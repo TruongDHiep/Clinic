@@ -1,0 +1,49 @@
+/* header.css */
+
+header {
+    padding: 10px;
+}
+
+header ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+header ul li {
+    display: inline;
+    margin-right: 15px;
+    position: relative; /* Cần thiết cho dropdown */
+}
+
+header ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Hiệu ứng hover */
+header ul li a:hover {
+    background-color: #0056b3; /* Thay đổi màu khi hover */
+    border-radius: 5px; /* Thêm bo góc nếu cần */
+}
+
+/* Dropdown styles */
+.dropdown-menu {
+    position: absolute;
+    display: none; /* Ẩn menu mặc định */
+    background-color: #00AFEF; /* Màu nền của dropdown */
+    min-width: 160px;
+    z-index: 1000; /* Đảm bảo dropdown ở trên cùng */
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block; /* Hiển thị dropdown khi hover */
+}
+
+.nav-item.dropdown {
+    cursor: pointer; /* Thêm con trỏ tay khi hover */
+}
+
+.logo-img {
+    width: 100px; /* Điều chỉnh kích thước nếu cần */
+    height: auto; /* Đảm bảo tỷ lệ hình ảnh */
+}
