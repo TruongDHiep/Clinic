@@ -7,10 +7,11 @@ import org.springframework.data.annotation.Id;
 @Entity
 @Table(name = "doctor")
 public class Doctor {
+    @jakarta.persistence.Id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private int id;
+    private Long id;
 
     @Column(name = "FullName", nullable = false, length = 255)
     private String fullName;
@@ -35,13 +36,6 @@ public class Doctor {
     }
 
     // Getters and Setters
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getFullName() {
         return fullName;
@@ -75,4 +69,11 @@ public class Doctor {
         this.email = email;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
 }
