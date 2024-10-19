@@ -7,6 +7,6 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-        return "home";  // Trả về trang "home.html"
+        return "home/index";  // Trả về trang "layout.html"
     }
 }
