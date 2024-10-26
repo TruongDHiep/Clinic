@@ -30,6 +30,6 @@ public class PatientController {
     @PostMapping("/patients")
     public String addPatient(@ModelAttribute("patient") PatientDTO patientDTO) {
         patientService.addPatient(patientDTO);
-        return "redirect:/patient/patients";
+        return "redirect:patient/patients";
     }
 }
