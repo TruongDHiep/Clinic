@@ -1,7 +1,7 @@
 package com.clinicmanagement.clinic.dto;
 
 public class DoctorDTO {
-    private int id;
+    private Integer id;
     private String fullName;
     private String specialization;
     private String phone;
@@ -10,7 +10,7 @@ public class DoctorDTO {
     // Constructors
     public DoctorDTO() {}
 
-    public DoctorDTO(int id, String fullName, String specialization, String phone, String email) {
+    public DoctorDTO(Integer id, String fullName, String specialization, String phone, String email) {
         this.id = id;
         this.fullName = fullName;
         this.specialization = specialization;
@@ -18,41 +18,40 @@ public class DoctorDTO {
         this.email = email;
     }
 
-    // Getters and Setters
-    public int getId() {
+    public Integer getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getFullName() {
         return fullName;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
     public String getSpecialization() {
         return specialization;
-    }
-
-    public void setSpecialization(String specialization) {
-        this.specialization = specialization;
     }
 
     public String getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
     public String getEmail() {
         return email;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public void setSpecialization(String specialization) {
+        this.specialization = specialization;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public void setEmail(String email) {

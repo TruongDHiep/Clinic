@@ -1,7 +1,7 @@
 package com.clinicmanagement.clinic.service;
 
 import com.clinicmanagement.clinic.dto.PatientDTO;
-import com.clinicmanagement.clinic.model.Patient;
+import com.clinicmanagement.clinic.Entities.Patient;
 import com.clinicmanagement.clinic.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,17 @@ public class PatientService {
     private PatientRepository patientRepository;
 
     public List<PatientDTO> getAllPatients() {
-        return patientRepository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
+        List<Patient> patients = patientRepository.findAll(); // Lấy tất cả bệnh nhân từ database
+
+        return patients.stream()
+                .map(patient -> new PatientDTO(
+                        patient.getId(),
+                        patient.getFullName(),
+                        patient.getDob(),
+                        patient.getAddress(),
+                        patient.getEmail(),
+                        patient.getPhone()))
+                .collect(Collectors.toList());
     }
 
     private PatientDTO convertToDTO(Patient patient) {
@@ -32,6 +42,7 @@ public class PatientService {
 
     public void addPatient(PatientDTO patientDTO) {
         Patient patient = new Patient(
+                null,
                 patientDTO.getFullName(),
                 patientDTO.getDob(),
                 patientDTO.getAddress(),
