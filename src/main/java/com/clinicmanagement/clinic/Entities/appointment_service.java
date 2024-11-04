@@ -20,7 +20,7 @@ public class appointment_service {
 
     @ManyToOne
     @JoinColumn(name = "appointmentId")
-    private Appointment appointment;
+    private Appointment appointment_id;
 
     @ManyToOne
     @JoinColumn(name = "serviceId")
