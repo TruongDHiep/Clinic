@@ -1,4 +1,4 @@
-package com.clinicmanagement.clinic.controller;
+package com.clinicmanagement.clinic.controller.admin;
 
 import com.clinicmanagement.clinic.dto.PatientDTO;
 import com.clinicmanagement.clinic.service.PatientService;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 @Controller
-public class PatientController {
+public class AdminPatientController {
 
     @Autowired
     private PatientService patientService;

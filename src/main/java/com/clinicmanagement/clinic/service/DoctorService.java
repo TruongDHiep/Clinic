@@ -17,17 +17,18 @@ public class DoctorService {
     public DoctorService(DoctorRepository doctorRepository) {
         this.doctorRepository = doctorRepository;
     }
-    public List<DoctorDTO> findAll() {
-        List<Doctor> doctors = doctorRepository.findAll(); // Lấy tất cả bệnh nhân từ database
-
-        return doctors.stream()
-                .map(docTors -> new DoctorDTO(
-                        docTors.getId(),
-                        docTors.getFullName(),
-                        docTors.getSpecialization(),
-                        docTors.getEmail(),
-                        docTors.getPhone()))
-                .collect(Collectors.toList());
+    public List<Doctor> findAll() {
+//        List<Doctor> doctors = doctorRepository.findAll(); // Lấy tất cả bệnh nhân từ database
+//
+//        return doctors.stream()
+//                .map(docTors -> new DoctorDTO(
+//                        docTors.getId(),
+//                        docTors.getFullName(),
+//                        docTors.getSpecialization(),
+//                        docTors.getEmail(),
+//                        docTors.getPhone()))
+//                .collect(Collectors.toList());
+        return doctorRepository.findAll();
     }
 
 }
