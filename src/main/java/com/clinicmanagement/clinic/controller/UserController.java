@@ -1,18 +1,12 @@
 package com.clinicmanagement.clinic.controller;
 
-import com.clinicmanagement.clinic.Entities.Doctor;
 import com.clinicmanagement.clinic.Entities.Useracount;
 import com.clinicmanagement.clinic.dto.user.ApiResponse;
 import com.clinicmanagement.clinic.dto.user.UserRequest;
-import com.clinicmanagement.clinic.dto.user.UserUpdateRequest;
 import com.clinicmanagement.clinic.mapper.UserMapper;
 import com.clinicmanagement.clinic.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,9 +37,11 @@ public class UserController {
 //        return apiResponse;
 //    }
 
-    @PostMapping("/users")
-    public Useracount createUser(@RequestBody UserRequest userRequest){
-       return userService.createUser(userRequest);
+    @PostMapping("/user/register")
+    public ApiResponse<Useracount> createUser(@RequestBody @Valid UserRequest userRequest){
+        ApiResponse<Useracount> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(userService.createUser(userRequest));
+        return apiResponse;
     }
 //    }
 
