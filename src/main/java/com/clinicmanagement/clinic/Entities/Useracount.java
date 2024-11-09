@@ -23,10 +23,6 @@ public class Useracount {
     private String password;
 
     @ManyToOne
-    @JoinColumn(name = "roleId")
-    private Role role;
-
-    @ManyToOne
     @JoinColumn(name = "patientId", nullable = true)
     private Patient patient;
 
@@ -34,4 +30,5 @@ public class Useracount {
     @JoinColumn(name = "doctorId", nullable = true)
     private Doctor doctor;
 
+    private boolean role;
 }

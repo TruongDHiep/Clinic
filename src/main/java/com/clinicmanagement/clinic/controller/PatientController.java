@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 @Controller
-public class PatientController {
+public class AdminPatientController {
 
     @Autowired
     private PatientService patientService;
