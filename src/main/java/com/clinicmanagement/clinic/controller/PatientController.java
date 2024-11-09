@@ -1,4 +1,4 @@
-package com.clinicmanagement.clinic.controller.admin;
+package com.clinicmanagement.clinic.controller;
 
 import com.clinicmanagement.clinic.dto.PatientDTO;
 import com.clinicmanagement.clinic.service.PatientService;
