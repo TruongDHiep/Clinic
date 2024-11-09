@@ -75,10 +75,8 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <scope>provided</scope>
+            <scope>annotationProcessor</scope>
         </dependency>
-
-
     </dependencies>
 
     <build>
