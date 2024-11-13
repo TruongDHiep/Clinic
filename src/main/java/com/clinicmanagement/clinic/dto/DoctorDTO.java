@@ -7,7 +7,6 @@ public class DoctorDTO {
     private String phone;
     private String email;
 
-    // Constructors
     public DoctorDTO() {}
 
     public DoctorDTO(Integer id, String fullName, String specialization, String phone, String email) {

@@ -1,78 +1,64 @@
-//package com.clinicmanagement.clinic.dto;
-//import com.clinicmanagement.clinic.Entities.Appointment;
-//
-//import java.time.LocalDate;
-//import java.time.LocalTime;
-//
-//public class AppointmentDTO {
-//    private Long id;
-//    private Long patientId;
-//    private Long doctorId;
-//    private LocalDate appointmentDate;
-//    private LocalTime appointmentTime;
-//    private String status;
-//
-//    public AppointmentDTO() {
-//    }
-//
-//    public AppointmentDTO(Appointment appointment) {
-//        this.id = appointment.getId();
-//        this.patientId = appointment.getPatient().getId();
-//        this.doctorId = appointment.getDoctor().getId();
-//        this.appointmentDate = appointment.getAppointmentDate();
-//        this.appointmentTime = appointment.getAppointmentTime();
-//        this.status = appointment.getStatus();
-//    }
-//
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
-//
-//
-//    public Long getPatientId() {
-//        return patientId;
-//    }
-//
-//    public void setPatientId(Long patientId) {
-//        this.patientId = patientId;
-//    }
-//
-//    public Long getDoctorId() {
-//        return doctorId;
-//    }
-//
-//    public void setDoctorId(Long doctorId) {
-//        this.doctorId = doctorId;
-//    }
-//
-//
-//    public LocalDate getAppointmentDate() {
-//        return appointmentDate;
-//    }
-//
-//    public void setAppointmentDate(LocalDate appointmentDate) {
-//        this.appointmentDate = appointmentDate;
-//    }
-//
-//    public LocalTime getAppointmentTime() {
-//        return appointmentTime;
-//    }
-//
-//    public void setAppointmentTime(LocalTime appointmentTime) {
-//        this.appointmentTime = appointmentTime;
-//    }
-//
-//    public String getStatus() {
-//        return status;
-//    }
-//
-//    public void setStatus(String status) {
-//        this.status = status;
-//    }
-//
-//
-//}
+package com.clinicmanagement.clinic.dto;
+import com.clinicmanagement.clinic.Entities.Appointment;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+public class AppointmentDTO {
+
+
+
+    private int _id;
+
+
+
+    private LocalDate _appointmentDate;
+    private LocalTime _appointmentTime;
+    private String _status;
+
+
+    //private Long patientId;
+    //private Long doctorId;
+    public AppointmentDTO() {
+    }
+
+    public AppointmentDTO(int id, LocalDate appointmentDate, LocalTime appointmentTime, String status) {
+        this._id = id;
+        this._appointmentDate = appointmentDate;
+        this._appointmentTime = appointmentTime;
+        this._status = status;
+
+    }
+
+    public int get_id() {
+        return _id;
+    }
+
+    public void set_id(int _id) {
+        this._id = _id;
+    }
+
+    public LocalTime get_appointmentTime() {
+        return _appointmentTime;
+    }
+
+    public void set_appointmentTime(LocalTime _appointmentTime) {
+        this._appointmentTime = _appointmentTime;
+    }
+
+    public String get_status() {
+        return _status;
+    }
+
+    public void set_status(String _status) {
+        this._status = _status;
+    }
+
+    public LocalDate get_appointmentDate() {
+        return _appointmentDate;
+    }
+
+    public void set_appointmentDate(LocalDate _appointmentDate) {
+        this._appointmentDate = _appointmentDate;
+    }
+}
