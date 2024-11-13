@@ -23,7 +23,7 @@ import javax.crypto.spec.SecretKeySpec;
 @Configuration
 public class SecurityConfig {
 
-    private final String[] PUBLIC_ENDPOINT = {"/auth/login", "/patients/**"};
+    private final String[] PUBLIC_ENDPOINT = {"/auth/login", "/patients/**","/api/**"};
     private final Environment environment;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {

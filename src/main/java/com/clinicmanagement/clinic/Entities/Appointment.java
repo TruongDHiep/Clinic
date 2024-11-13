@@ -14,7 +14,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="appontment")
+@Table(name="appointment")
 public class Appointment {
 
     @Id
@@ -32,7 +32,4 @@ public class Appointment {
     private LocalDate appointmentDate;
     private LocalTime appointmentTime;
     private String status;
-
-
-
 }
