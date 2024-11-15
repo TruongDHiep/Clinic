@@ -9,16 +9,12 @@ public class AppointmentDTO {
 
 
     private int _id;
-
-
-
     private LocalDate _appointmentDate;
     private LocalTime _appointmentTime;
     private String _status;
+    private Integer patientId;
+    private Integer doctorId;
 
-
-    //private Long patientId;
-    //private Long doctorId;
     public AppointmentDTO() {
     }
 
@@ -60,5 +56,21 @@ public class AppointmentDTO {
 
     public void set_appointmentDate(LocalDate _appointmentDate) {
         this._appointmentDate = _appointmentDate;
+    }
+
+    public Integer getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(Integer patientId) {
+        this.patientId = patientId;
+    }
+
+    public Integer getDoctorId() {
+        return doctorId;
+    }
+
+    public void setDoctorId(Integer doctorId) {
+        this.doctorId = doctorId;
     }
 }
