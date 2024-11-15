@@ -1,20 +1,30 @@
 package com.clinicmanagement.clinic.dto;
-import com.clinicmanagement.clinic.Entities.Appointment;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+@Getter
+@Setter
+
 public class AppointmentDTO {
-
-
-
+    @JsonProperty("id")
     private int _id;
-    private LocalDate _appointmentDate;
-    private LocalTime _appointmentTime;
-    private String _status;
-    private Integer patientId;
-    private Integer doctorId;
 
+    @JsonProperty("appointmentDate")
+    private LocalDate _appointmentDate;
+
+    @JsonProperty("appointmentTime")
+    private LocalTime _appointmentTime;
+
+    @JsonProperty("status")
+    private String _status;
+
+    private Integer patientId;
+
+    private Integer doctorId;
     public AppointmentDTO() {
     }
 
@@ -24,53 +34,5 @@ public class AppointmentDTO {
         this._appointmentTime = appointmentTime;
         this._status = status;
 
-    }
-
-    public int get_id() {
-        return _id;
-    }
-
-    public void set_id(int _id) {
-        this._id = _id;
-    }
-
-    public LocalTime get_appointmentTime() {
-        return _appointmentTime;
-    }
-
-    public void set_appointmentTime(LocalTime _appointmentTime) {
-        this._appointmentTime = _appointmentTime;
-    }
-
-    public String get_status() {
-        return _status;
-    }
-
-    public void set_status(String _status) {
-        this._status = _status;
-    }
-
-    public LocalDate get_appointmentDate() {
-        return _appointmentDate;
-    }
-
-    public void set_appointmentDate(LocalDate _appointmentDate) {
-        this._appointmentDate = _appointmentDate;
-    }
-
-    public Integer getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(Integer patientId) {
-        this.patientId = patientId;
-    }
-
-    public Integer getDoctorId() {
-        return doctorId;
-    }
-
-    public void setDoctorId(Integer doctorId) {
-        this.doctorId = doctorId;
     }
 }
