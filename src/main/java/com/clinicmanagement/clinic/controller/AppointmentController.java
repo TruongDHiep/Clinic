@@ -1,17 +1,12 @@
 package com.clinicmanagement.clinic.controller;
 
 import com.clinicmanagement.clinic.Entities.Appointment;
-import com.clinicmanagement.clinic.dto.AppointmentDTO;
 import com.clinicmanagement.clinic.service.AppointmentService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RequestMapping("/information/appointment")
@@ -19,9 +14,6 @@ import java.util.List;
 public class AppointmentController {
     @Autowired
     private AppointmentService _appointmentService;
-
-    @Autowired
-    private static final Logger logger = LoggerFactory.getLogger(AppointmentController.class);
 
     @GetMapping
     public String GetAllAppointments(Model model) {

@@ -1,9 +1,6 @@
 package com.clinicmanagement.clinic.service;
 
 import com.clinicmanagement.clinic.Entities.Appointment;
-import com.clinicmanagement.clinic.Entities.Doctor;
-import com.clinicmanagement.clinic.Entities.Patient;
-import com.clinicmanagement.clinic.dto.AppointmentDTO;
 import com.clinicmanagement.clinic.repository.AppointmentRepository;
 import com.clinicmanagement.clinic.repository.DoctorRepository;
 import com.clinicmanagement.clinic.repository.PatientRepository;
@@ -12,14 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
-
-
-import static org.hibernate.internal.util.collections.ArrayHelper.forEach;
 
 @Service
 public class AppointmentService {
