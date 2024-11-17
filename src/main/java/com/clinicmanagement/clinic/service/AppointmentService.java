@@ -37,15 +37,9 @@ public class AppointmentService {
         return appointments;
     }
 
-    public Appointment GetAppointmentById(int id) {
-        return _appointmentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Not found appointment by id: " + id));
-    }
-
     public List<Appointment> searchAppointments(String keyword) {
         return _appointmentRepository.searchAppointments(keyword);
     }
-
 
     public void addAppointment(Appointment appointment) {
         try {
