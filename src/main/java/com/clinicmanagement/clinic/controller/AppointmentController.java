@@ -1,48 +1,50 @@
 package com.clinicmanagement.clinic.controller;
 
 import com.clinicmanagement.clinic.Entities.Appointment;
-import com.clinicmanagement.clinic.dto.AppointmentDTO;
 import com.clinicmanagement.clinic.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/api/appointments")
-@RestController
+@RequestMapping("/information/appointment")
+@Controller
 public class AppointmentController {
     @Autowired
     private AppointmentService _appointmentService;
 
     @GetMapping
-    public List<Appointment> GetAllAppointments() {
-        return _appointmentService.GetAllUsers();
+    public String GetAllAppointments(Model model) {
+        try {
+            List<Appointment> appointments = _appointmentService.getAllAppointments();
+            model.addAttribute("appointments", appointments);
+            return "information/appointment/index";
+        } catch (Exception e) {
+            e.printStackTrace();  // Log exception for debugging
+            model.addAttribute("errorMessage", "An error occurred while fetching appointments.");
+            return "error";
+        }
     }
 
-    @GetMapping("/{id}")
-    public Appointment GetAppointmentById(@PathVariable int id) {
-        return _appointmentService.GetAppointmentById(id);
+    @GetMapping("/search")
+    public String searchAppointments(@RequestParam String keyword, Model model) {
+        List<Appointment> appointments = _appointmentService.searchAppointments(keyword);
+        model.addAttribute("appointments", appointments);
+        model.addAttribute("keyword", keyword);  // Thêm keyword vào model
+        return "information/appointment/index";
     }
 
-    @GetMapping("/doctor/{id}")
-    public List<Appointment> GetAppointmentByDocTorId(@PathVariable int id) {
-        return _appointmentService.GetAppointmentByDocTorId(id);
-    }
+    //Viết add controller ở đây nha hiệp
 
-    @PostMapping
-    public Appointment CreateAppointment(@RequestBody AppointmentDTO appointmentDTO) {
-        return _appointmentService.AddAppointment(appointmentDTO);
-    }
-
-    @PutMapping
-    public Appointment UpdateAppointment(@RequestBody AppointmentDTO appointmentDTO) {
-        return _appointmentService.UpdateAppointment(appointmentDTO);
-    }
-
-    @DeleteMapping("/{id}")
-    public String DeleteAppointment(@PathVariable int id) {
-        return _appointmentService.DeleteAppointment(id);
+    @PostMapping("/cancel")
+    public String cancelAppointment(@RequestParam("id") int id) {
+        try {
+            _appointmentService.cancelAppointment(id);
+            return "redirect:/information/appointment";
+        } catch (Exception e) {
+            return "error";
+        }
     }
 }
