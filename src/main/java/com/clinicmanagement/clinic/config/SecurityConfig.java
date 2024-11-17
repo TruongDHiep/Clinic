@@ -23,7 +23,7 @@ import javax.crypto.spec.SecretKeySpec;
 @Configuration
 public class SecurityConfig {
 
-    private final String[] PUBLIC_ENDPOINT = {"/auth/login", "/patients/**","/api/**"};
+    private final String[] PUBLIC_ENDPOINT = {"/auth/login", "/patients/**","/api/**","/information/**"};
     private final Environment environment;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -35,6 +35,8 @@ public class SecurityConfig {
       httpSecurity.oauth2ResourceServer(oauth2 ->
               oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())));
       httpSecurity.csrf(AbstractHttpConfigurer::disable);
+
+        httpSecurity.securityMatcher(PUBLIC_ENDPOINT);
       return httpSecurity.build();
     }
 
