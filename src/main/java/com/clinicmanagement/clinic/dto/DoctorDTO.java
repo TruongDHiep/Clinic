@@ -17,4 +17,5 @@ public class DoctorDTO {
     private String email;
     private boolean status = true;
 
+
 }

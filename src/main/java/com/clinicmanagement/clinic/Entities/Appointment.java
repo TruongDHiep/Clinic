@@ -1,5 +1,6 @@
 package com.clinicmanagement.clinic.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -33,4 +35,8 @@ public class Appointment {
     private LocalTime appointmentTime;
     private String status;
 
+    // Thêm thuộc tính này để lấy các dịch vụ liên quan đến cuộc hẹn
+    @OneToMany(mappedBy = "appointment_id", fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("appointment_id")
+    private List<appointment_service> appointmentServices;
 }
