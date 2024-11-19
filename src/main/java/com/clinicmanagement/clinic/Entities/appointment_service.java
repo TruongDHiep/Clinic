@@ -24,7 +24,7 @@ public class appointment_service {
 
     @ManyToOne
     @JoinColumn(name = "serviceId")
-    private Service service;
+    private Services services;
 
     private Integer quantity;
     private String note;

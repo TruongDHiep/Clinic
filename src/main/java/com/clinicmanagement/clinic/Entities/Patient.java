@@ -39,4 +39,6 @@ public class Patient {
     @Length(min = 10, max = 10, message = "Phone must be 10 characters")
     @Pattern(regexp = "^[0-9]*$", message = "Phone must be number")
     private String phone;
+
+    private  boolean status;
 }

@@ -38,7 +38,5 @@ public class Doctor {
     @Size(max = 50, message = "Email must be less than 50 characters")
     @Email
     private String email;
-
-
-
+    private boolean status;
 }

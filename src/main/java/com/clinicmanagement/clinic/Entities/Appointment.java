@@ -33,6 +33,4 @@ public class Appointment {
     private LocalTime appointmentTime;
     private String status;
 
-
-
 }

@@ -1,76 +1,81 @@
 package com.clinicmanagement.clinic.service;
 
 import com.clinicmanagement.clinic.Entities.Useracount;
+import com.clinicmanagement.clinic.dto.user.UserReponse;
 import com.clinicmanagement.clinic.dto.user.UserRequest;
+import com.clinicmanagement.clinic.dto.user.UserUpdateRequest;
+import com.clinicmanagement.clinic.enums.Role;
 import com.clinicmanagement.clinic.exception.AppException;
 import com.clinicmanagement.clinic.exception.ErrorCode;
 import com.clinicmanagement.clinic.mapper.UserMapper;
-import com.clinicmanagement.clinic.repository.PatientRepository;
 import com.clinicmanagement.clinic.repository.UserRopsitory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService{
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
     @Autowired
     private UserRopsitory userRepo;
 
     @Autowired
     private UserMapper userMapper;
 
-//    public boolean login(UserRequest user){
-//        Useracount userFromDB = userRepo.findByUsername(user.getUsername());
-//        if (userFromDB != null && userFromDB.getPassword().equals(user.getPassword())) {
-//
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
 
-//    public void save(Useracount user){
-//        userRepo.save(user);
-//    }
-//
-//    public  void delete(Integer id){
-//        userRepo.deleteById(id);
-//    }
-    public List<Useracount> getAllUsers() {
-        return userRepo.findAll();
+    public List<UserReponse> getAllUsers() {
+        log.info("In method get users");
+        return userRepo.findAll().stream().map(userMapper::toUserReponse).toList();
     }
 
-    public Useracount getByID(int id){
-        return userRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public UserReponse getByID(int id){
+        return userMapper.toUserReponse(userRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found")));
     }
-    public Useracount createUser(UserRequest userRequest) {
-        if(userRepo.existsByUsername(userRequest.getUsername()))
-            throw new AppException(ErrorCode.USER_EXISTED);
 
-        Useracount user = userMapper.toUser(userRequest);
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
-        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-        return userRepo.save(user);
-    }
+//    public UserReponse getUserInfo(){
+//        var context = SecurityContextHolder.getContext();
+//        String name = context.getAuthentication().getName();
+//        Useracount user = userRepo.findByUsername(name).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+//        return userMapper.toUserReponse(user);
+//    }
+
+//    public Useracount createUser(UserRequest userRequest) {
+//        if(userRepo.existsByUsername(userRequest.getUsername()))
+//            throw new AppException(ErrorCode.USER_EXISTED);
+//        Useracount user = userMapper.toUser(userRequest);
+//        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 //
-//    public Useracount updateUser(Integer id, UserUpdateRequest userUpdateRequest){
-//        Role role = roleRepo.findById(userUpdateRequest.getRoleId())
-//                .orElseThrow(() -> new RuntimeException("Role not found"));
-//        Patient patient = patientRepository.findById(userUpdateRequest.getPatientId())
-//                .orElseThrow(() -> new RuntimeException("Patient not found"));
-//        Useracount user = getById(id);
-//        user.setPassword(userUpdateRequest.getPassword());
+//        //Set role user khi dang ki thanh cong
+//        HashSet<String> role = new HashSet<>();
+//        role.add(Role.USER.name());
 //        user.setRole(role);
-//        user.setPatient(patient);
+//
 //        return userRepo.save(user);
 //    }
-//    public Useracount findByName(String username){
-//        return userRepo.findByUserName(username);
+//
+//    public UserReponse updateUser(Integer id, UserUpdateRequest userUpdateRequest){
+//        Useracount user = userRepo.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+//        userMapper.updateUser(userUpdateRequest,user);
+//        return userMapper.toUserReponse(userRepo.save(user));
 //    }
-
+//
+//    public Useracount getByName(String username) {
+//        Optional<Useracount> optionalUser = userRepo.findByUsername(username);
+//
+//        return optionalUser.orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+//    }
 
 }

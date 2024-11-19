@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,5 +19,6 @@ public class UserRequest {
          String password;
          Doctor doctor;
          Patient patient;
-         boolean role;
+         Set<String> role;
+         boolean status = true;
 }

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Minie Shop</title>
     <th:block th:fragment="link-css">
-        <link rel="icon" href="/pictures/logo/logo.ico" type="image/png">
+<!--        <link rel="icon" href="/pictures/logo/logo.ico" type="image/png">-->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
         <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
         <link rel="stylesheet" th:href="@{/css/snackbar.min.css}">
@@ -70,13 +70,13 @@
                 </li>
             </ul>
             <ul class="navbar-nav">
-                <li sec:authorize="hasAuthority('Manager')" class="nav-item me-2">
+                <li class="nav-item me-2">
                     <a href="/admin" class="btn btn-warning">ADMIN</a>
                 </li>
                 <li class="nav-item me-2">
                     <a class="btn btn-info" href="/cart"><i class="bi bi-cart4"></i> Giỏ hàng</a>
                 </li>
-                <li sec:authorize="isAuthenticated()" class="nav-item me-2">
+                <li class="nav-item me-2">
                     <a th:href="@{/user-details/{id}(id=${#authentication.getName()})}" class="btn btn-dark">Xin chào <span sec:authentication="name">Username</span></a>
                 </li>
                 <li sec:authorize="isAuthenticated()" class="nav-item me-2">

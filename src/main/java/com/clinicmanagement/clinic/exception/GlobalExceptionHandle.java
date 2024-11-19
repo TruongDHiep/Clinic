@@ -1,6 +1,6 @@
 package com.clinicmanagement.clinic.exception;
 
-import com.clinicmanagement.clinic.dto.user.ApiResponse;
+import com.clinicmanagement.clinic.dto.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -12,8 +12,8 @@ public class GlobalExceptionHandle {
     @ExceptionHandler(value = Exception.class)
     ResponseEntity<ApiResponse> handlingRuntimeException(RuntimeException exception){
         ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setCode(ErrorCode.UNCATEGORIZED_EXCEPTIO.getCode());
-        apiResponse.setMessage(ErrorCode.UNCATEGORIZED_EXCEPTIO.getMessage());
+        apiResponse.setCode(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode());
+        apiResponse.setMessage(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage());
         return ResponseEntity.badRequest().body(apiResponse);
     }
 
@@ -26,7 +26,6 @@ public class GlobalExceptionHandle {
         return ResponseEntity.badRequest().body(apiResponse);
     }
 
-
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     ResponseEntity<ApiResponse> handlingValidation(MethodArgumentNotValidException exception){
         String enumKey = exception.getFieldError().getDefaultMessage();
@@ -34,7 +33,6 @@ public class GlobalExceptionHandle {
         try{
             errorCode = ErrorCode.valueOf(enumKey);
         } catch (IllegalArgumentException e){
-
         }
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setCode(errorCode.getCode());

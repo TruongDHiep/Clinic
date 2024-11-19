@@ -14,41 +14,42 @@ public class PatientService {
 
     @Autowired
     private PatientRepository patientRepository;
-
-    public List<PatientDTO> getAllPatients() {
-        List<Patient> patients = patientRepository.findAll(); // Lấy tất cả bệnh nhân từ database
-
-        return patients.stream()
-                .map(patient -> new PatientDTO(
-                        patient.getId(),
-                        patient.getFullName(),
-                        patient.getDob(),
-                        patient.getAddress(),
-                        patient.getEmail(),
-                        patient.getPhone()))
-                .collect(Collectors.toList());
-    }
-
-    private PatientDTO convertToDTO(Patient patient) {
-        return new PatientDTO(
-                patient.getId(),
-                patient.getFullName(),
-                patient.getDob(),
-                patient.getAddress(),
-                patient.getEmail(),
-                patient.getPhone()
-        );
-    }
-
-    public void addPatient(PatientDTO patientDTO) {
-        Patient patient = new Patient(
-                null,
-                patientDTO.getFullName(),
-                patientDTO.getDob(),
-                patientDTO.getAddress(),
-                patientDTO.getEmail(),
-                patientDTO.getPhone()
-        );
-        patientRepository.save(patient);
-    }
+//
+//    public List<PatientDTO> getAllPatients() {
+//        List<Patient> patients = patientRepository.findAll(); // Lấy tất cả bệnh nhân từ database
+//
+//        return patients.stream()
+//                .map(patient -> new PatientDTO(
+//                        patient.getId(),
+//                        patient.getFullName(),
+//                        patient.getDob(),
+//                        patient.getAddress(),
+//                        patient.getEmail(),
+//                        patient.getPhone()),
+//                        patients.getStatus())
+//                .collect(Collectors.toList());
+//    }
+//
+//    private PatientDTO convertToDTO(Patient patient) {
+//        return new PatientDTO(
+//                patient.getId(),
+//                patient.getFullName(),
+//                patient.getDob(),
+//                patient.getAddress(),
+//                patient.getEmail(),
+//                patient.getPhone()
+//        );
+//    }
+//
+//    public void addPatient(PatientDTO patientDTO) {
+//        Patient patient = new Patient(
+//                null,
+//                patientDTO.getFullName(),
+//                patientDTO.getDob(),
+//                patientDTO.getAddress(),
+//                patientDTO.getEmail(),
+//                patientDTO.getPhone()
+//        );
+//        patientRepository.save(patient);
+//    }
 }
