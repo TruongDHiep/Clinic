@@ -2,33 +2,38 @@ package com.clinicmanagement.clinic.Entities;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+import java.util.Set;
 
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name="useraccount")
 public class Useracount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    Integer id;
 
-    private String username;
-    private String password;
+     String username;
+     String password;
 
     @ManyToOne
     @JoinColumn(name = "patientId", nullable = true)
-    private Patient patient;
+     Patient patient;
 
     @ManyToOne
     @JoinColumn(name = "doctorId", nullable = true)
-    private Doctor doctor;
+    Doctor doctor;
 
-    private boolean role;
+    @ElementCollection
+    Set<String> role;
+
+    boolean status;
 }

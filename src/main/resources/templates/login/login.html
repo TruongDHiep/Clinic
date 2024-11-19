@@ -2,73 +2,70 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Login Page</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="/css/login.css">
+    <script th:src="@{/js/login.js}"></script>
 </head>
 <body>
-    <nav class="d-flex p-2" style="background-color:#FFFFFF">
-        <img class="logo me-auto" src="/image/logo.png" style="height: 40px; width: auto;">
-        <button type="button" class="btn btn-outline-primary ms-auto">Đăng nhập</button>
-    </nav>
+<nav class="d-flex p-2" style="background-color:#FFFFFF">
+    <img class="logo me-auto" th:src="@{/images/logo.png}" style="height: 40px; width: auto;" alt="Logo">
+    <a th:href="@{/login}" class="btn btn-outline-primary ms-auto">Đăng nhập</a>
+</nav>
 
-    <div class="container d-flex justify-content-center align-items-center min-vh-100">
-        <div class="row border rounded-5 p-3 bg-white shadow box-area">
-            <div class="col-md-6 rounder-4 d-flex justify-content-center align-items-center flex-column left-box" style="background:#103cbe;">
-                <div class="feature-image mb-3">
-                    <img src="/image/2250207.png" class="img-fluid" style="width: 250px" alt="">
-                </div>
-                <p class="text-white fs-2" style="font-family: 'Courier New',Courier,monospace; font-weight: 700">Be verified</p>
-                <small class="text-white text-wrap text-center" style="width: 17rem;font-family:'Courier New',Courier,monospace;  ">Join with Us</small>
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="row border rounded-5 p-3 bg-white shadow box-area">
+        <div class="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column left-box" style="background:#103cbe;">
+            <div class="feature-image mb-3">
+                <img th:src="@{/images/2250207.png}" class="img-fluid" style="width: 250px" alt="Feature">
             </div>
-            <div class="col-md-6 right-box">
-                <div class="row align-items-center">
-                    <div class="header-text mb-4">
-                        <p>Hello,Again</p>
-                        <p>We are happy to have u back</p>
-                        <form action="/login" method="post" th:object="${userRequest}">
-                            <div class="input-group mb-3 mt-5">
-                                <input type="text" th:field="*{username}" class="form-control form-control-lg bg-light fs-6" placeholder="Username" required>
-                            </div>
-                            <div class="input-group mb-3">
-                                <input type="password" th:field="*{password}" class="form-control form-control-lg bg-light fs-6" placeholder="Password" required>
-                            </div>
-                            <div class="input-group mb-5 d-flex justify-content-between">
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="formCheck">
-                                    <label for="formCheck" class="form-check-label text-secondary">
-                                        <small>Remember Me</small>
-                                    </label>
-                                </div>
-                                <div class="forgot">
-                                    <small><a href="#">Forgot Password?</a></small>
-                                </div>
-                            </div>
-                            <div class="input-group mb-3">
-                                <button type="submit" class="btn btn-lg btn-primary w-100 fs-6">Login</button>
-                            </div>
-                        </form>
-                        <div class="input-group mb-3 d-flex justify-content-center">
-                            <button class="btn btn-lgw-100 fs-6"> <i class="fab fa-google"></i></button>
-                            <button class="btn btn-lgw-100 fs-6"> <i class="fab fa-facebook"></i></button>
+            <p class="text-white fs-2" style="font-family: 'Courier New', Courier, monospace; font-weight: 700">Be verified</p>
+            <small class="text-white text-wrap text-center" style="width: 17rem;font-family:'Courier New', Courier, monospace;">Join with Us</small>
+        </div>
+        <div class="col-md-6 right-box">
+            <div class="row align-items-center">
+                <div class="header-text mb-4">
+                    <p>Hello, Again</p>
+                    <p>We are happy to have you back</p>
+                    <form id="loginForm">
+                        <div class="input-group mb-3 mt-5">
+                            <input type="text" id="username" class="form-control form-control-lg bg-light fs-6" placeholder="Username" required>
                         </div>
-                        <div class="row">
-                            <small>Do you haven't account? <a th:href="@{/register}">Sign up</a></small>
+                        <div class="input-group mb-3">
+                            <input type="password" id="password" class="form-control form-control-lg bg-light fs-6" placeholder="Password" required>
                         </div>
+                        <div class="input-group mb-5 d-flex justify-content-between">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="formCheck">
+                                <label for="formCheck" class="form-check-label text-secondary">
+                                    <small>Remember Me</small>
+                                </label>
+                            </div>
+                            <div class="forgot">
+                                <small><a th:href="@{/forgot-password}">Forgot Password?</a></small>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <button type="button" onclick="submitLogin()" class="btn btn-lg btn-primary w-100 fs-6">Login</button>
+                        </div>
+                    </form>
+                    <div class="input-group mb-3 d-flex justify-content-center">
+                        <button class="btn btn-lg w-100 fs-6"> <i class="fab fa-google"></i></button>
+                        <button class="btn btn-lg w-100 fs-6"> <i class="fab fa-facebook"></i></button>
                     </div>
-
+                    <div class="row">
+                        <small>Don't have an account? <a th:href="@{/register}">Sign up</a></small>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <footer class="d-flex flex-column align-items-center">
-        <p>
-            Các thông tin chỉ dành cho mục đích tham khảo, tra cứu và không thay thế cho việc chẩn đoán hoặc điều trị y khoa.
-        </p>
-    </footer>
-</body>
-
-</html>
+</div>
+<footer class="d-flex flex-column align-items-center">
+    <p>
+        Các thông tin chỉ dành cho mục đích tham khảo, tra cứu và không thay thế cho việc chẩn đoán hoặc điều trị y khoa.
+    </p>
+</footer>

@@ -1,6 +1,6 @@
 package com.clinicmanagement.clinic.exception;
 
-import com.clinicmanagement.clinic.dto.user.ApiResponse;
+import com.clinicmanagement.clinic.dto.ApiResponse;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.ResponseEntity;

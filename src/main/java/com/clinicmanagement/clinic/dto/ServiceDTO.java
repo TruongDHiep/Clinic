@@ -1,13 +1,20 @@
 package com.clinicmanagement.clinic.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ServiceDTO {
-    private Integer id;
+    @NotBlank(message = "Service is required")
+    private String serviceName;
     private String description;
-    private Double price;
-    private String service_name;
+    @NotNull(message = "Price is required")
+    private double price;
+    private boolean status = true;
 }

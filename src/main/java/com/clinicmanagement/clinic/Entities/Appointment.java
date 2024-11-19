@@ -16,13 +16,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="appointment")
+@Table(name="appontment")
 public class Appointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
 
     @ManyToOne
     @JoinColumn(name = "patientId")
