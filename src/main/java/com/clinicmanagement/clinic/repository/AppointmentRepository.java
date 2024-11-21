@@ -13,7 +13,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
 
     @Query("SELECT a FROM Appointment a " +
             "JOIN a.appointmentServices asv " +
-            "JOIN asv.service s " +
+            "JOIN asv.services s " +
             "WHERE (LOWER(a.status) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
             "OR (LOWER(s.serviceName) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
             "OR (CAST(a.appointmentDate AS string) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
