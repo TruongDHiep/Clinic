@@ -28,7 +28,9 @@ public class Doctor {
     private String fullName;
 
     @NotBlank(message = "Specialization name is required")
-    private String specialization;
+    @ManyToOne
+    @JoinColumn(name = "specialization_id")
+    private Specialization specialization_id;
 
     @Length(min = 10, max = 10, message = "Phone must be 10 characters")
     @Pattern(regexp = "^[0-9]*$", message = "Phone must be number")
