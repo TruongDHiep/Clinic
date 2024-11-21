@@ -9,9 +9,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-//import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
-//import org.springframework.security.oauth2.jwt.JwtDecoder;
-//import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.security.web.SecurityFilterChain;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -23,12 +23,13 @@ import javax.crypto.spec.SecretKeySpec;
 @Configuration
 public class SecurityConfig {
 
-    private final String[] PUBLIC_ENDPOINT = {"/admin/**","/api/users/register","/login","/","/patients","/auth/login"};
+    private final String[] PUBLIC_ENDPOINT = {"/api/users/register","/login","/","/patients","/auth/login"};
     private final Environment environment;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
       httpSecurity.authorizeHttpRequests(request ->
               request.requestMatchers(PUBLIC_ENDPOINT).permitAll()
+                      .requestMatchers("/js/**","/images/**","/css/**","/fonts/**").permitAll()
                       .anyRequest().authenticated()
       );
 
@@ -60,9 +61,9 @@ public class SecurityConfig {
 //                .build();
 //    }
 //
-//    @Bean
-//    PasswordEncoder passwordEncoder(){
-//        return new BCryptPasswordEncoder(10);
-//    }
+    @Bean
+    PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder(10);
+    }
 }
 
