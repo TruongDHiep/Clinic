@@ -12,16 +12,14 @@ import com.clinicmanagement.clinic.repository.UserRopsitory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.access.prepost.PreAuthorize;
-//import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class UserService{
@@ -32,8 +30,8 @@ public class UserService{
     @Autowired
     private UserMapper userMapper;
 
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public List<UserReponse> getAllUsers() {
         log.info("In method get users");
@@ -52,20 +50,20 @@ public class UserService{
 //        return userMapper.toUserReponse(user);
 //    }
 
-//    public Useracount createUser(UserRequest userRequest) {
-//        if(userRepo.existsByUsername(userRequest.getUsername()))
-//            throw new AppException(ErrorCode.USER_EXISTED);
-//        Useracount user = userMapper.toUser(userRequest);
-//        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-//
-//        //Set role user khi dang ki thanh cong
-//        HashSet<String> role = new HashSet<>();
-//        role.add(Role.USER.name());
-//        user.setRole(role);
-//
-//        return userRepo.save(user);
-//    }
-//
+    public Useracount createUser(UserRequest userRequest) {
+        if(userRepo.existsByUsername(userRequest.getUsername()))
+            throw new AppException(ErrorCode.USER_EXISTED);
+        Useracount user = userMapper.toUser(userRequest);
+        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+
+        //Set role user khi dang ki thanh cong
+        HashSet<String> role = new HashSet<>();
+//        if(userRequest.getRole().str)
+        user.setRole(role);
+
+        return userRepo.save(user);
+    }
+
 //    public UserReponse updateUser(Integer id, UserUpdateRequest userUpdateRequest){
 //        Useracount user = userRepo.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 //        userMapper.updateUser(userUpdateRequest,user);
