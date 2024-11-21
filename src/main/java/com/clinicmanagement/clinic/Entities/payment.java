@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -24,6 +25,7 @@ public class payment {
     @JoinColumn(name = "appointmentId")
     private Appointment appointment;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate paymentDate;
     private double totalAmount;
     private String paymentMethod;
