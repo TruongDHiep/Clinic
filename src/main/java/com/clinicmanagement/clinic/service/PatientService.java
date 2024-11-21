@@ -1,55 +1,31 @@
 package com.clinicmanagement.clinic.service;
 
-import com.clinicmanagement.clinic.dto.PatientDTO;
 import com.clinicmanagement.clinic.Entities.Patient;
 import com.clinicmanagement.clinic.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 public class PatientService {
 
     @Autowired
     private PatientRepository patientRepository;
-//
-//    public List<PatientDTO> getAllPatients() {
-//        List<Patient> patients = patientRepository.findAll(); // Lấy tất cả bệnh nhân từ database
-//
-//        return patients.stream()
-//                .map(patient -> new PatientDTO(
-//                        patient.getId(),
-//                        patient.getFullName(),
-//                        patient.getDob(),
-//                        patient.getAddress(),
-//                        patient.getEmail(),
-//                        patient.getPhone()),
-//                        patients.getStatus())
-//                .collect(Collectors.toList());
-//    }
-//
-//    private PatientDTO convertToDTO(Patient patient) {
-//        return new PatientDTO(
-//                patient.getId(),
-//                patient.getFullName(),
-//                patient.getDob(),
-//                patient.getAddress(),
-//                patient.getEmail(),
-//                patient.getPhone()
-//        );
-//    }
-//
-//    public void addPatient(PatientDTO patientDTO) {
-//        Patient patient = new Patient(
-//                null,
-//                patientDTO.getFullName(),
-//                patientDTO.getDob(),
-//                patientDTO.getAddress(),
-//                patientDTO.getEmail(),
-//                patientDTO.getPhone()
-//        );
-//        patientRepository.save(patient);
-//    }
+
+    public List<Patient> findAll() {
+        return patientRepository.findAll();
+    }
+    public List<Patient> findAllByStatus(Boolean status) {
+        return patientRepository.findAllByStatus(status);
+    }
+
+    public Patient findById(Integer patientID) {
+        return patientRepository.findById(patientID)
+                .orElseThrow(() -> new RuntimeException("Patient not found"));
+    }
+    public void createPatient(Patient patient) {
+        patientRepository.save(patient);
+    }
 }
