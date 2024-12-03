@@ -1,6 +1,5 @@
 package com.clinicmanagement.clinic.Entities;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -21,19 +20,18 @@ public class Useracount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-     String username;
-     String password;
+    String username;
+    String password;
 
     @ManyToOne
     @JoinColumn(name = "patientId", nullable = true)
-     Patient patient;
+    Patient patient;
 
     @ManyToOne
     @JoinColumn(name = "doctorId", nullable = true)
     Doctor doctor;
 
-    @ElementCollection
-    Set<String> role;
-
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    Set<UserRole> userRoles;
     boolean status;
 }

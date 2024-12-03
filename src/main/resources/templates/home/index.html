@@ -13,49 +13,13 @@
 
     <!-- Các nút Đăng nhập và Đăng xuất -->
     <button id="loginBtn" class="btn btn-primary">Đăng nhập</button>
-    <button id="logoutBtn" class="btn btn-danger" style="display: none;">Đăng xuất</button>
+    <form th:action="@{/myInfo}" method="get" style="display:inline;">
+        <button type="submit" class="btn btn-primary">Xem Thông Tin</button>
+    </form>
+
 </div>
 
-<script>
-    function getCookie(name) {
-        let cookieArr = document.cookie.split(';');
-        for (let i = 0; i < cookieArr.length; i++) {
-            let cookie = cookieArr[i].trim();
-            // Kiểm tra nếu tên cookie phù hợp
-            if (cookie.startsWith(name + '=')) {
-                return cookie.substring(name.length + 1);
-            }
-        }
-        return null;
-    }
 
-    // Lấy username từ cookie
-    const username = getCookie('username');
-    
-    if (username) {
-        document.getElementById('greeting').textContent = `Xin chào, ${username}!`;
-        document.getElementById('loginBtn').style.display = 'none';  // Ẩn nút Đăng nhập
-        document.getElementById('logoutBtn').style.display = 'inline-block';  // Hiển thị nút Đăng xuất
-    } else {
-        document.getElementById('greeting').textContent = `Xin chào, Guest!`;
-        document.getElementById('loginBtn').style.display = 'inline-block';  // Hiển thị nút Đăng nhập
-        document.getElementById('logoutBtn').style.display = 'none';  // Ẩn nút Đăng xuất
-    }
 
-    // Xử lý sự kiện khi nhấn nút Đăng xuất
-    document.getElementById('logoutBtn').addEventListener('click', function() {
-        document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
-        document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";// Xóa cookie
-        location.reload();  // Tải lại trang để cập nhật lại giao diện
-    });
-
-    // Xử lý sự kiện khi nhấn nút Đăng nhập
-    document.getElementById('loginBtn').addEventListener('click', function() {
-        // Giả sử bạn có form đăng nhập hoặc gọi API đăng nhập ở đây
-        // Sau khi đăng nhập thành công, lưu thông tin username vào cookie
-        document.cookie = "username=JohnDoe; path=/";  // Lưu username vào cookie (thay thế bằng giá trị thực tế)
-        location.reload();  // Tải lại trang để cập nhật lại giao diện
-    });
-</script>
 </body>
 </html>

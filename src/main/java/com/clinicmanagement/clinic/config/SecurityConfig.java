@@ -1,20 +1,22 @@
 package com.clinicmanagement.clinic.config;
 
+import com.clinicmanagement.clinic.service.CustomUserDetailsService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import org.springframework.security.web.SecurityFilterChain;
 
-import javax.crypto.spec.SecretKeySpec;
+import org.springframework.security.web.SecurityFilterChain;
 
 //
 @EnableWebSecurity
@@ -23,44 +25,58 @@ import javax.crypto.spec.SecretKeySpec;
 @Configuration
 public class SecurityConfig {
 
-    private final String[] PUBLIC_ENDPOINT = {"/admin/**","/api/users/register","/login","/","/patients","/auth/login"};
-    private final Environment environment;
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
+
+    private final String[] PUBLIC_ENDPOINT = {"/","/login","/js/**","/images/**","/css/**", "/fonts/**"};
+    private final String[] AUTHENICATE_ENDPOINT = {"/myInfo"};
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-      httpSecurity.authorizeHttpRequests(request ->
+        httpSecurity.authorizeHttpRequests(request ->
               request.requestMatchers(PUBLIC_ENDPOINT).permitAll()
-                      .requestMatchers("/js/**","/images/**","/css/**","/fonts/**").permitAll()
+                      .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                      .requestMatchers("/**").hasAuthority("USER")
+                      .requestMatchers("/doctor/**").hasAuthority("DOCTOR")
+                      .requestMatchers(AUTHENICATE_ENDPOINT).authenticated()
                       .anyRequest().authenticated()
-      );
+      )
+                .formLogin(form ->
+                        form
+                                .loginPage("/login").loginProcessingUrl("/login")
+                                .usernameParameter("username").passwordParameter("password")
+                                .successHandler((request, response, authentication) -> {
+                                    String role = authentication.getAuthorities().stream()
+                                            .map(GrantedAuthority::getAuthority)
+                                            .findFirst()
+                                            .orElse("");
+                                    switch (role) {
+                                        case "ADMIN":
+                                            response.sendRedirect("/admin");
+                                            break;
+                                        case "USER":
+                                            response.sendRedirect("/");
+                                            break;
+//                                        case "DOCTOR":
+//                                            response.sendRedirect("/doctor");
+//                                            break;
+                                        default:
+                                            response.sendRedirect("/login?error=true");
+                                    }
+                                })
+                                .failureUrl("/login?error=true")
 
-//          httpSecurity.oauth2ResourceServer(oauth2 ->
-//                  oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())
-//                          .jwtAuthenticationConverter(jwtAuthenticationConverter())));
-
-          httpSecurity.csrf(AbstractHttpConfigurer::disable);
-          return httpSecurity.build();
+                                )
+                .exceptionHandling(exceptionHandling ->
+                exceptionHandling
+                        .accessDeniedPage("/access-denied")  // Redirect to access-denied page on access denied
+        )
+                .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/"))
+        ;
+        httpSecurity.csrf(AbstractHttpConfigurer::disable);
+        return httpSecurity.build();
     }
-//
-//
-//    @Bean
-//    JwtAuthenticationConverter jwtAuthenticationConverter(){
-//        JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-//        jwtGrantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
-//        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
-//        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
-//        return jwtAuthenticationConverter;
-//    }
-//
-//    @Bean
-//    JwtDecoder jwtDecoder(){
-//        String signkey = environment.getProperty("security.signerkey");
-//        SecretKeySpec secretKeySpec = new SecretKeySpec(signkey.getBytes(),"HS512");
-//        return NimbusJwtDecoder
-//                .withSecretKey(secretKeySpec)
-//                .macAlgorithm(MacAlgorithm.HS512)
-//                .build();
-//    }
-//
+
     @Bean
     PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder(10);
