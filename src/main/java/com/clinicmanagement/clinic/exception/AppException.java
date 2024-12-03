@@ -1,6 +1,5 @@
 package com.clinicmanagement.clinic.exception;
 
-import com.clinicmanagement.clinic.dto.ApiResponse;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +16,13 @@ public class AppException extends RuntimeException{
 
     private ErrorCode errorCode;
 
-    @ExceptionHandler(value = AppException.class)
-    ResponseEntity<ApiResponse> handlingAppException(AppException exception){
-        ErrorCode errorCode = exception.getErrorCode();
-        ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setCode(1001);
-        apiResponse.setMessage(exception.getMessage());
-        return ResponseEntity.badRequest().body(apiResponse);
-    }
+//    @ExceptionHandler(value = AppException.class)
+//    ResponseEntity<ApiResponse> handlingAppException(AppException exception){
+//        ErrorCode errorCode = exception.getErrorCode();
+//        ApiResponse apiResponse = new ApiResponse();
+//        apiResponse.setCode(1001);
+//        apiResponse.setMessage(exception.getMessage());
+//        return ResponseEntity.badRequest().body(apiResponse);
+//    }
 
 }
