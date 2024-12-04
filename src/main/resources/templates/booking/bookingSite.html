@@ -30,37 +30,25 @@
                         <span class="text-primary" style="font-weight: bold">Loại hình khám</span>
                     </div>
                     <div class="border bg-secondary w-100 mt-2"></div>
-                    <div class="options mt-2 d-flex flex-column ">
-                        <button class="btn-option option w-100 d-flex justify-content-between" data-step="1" data-choice="Khám thường">
-                            <span>Khám thường</span> <span>50,000đ</span>
-                        </button>
-                        <button class="btn-option option mt-2 w-100 d-flex justify-content-between" data-step="1" data-choice="Khám VIP">
-                            <span>Khám VIP</span> <span>200,000đ</span>
-                        </button>
+<!--                    <div class="options mt-2 d-flex flex-column ">-->
+<!--                        <button class="btn-option option w-100 d-flex justify-content-between" data-step="1" data-choice="Khám thường">-->
+<!--                            <span>Khám thường</span> <span>50,000đ</span>-->
+<!--                        </button>-->
+<!--                        <button class="btn-option option mt-2 w-100 d-flex justify-content-between" data-step="1" data-choice="Khám VIP">-->
+<!--                            <span>Khám VIP</span> <span>200,000đ</span>-->
+<!--                        </button>-->
+<!--                    </div>-->
+                    <div class="options mt-2">
+                        <div th:each="service : ${services}" class="btn-option option ml-2 my-2"
+                             data-step="1"
+                             th:data-choice="${service.getServiceName()}">
+                            <span th:text="${service.getServiceName()}">Tên dịch vụ</span>
+                         <span th:text="${service.getPrice()} + 'đ'">Giá tiền</span>
+                        </div>
                     </div>
                 </div>
 
-<!--                <div class="step mb-4" id="step-1">-->
-<!--                    <div>-->
-<!--                    <span class="mr-3">-->
-<!--                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#007BFF" class="bi bi-1-circle-fill" viewBox="0 0 16 16">-->
-<!--                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M9.283 4.002H7.971L6.072 5.385v1.271l1.834-1.318h.065V12h1.312z"/>-->
-<!--                        </svg>-->
-<!--                    </span>-->
-<!--                        <span class="text-primary" style="font-weight: bold">Loại hình khám</span>-->
-<!--                    </div>-->
-<!--                    <div class="border bg-secondary w-100 mt-2"></div>-->
-<!--                    <div class="options mt-2 d-flex flex-wrap">-->
-<!--                        &lt;!&ndash; Đổ dữ liệu từ Service &ndash;&gt;-->
-<!--                        <div th:each="service : ${services}" class="btn-option option mr-2 mb-2 p-2"-->
-<!--                             data-step="1"-->
-<!--                             th:data-choice="${service.serviceName}"-->
-<!--                             style="font-size: 0.9em; width: 45%; text-align: left; display: flex; justify-content: space-between;">-->
-<!--                            <span th:text="${service.serviceName}">Khám thường</span>-->
-<!--                            <span th:text="${#numbers.formatDecimal(service.price, 0, 'COMMA')} + 'đ'">50,000đ</span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
+
                 <div class="step mb-4" id="step-2" style="display: none;">
                     <div>
                         <span class="mr-3">
@@ -75,6 +63,8 @@
                         <input type="text" id="date-choice" class="form-control" placeholder="Chọn ngày"/>
                     </div>
                 </div>
+
+
                 <div class="step mb-4" id="step-3" style="display: none;">
                     <div>
                         <span class="mr-3">
@@ -85,9 +75,17 @@
                         <span class="text-primary" style="font-weight: bold">Giờ khám</span>
                     </div>
                     <div class="border bg-secondary w-100 mt-2"></div>
+<!--                    <div class="options mt-2">-->
+<!--                        <button class="btn-option option" data-step="3" data-choice="A">16:30 - 17:00</button>-->
+<!--                        <button class="btn-option option ml-2" data-step="3" data-choice="B">18:00 - 18:30</button>-->
+<!--                    </div>-->
+
                     <div class="options mt-2">
-                        <button class="btn-option option" data-step="3" data-choice="A">16:30 - 17:00</button>
-                        <button class="btn-option option ml-2" data-step="3" data-choice="B">18:00 - 18:30</button>
+                        <div th:each="slot : ${timeSlots}" class="btn-option option ml-2 my-2"
+                             data-step="3"
+                             th:data-choice="${slot}"
+                             th:text="${slot.slot}">
+                        </div>
                     </div>
                 </div>
                 <div class="step mb-4" id="step-4" style="display: none;">
@@ -100,8 +98,9 @@
                         <span class="text-primary" style="font-weight: bold">Bệnh nhân</span>
                     </div>
                     <div class="border bg-secondary w-100 mt-2"></div>
-                    <div class="options mt-2">
-                        <div class="card border-gray-300 rounded-lg">
+
+                    <div class="options mt-2" th:each="patient : ${patients}">
+                        <div class="card border-gray-300 rounded-lg" >
                             <div class="card-body d-flex justify-content-between align-items-center p-2">
                                 <div class="d-flex">
                                     <div class="position-relative p-1">
@@ -119,23 +118,23 @@
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item d-flex justify-content-between text-dark">
                                         <span>Mã bệnh nhân</span>
-                                        <span class="font-weight-600" >YMP241958006</span>
+                                        <span class="font-weight-600" th:text="${patient.getId()}">YMP241958006</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between text-dark">
                                         <span>Họ và tên</span>
-                                        <span class="font-weight-600">Truong Hiep</span>
+                                        <span class="font-weight-600" th:text="${patient.getFullName()}">Truong Hiep</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between text-dark">
                                         <span>Giới tính</span>
-                                        <span class="font-weight-600">Nam</span>
+                                        <span class="font-weight-600" >Nam</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between text-dark">
                                         <span>Ngày sinh</span>
-                                        <span class="font-weight-600">10/09/2003</span>
+                                        <span class="font-weight-600" th:text="${patient.getDob()}">10/09/2003</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between text-dark">
                                         <span>Số điện thoại</span>
-                                        <span class="font-weight-600">0965843332</span>
+                                        <span class="font-weight-600" th:text="${patient.getPhone()}">0965843332</span>
                                     </li>
                                 </ul>
                                 <div class="mt-3 d-flex justify-content-end">
@@ -145,16 +144,25 @@
                                 </div>
                             </div>
                         </div>
+
+
                         <div class="description border-gray-300 card rounded-lg mt-2">
                             <div class="card-body d-flex justify-content-between flex-column p-2">
                                 <div class="form-floating">
                                     <label for="floatingTextarea2" class="font-weight-600">Ghi chú (Không bắt buộc)</label>
-                                    <textarea class="form-control mt-1" placeholder="Triệu chứng, Thuốc đang dùng, tiền sử,..." id="floatingTextarea2" style="height: 100px"></textarea>
+                                    <textarea class="form-control mt-1" placeholder="Triệu chứng, Thuốc đang dùng, tiền sử,..." id="floatingTextarea2" style="max-height: 200px"></textarea>
                                 </div>
                             </div>
                         </div>
-                        <button class="btn-option option mt-2" data-step="4" data-choice="USER ID">Tiếp tục</button>
+                        <button class="btn-option option mt-2" data-step="4" th:data-choice="${patient.id}">Tiếp tục</button>
                     </div>
+
+<!--                    <div class="options mt-2">-->
+<!--                        <div th:each="patient : ${patients}" class="btn-option option" th:data-choice="${patient.id}">-->
+<!--                            <span th:text="${patient.getFullName()}">Tên bệnh nhân</span>-->
+<!--                            <span th:text="${patient.getDob()}">Ngày sinh</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </div>
                 <div class="step mb-4" id="step-5" style="display: none;">
                     <div>
