@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,17 +26,16 @@ public class SecurityConfig {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
-    private final String[] PUBLIC_ENDPOINT = {"/","/login","/js/**","/images/**","/css/**", "/fonts/**"};
-    private final String[] AUTHENICATE_ENDPOINT = {"/myInfo"};
+    private final String[] PUBLIC_ENDPOINT = {"/","/login","/js/**","/images/**","/css/**", "/fonts/**","/register"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(request ->
               request.requestMatchers(PUBLIC_ENDPOINT).permitAll()
                       .requestMatchers("/admin/**").hasAuthority("ADMIN")
-                      .requestMatchers("/**").hasAuthority("USER")
+                      .requestMatchers("/**").hasAnyAuthority("DOCTOR","USER")
                       .requestMatchers("/doctor/**").hasAuthority("DOCTOR")
-                      .requestMatchers(AUTHENICATE_ENDPOINT).authenticated()
+                      .requestMatchers("/myInfo").authenticated()
                       .anyRequest().authenticated()
       )
                 .formLogin(form ->
@@ -57,9 +54,9 @@ public class SecurityConfig {
                                         case "USER":
                                             response.sendRedirect("/");
                                             break;
-//                                        case "DOCTOR":
-//                                            response.sendRedirect("/doctor");
-//                                            break;
+                                        case "DOCTOR":
+                                            response.sendRedirect("/doctor");
+                                            break;
                                         default:
                                             response.sendRedirect("/login?error=true");
                                     }
@@ -67,10 +64,6 @@ public class SecurityConfig {
                                 .failureUrl("/login?error=true")
 
                                 )
-                .exceptionHandling(exceptionHandling ->
-                exceptionHandling
-                        .accessDeniedPage("/access-denied")  // Redirect to access-denied page on access denied
-        )
                 .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/"))
         ;
         httpSecurity.csrf(AbstractHttpConfigurer::disable);

@@ -38,6 +38,26 @@ public class ApplicationConfig {
     @Bean
     ApplicationRunner applicationRunner(UserRepository userRepository){
         return args -> {
+            if (roleRepository.findByRoleName("ADMIN") == null) {
+                roleRepository.save(Role.builder()
+                        .roleName("ADMIN")
+                        .build());
+                log.info("Role ADMIN has been added to the database.");
+            }
+            if (roleRepository.findByRoleName("USER") == null) {
+                roleRepository.save(Role.builder()
+
+                        .roleName("USER")
+                        .build());
+                log.info("Role USER has been added to the database.");
+            }
+            if (roleRepository.findByRoleName("DOCTOR") == null) {
+                roleRepository.save(Role.builder()
+                        .roleName("DOCTOR")
+                        .build());
+                log.info("Role DOCTOR has been added to the database.");
+            }
+
             if(userRepository.findByUsername("admin").isEmpty()){
                 Role adminRole = roleRepository.findByRoleName("ADMIN");
                 Useracount user = Useracount.builder()

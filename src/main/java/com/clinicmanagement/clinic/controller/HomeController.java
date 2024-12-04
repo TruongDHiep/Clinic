@@ -5,6 +5,7 @@ import com.clinicmanagement.clinic.dto.auth.AuthenicationRequest;
 import com.clinicmanagement.clinic.dto.user.UserRequest;
 import com.clinicmanagement.clinic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +31,9 @@ public class HomeController {
     }
 
     @GetMapping("/register")
-    public String signup(){
+    public String signup(Model model){
+        UserRequest userRequest = new UserRequest();
+        model.addAttribute("user",userRequest);
         return "login/register";
     }
 

@@ -1,13 +1,17 @@
 package com.clinicmanagement.clinic.service;
 
 import com.clinicmanagement.clinic.Entities.Role;
+import com.clinicmanagement.clinic.Entities.UserRole;
 import com.clinicmanagement.clinic.Entities.Useracount;
 import com.clinicmanagement.clinic.dto.user.UserReponse;
 import com.clinicmanagement.clinic.dto.user.UserRequest;
+import com.clinicmanagement.clinic.enums.Roles;
 import com.clinicmanagement.clinic.exception.AppException;
 import com.clinicmanagement.clinic.exception.ErrorCode;
 import com.clinicmanagement.clinic.mapper.UserMapper;
+import com.clinicmanagement.clinic.repository.RoleRepository;
 import com.clinicmanagement.clinic.repository.UserRepository;
+import com.clinicmanagement.clinic.repository.UserRoleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,12 @@ public class UserService{
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
     @Autowired
     private UserRepository userRepo;
+
+    @Autowired
+    private UserRoleRepository userRoleRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Autowired
     private UserMapper userMapper;
@@ -51,26 +61,26 @@ public class UserService{
 //        return userMapper.toUserReponse(user);
 //    }
 
-//    public Useracount createUser(UserRequest userRequest) {
-//        if(userRepo.existsByUsername(userRequest.getUsername()))
-//            throw new AppException(ErrorCode.USER_EXISTED);
-//        Useracount user = userMapper.toUser(userRequest);
-//        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-//
-//        //Set role user khi dang ki thanh cong
-//        HashSet<Role> role = new HashSet<>();
-////        if(userRequest.getRole().str)
-//        user.setRoles(role);
-//
-//        return userRepo.save(user);
-//    }
+    public Useracount createUser(UserRequest userRequest) {
+        if(userRepo.existsByUsername(userRequest.getUsername()))
+            throw new AppException(ErrorCode.USER_EXISTED);
+        Useracount user = userMapper.toUser(userRequest);
+        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        try{
+            user = userRepo.save(user);
+            Role role = roleRepository.findByRoleName(Roles.USER.name());
+            UserRole userRole = userRoleRepository.save(UserRole.builder()
+                    .user(user)
+                    .role(role)
+                    .build());
+            return userRepo.save(user);
+        } catch (Exception ex){
+            throw ex;
+        }
+    }
 
-//    public UserReponse updateUser(Integer id, UserUpdateRequest userUpdateRequest){
-//        Useracount user = userRepo.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-//        userMapper.updateUser(userUpdateRequest,user);
-//        return userMapper.toUserReponse(userRepo.save(user));
-//    }
-//
+
+
     public Useracount getByName(String username) {
         Optional<Useracount> optionalUser = userRepo.findByUsername(username);
         return optionalUser.orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));

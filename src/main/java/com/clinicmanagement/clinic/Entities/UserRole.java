@@ -1,11 +1,15 @@
 package com.clinicmanagement.clinic.Entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 @Entity
 @Table(name="user_role")
-@Data
+@Setter
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserRole {
 
     @Id
