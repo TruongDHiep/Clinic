@@ -58,7 +58,7 @@ public class InformationController {
 
     //============================================================================================
 
-    @GetMapping("/profile")
+    /*@GetMapping("/profile")
     public String GetPatients(Model model) {
         try {
             List<Patient> patients = _patientService.getAllPatients();
@@ -69,5 +69,5 @@ public class InformationController {
             model.addAttribute("errorMessage", "An error occurred while fetching appointments.");
             return "error";
         }
-    }
+    }*/
 }
