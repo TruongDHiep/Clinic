@@ -1,7 +1,6 @@
 package com.clinicmanagement.clinic.controller;
 
 import com.clinicmanagement.clinic.Entities.Services;
-import com.clinicmanagement.clinic.dto.ApiResponse;
 import com.clinicmanagement.clinic.dto.ServiceDTO;
 import com.clinicmanagement.clinic.service.ServicesService;
 import jakarta.validation.Valid;
@@ -27,12 +26,12 @@ public class ServiceController {
         return servicesService.getByName(name);
     }
 
-    @PostMapping("/services/new")
-    public ApiResponse<Services> creatServices(@RequestBody @Valid ServiceDTO serviceDTO){
-        ApiResponse<Services> apiResponse = new ApiResponse<>();
-        apiResponse.setResult(servicesService.createServices(serviceDTO));
-        return apiResponse;
-    }
+//    @PostMapping("/services/new")
+//    public ApiResponse<Services> creatServices(@RequestBody @Valid ServiceDTO serviceDTO){
+//        ApiResponse<Services> apiResponse = new ApiResponse<>();
+//        apiResponse.setResult(servicesService.createServices(serviceDTO));
+//        return apiResponse;
+//    }
 
     @PostMapping("services/update/{id}")
     public Services updateService(@PathVariable int id,@RequestBody ServiceDTO serviceDTO){

@@ -1,19 +1,12 @@
 package com.clinicmanagement.clinic.controller;
 
-import com.clinicmanagement.clinic.dto.auth.AuthenicationRequest;
-import com.clinicmanagement.clinic.dto.auth.AuthenicationResponse;
-import com.clinicmanagement.clinic.dto.ApiResponse;
-import com.clinicmanagement.clinic.service.AuthenicationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 //import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 @RequestMapping("/auth")
