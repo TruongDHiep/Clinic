@@ -2,7 +2,6 @@ package com.clinicmanagement.clinic.controller;
 
 import com.clinicmanagement.clinic.Entities.Appointment;
 import com.clinicmanagement.clinic.Entities.Patient;
-import com.clinicmanagement.clinic.Entities.Service;
 import com.clinicmanagement.clinic.service.AppointmentService;
 import com.clinicmanagement.clinic.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +59,7 @@ public class InformationController {
     //============================================================================================
 
     @GetMapping("/profile")
-    public String GetAllAppointments(Model model) {
+    public String GetPatients(Model model) {
         try {
             List<Patient> patients = _patientService.getAllPatients();
             model.addAttribute("appointments", appointments);
