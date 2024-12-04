@@ -7,7 +7,7 @@
                 <img th:src="@{/images/user2-160x160.jpg}" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
-                <p>Admin</p>
+                <p><span th:text="${#authentication.name}">Username</span></p>
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
         </div>
