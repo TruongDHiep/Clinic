@@ -78,9 +78,9 @@
                     <a class="btn btn-info" href="/cart"><i class="bi bi-cart4"></i> Giỏ hàng</a>
                 </li>
                 <li class="nav-item me-2">
-                    <a th:href="@{/user-details/{id}(id=${#authentication.getName()})}" class="btn btn-dark">Xin chào <span sec:authentication="name">Username</span></a>
+                    <a  class="btn btn-dark">Xin chào <span sec:authentication="name">Username</span></a>
                 </li>
-                <li sec:authorize="isAuthenticated()" class="nav-item me-2">
+                <li  class="nav-item me-2">
                     <form th:action="@{/logout}" method="post">
                         <button class="btn btn-danger" type="submit">Đăng xuất</button>
                     </form>
@@ -99,7 +99,7 @@
 <div class="container">
     <div class="content">
         <!-- Page content goes here -->
-        <div th:insert="~{::${content}}"></div>
+        <div></div>
     </div>
     <!-- Footer -->
     <footer th:fragment="footer" class="bg-primary py-3 text-center row">
