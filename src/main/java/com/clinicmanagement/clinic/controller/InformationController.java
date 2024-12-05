@@ -223,6 +223,49 @@ public class InformationController {
         }
     }
 
+    //========================================ACCOUNT===========================================
+
+    @GetMapping("/account/{patientId}")
+    public String getUserAccount (@PathVariable Integer patientId, Model model) {
+        var context = SecurityContextHolder.getContext();
+        String username = context.getAuthentication().getName();
+
+        // Tìm Useracount dựa trên username
+        Useracount user = _userRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        Patient patient = user.getPatient();
+
+        if (patient == null) {
+            System.out.println("Patient ID: " + patientId);
+        }
+
+        // Kiểm tra xem patientId có khớp với patient từ user không
+        if (!patient.getId().equals(patientId)) {
+            System.out.println("Patient ID: " + patientId);
+        }
+
+        // Thêm thông tin bệnh nhân vào model
+        model.addAttribute("patient", patient);
+        model.addAttribute("user", user);
+        return "information/account/index";
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
