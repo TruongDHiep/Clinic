@@ -3,6 +3,8 @@ package com.clinicmanagement.clinic.service;
 import com.clinicmanagement.clinic.Entities.Patient;
 import com.clinicmanagement.clinic.dto.PatientDTO;
 import com.clinicmanagement.clinic.repository.PatientRepository;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,5 +37,9 @@ public class PatientService {
 
     public void createPatient(Patient patient) {
         patientRepository.save(patient);
+    }
+
+    public Patient findByEmail(String email) {
+        return patientRepository.findByEmail(email);
     }
 }
