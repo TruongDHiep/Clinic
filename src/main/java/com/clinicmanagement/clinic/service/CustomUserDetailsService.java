@@ -31,7 +31,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         if(userOpt.isEmpty()){
             throw  new AppException(ErrorCode.USER_NOT_EXISTED);
         }
+
         Useraccount user = userOpt.get();
+        if(!user.isStatus()){
+            throw new AppException(ErrorCode.USER_ACCOUNT_INACTIVE);
+        }
+
         Set<UserRole> roless = user.getUserRoles();
         Collection<GrantedAuthority> grantedAuthoritySet = new HashSet<>();
         for (UserRole userRole : roless) {

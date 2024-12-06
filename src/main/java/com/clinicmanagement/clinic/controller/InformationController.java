@@ -38,7 +38,7 @@ public class InformationController {
     private PaymentService _paymentService;
 
     @Autowired
-    UserService _userService;
+    private UserService _userService;
 
     //========================================APPOINTMENT===========================================
 

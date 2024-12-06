@@ -1,5 +1,6 @@
 package com.clinicmanagement.clinic.service;
 
+import com.clinicmanagement.clinic.Entities.Doctor;
 import com.clinicmanagement.clinic.Entities.Role;
 import com.clinicmanagement.clinic.Entities.UserRole;
 import com.clinicmanagement.clinic.Entities.Useraccount;
@@ -10,6 +11,7 @@ import com.clinicmanagement.clinic.enums.Roles;
 import com.clinicmanagement.clinic.exception.AppException;
 import com.clinicmanagement.clinic.exception.ErrorCode;
 import com.clinicmanagement.clinic.mapper.UserMapper;
+import com.clinicmanagement.clinic.repository.DoctorRepository;
 import com.clinicmanagement.clinic.repository.RoleRepository;
 import com.clinicmanagement.clinic.repository.UserRepository;
 import com.clinicmanagement.clinic.repository.UserRoleRepository;
@@ -25,7 +27,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,6 +37,9 @@ public class UserService{
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
     @Autowired
     private UserRepository userRepo;
+
+    @Autowired
+    private DoctorRepository doctorRepository;
 
     @Autowired
     private UserRoleRepository userRoleRepository;
@@ -49,13 +53,12 @@ public class UserService{
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public List<UserResponse> getAllUsers() {
+    public List<UserResponse> findAllUser() {
         List<Useraccount> users = userRepo.findAll();
         return users.stream()
                 .map(userMapper::toUserReponse)
                 .collect(Collectors.toList());
     }
-
 
     public Page<UserResponse> getAllUsers(Pageable pageable) {
         return userRepo.findAll(pageable).map(userMapper::toUserReponse);
@@ -66,15 +69,26 @@ public class UserService{
                 .orElseThrow(() -> new RuntimeException("User not found")));
     }
 
-//    public UserReponse getUserInfo(){
-//        var context = SecurityContextHolder.getContext();
-//        String name = context.getAuthentication().getName();
-//        System.out.println(name);
-//        Useracount user = userRepo.findByUsername(name).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-//        return userMapper.toUserReponse(user);
-//    }
+    public void  createUserDoctor(UserRequest userRequest,int idDoctor){
+        Doctor doctor = doctorRepository.findById(idDoctor)
+                .orElseThrow(() -> new IllegalArgumentException("Doctor with ID " + idDoctor + " not found"));
+        Useraccount user = userMapper.toUser(userRequest);
+        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        user.setDoctor(doctor);
+        try {
+            user = userRepo.save(user);
+            Role role = roleRepository.findByRoleName(Roles.DOCTOR.name());
+            UserRole userRole = userRoleRepository.save(UserRole.builder()
+                    .user(user)
+                    .role(role)
+                    .build());
+            userRepo.save(user);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
 
-    public Useraccount createUser(UserRequest userRequest) {
+    public void createUser(UserRequest userRequest) {
         if (userRepo.existsByUsername(userRequest.getUsername()))
             throw new AppException(ErrorCode.USER_EXISTED);
         Useraccount user = userMapper.toUser(userRequest);
@@ -86,7 +100,7 @@ public class UserService{
                     .user(user)
                     .role(role)
                     .build());
-            return userRepo.save(user);
+            userRepo.save(user);
         } catch (Exception ex) {
             throw ex;
         }
@@ -125,6 +139,15 @@ public class UserService{
         return userRepo.findByResetPasswordToken(token);
     }
 
+    public void updateAccountStatus(int userId, boolean status) {
+        Optional<Useraccount> userOpt = userRepo.findById(userId);
+        if (userOpt.isPresent()) {
+            Useraccount user = userOpt.get();
+            user.setStatus(status);  // Cập nhật trạng thái tài khoản
+            userRepo.save(user);  // Lưu thay đổi vào cơ sở dữ liệu
+        }
+    }
+
     //================================TOANLD===============================
     public void changePassword(ChangePasswordDTO changePasswordDTO) {
         var context = SecurityContextHolder.getContext();
@@ -158,11 +181,5 @@ public class UserService{
         userRepo.save(user);
 
     }
-
-
-
-
-
-
 
 }

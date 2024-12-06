@@ -8,19 +8,39 @@
 </head>
 <body>
 
-<div layout:fragment="content" class="content">
-    <div class="d-flex justify-content-center">
-        <h2>Thêm tài khoản cho bác sĩ</h2>
-    </div>
+<div layout:fragment="content" class="content" >
 
-    <div class="d-flex justify-content-center">
-        <form action="" method="post" class="w-50">
-
-            <!-- Submit Button -->
-            <div class="mb-3">
-                <button type="submit" class="btn btn-success w-100" style="font-size: 17px;">Thêm tài khoản</button>
-            </div>
-        </form>
+    <div class="card d-flex align-items-center" style="height: 100vh;">
+        <h1 class="text-center mb-4">Thêm tài khoản (Bác sĩ)</h1>
+        <p th:text="${error}"></p>  <!-- Xem giá trị của error -->
+        <div class="d-flex justify-content-center w-100">
+            <form th:action="@{/admin/accounts/new}" method="post" th:object="${user}" class="w-50 p-4 shadow-lg rounded" style="background-color: #f8f9fa;">
+                <div class="form-group mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" th:field="*{username}" name="username" placeholder="Enter username" required>
+                    <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" th:field="*{password}" name="password" placeholder="Enter password" required>
+                    <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="doctor" class="form-label">Select Doctor</label>
+                    <select class="form-control" id="doctor" name="doctorId" required>
+                        <option th:each="doctor : ${doctors}"
+                                th:value="${doctor.id}"
+                                th:text="${doctor.fullName}">
+                        </option>
+                    </select>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+
+
 </body>
