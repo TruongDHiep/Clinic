@@ -9,7 +9,10 @@ public enum ErrorCode {
     PASS_INVALID(1003,"Password phải ít nhất 8 kí tự"),
     USER_NOT_EXISTED(1004,"User not existed"),
     UNAUTHENICATED(1005,"Sai mật khẩu"),
-    EXISTED(1006,"Đã tồn tại"),;
+    EXISTED(1006,"Đã tồn tại"),
+    INVALID_PASSWORD(1007,"Mật khẩu không đúng"),
+    PASSWORD_NOT_MATCH(1008,"Mật khẩu xác nhận không khớp"),
+    PASSWORD_TOO_SHORT(1009,"Mật khẩu phải có ít nhất 8 ký tự");
 
     ErrorCode(int code,String message){
         this.code = code;

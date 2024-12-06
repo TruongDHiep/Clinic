@@ -3,8 +3,9 @@ package com.clinicmanagement.clinic.service;
 import com.clinicmanagement.clinic.Entities.Role;
 import com.clinicmanagement.clinic.Entities.UserRole;
 import com.clinicmanagement.clinic.Entities.Useraccount;
-import com.clinicmanagement.clinic.dto.user.UserResponse;
+import com.clinicmanagement.clinic.dto.ChangePasswordDTO;
 import com.clinicmanagement.clinic.dto.user.UserRequest;
+import com.clinicmanagement.clinic.dto.user.UserResponse;
 import com.clinicmanagement.clinic.enums.Roles;
 import com.clinicmanagement.clinic.exception.AppException;
 import com.clinicmanagement.clinic.exception.ErrorCode;
@@ -18,11 +19,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -121,4 +124,45 @@ public class UserService{
     public Optional<Useraccount> getByResetPasswordToken(String token) {
         return userRepo.findByResetPasswordToken(token);
     }
+
+    //================================TOANLD===============================
+    public void changePassword(ChangePasswordDTO changePasswordDTO) {
+        var context = SecurityContextHolder.getContext();
+        String username = context.getAuthentication().getName();
+
+        Useraccount user = userRepo.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        System.out.println("Current Password from DTO: " + changePasswordDTO.getCurrentPassword());
+        System.out.println("Current Password: " + user.getPassword());
+
+        //Kiểm tra mật khẩu hiện tại
+        if (!passwordEncoder.matches(changePasswordDTO.getCurrentPassword(), user.getPassword())) {
+            throw new AppException(ErrorCode.INVALID_PASSWORD);
+        }
+
+        // Kiểm tra mật khẩu mới và xác nhận mật khẩu
+        if (!changePasswordDTO.getNewPassword().equals(changePasswordDTO.getConfirmNewPassword())) {
+            System.out.println("New Password: " + changePasswordDTO.getNewPassword());
+        }
+
+        // Kiểm tra độ dài mật khẩu
+        if (changePasswordDTO.getNewPassword().length() < 8) {
+            System.out.println("Mat khau co do dai nho hon 8 ky tu");
+        }
+
+
+        String encodedPassword = passwordEncoder.encode(changePasswordDTO.getNewPassword());
+
+        user.setPassword(encodedPassword);
+        userRepo.save(user);
+
+    }
+
+
+
+
+
+
+
 }
