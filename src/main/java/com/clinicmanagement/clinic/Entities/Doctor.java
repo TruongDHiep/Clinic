@@ -6,14 +6,16 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
 @Table(name="doctor")
 public class Doctor {
@@ -25,7 +27,6 @@ public class Doctor {
     @NotBlank(message = "Full name is required")
     private String fullName;
 
-    @NotBlank(message = "Specialization name is required")
     @ManyToOne
     @JoinColumn(name = "specialization_id")
     private Specialization specialization_id;
@@ -36,7 +37,7 @@ public class Doctor {
 
     @Column(name = "email", length = 50, unique = true)
     @Size(max = 50, message = "Email must be less than 50 characters")
-    @Email
     private String email;
     private boolean status;
 }
+

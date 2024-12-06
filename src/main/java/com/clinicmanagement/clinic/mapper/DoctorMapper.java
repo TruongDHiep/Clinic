@@ -1,13 +1,23 @@
 package com.clinicmanagement.clinic.mapper;
 
 import com.clinicmanagement.clinic.Entities.Doctor;
+import com.clinicmanagement.clinic.Entities.Specialization;
 import com.clinicmanagement.clinic.dto.doctor.DoctorCreateRequest;
-import com.clinicmanagement.clinic.dto.doctor.DoctorUpdateRequest;
 import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface DoctorMapper {
-    Doctor toDoctor(DoctorCreateRequest request);
-    void updateDoctor(@MappingTarget Doctor doctor, DoctorUpdateRequest request);
+
+    @Mapping(target = "specialization_id", expression = "java(mapSpecialization(doctorCreateRequest.getSpecialization_id()))")
+    Doctor toDoctor(DoctorCreateRequest doctorCreateRequest);
+
+    default Specialization mapSpecialization(Integer specializationId) {
+        if (specializationId == null) {
+            return null;
+        }
+        Specialization specialization = new Specialization();
+        specialization.setId(specializationId);
+        return specialization;
+    }
 }

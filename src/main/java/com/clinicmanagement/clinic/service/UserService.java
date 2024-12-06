@@ -50,6 +50,7 @@ public class UserService{
         log.info("In method get users");
         return userRepo.findAll().stream().map(userMapper::toUserReponse).toList();
     }
+
     public UserReponse getByID(int id){
         return userMapper.toUserReponse(userRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found")));

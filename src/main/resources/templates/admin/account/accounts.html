@@ -1,25 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="admin/fragment/head :: head"></head>
-<body class="hold-transition skin-blue sidebar-mini">
-<!-- Site wrapper -->
-<div class="wrapper">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/index}">
+<head>
+    <meta charset="UTF-8">
+    <title>Account</title>
+</head>
+<body>
 
-    <div th:replace="admin/fragment/header :: header"></div>
-
-    <!-- =============================================== -->
-
-    <!-- Left side column. contains the sidebar -->
-    <div th:replace="admin/fragment/sidebar :: sidebar"></div>
-
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-
-
-        <!-- Main content -->
-
-
-            <!-- Default box -->
+<div layout:fragment="content" class="content">
             <div class="container-fluid ">
                 <h1 class="text-center" >Quản lý Tài Khoản</h1>
                 <button type="button" class="btn btn-success" style="width: 120px;font-size: 17px;">Người dùng</button>
@@ -47,18 +36,6 @@
                 </tr>
                 </tbody>
             </table>
-            <!-- /.box -->
-
-        <!-- /.content -->
-    </div>
-    <!-- /.content-wrapper -->
-    <div th:replace="admin/fragment/footer :: footer"></div>
-
 </div>
-<!-- ./wrapper -->
-
-<!-- jQuery 3 -->
-<div th:replace="admin/fragment/script :: script"></div>
-
 </body>
 </html>
