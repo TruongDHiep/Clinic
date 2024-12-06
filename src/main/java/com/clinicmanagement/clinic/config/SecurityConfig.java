@@ -11,6 +11,12 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+//import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
+//import org.springframework.security.oauth2.jwt.JwtDecoder;
+//import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,15 +31,21 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
+    // private final String[] PUBLIC_ENDPOINT = {"/api/users/register","/login","/","/patients","/auth/login"
+    //         , "/vnpay/**", "/payment/**", "/js/**","/images/**","/css/**", "/fonts/**", "/about", "/check-appointment"};
+    private final Environment environment;
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
-    private final String[] PUBLIC_ENDPOINT = {"verifytoken","/resetPass","/forgotpassword","/","/login","/js/**","/images/**","/css/**", "/fonts/**","/register"};
+//    private final String[] PUBLIC_ENDPOINT = {"/","/login","/js/**","/images/**","/css/**", "/fonts/**"};
+//    private final String[] AUTHENICATE_ENDPOINT = {"/myInfo", "/booking"};
+    private final String[] PUBLIC_ENDPOINT = {"verifytoken","/resetPass","/forgotpassword","/","/login","/js/**","/images/**","/css/**", "/fonts/**","/register", "/check-appointment", "/about"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(request ->
               request.requestMatchers(PUBLIC_ENDPOINT).permitAll()
+                      .requestMatchers("/images/**", "/css/**", "/js/**","/fonts/**").permitAll()
                       .requestMatchers("/admin/**").hasAuthority("ADMIN")
                       .requestMatchers("/**").hasAnyAuthority("DOCTOR","USER")
                       .requestMatchers("/doctor/**").hasAuthority("DOCTOR")
