@@ -1,12 +1,14 @@
 package com.clinicmanagement.clinic.controller;
 
 import com.clinicmanagement.clinic.Entities.*;
+import com.clinicmanagement.clinic.dto.ChangePasswordDTO;
 import com.clinicmanagement.clinic.exception.AppException;
 import com.clinicmanagement.clinic.exception.ErrorCode;
 import com.clinicmanagement.clinic.repository.UserRepository;
 import com.clinicmanagement.clinic.service.AppointmentService;
 import com.clinicmanagement.clinic.service.PatientService;
 import com.clinicmanagement.clinic.service.PaymentService;
+import com.clinicmanagement.clinic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +36,8 @@ public class InformationController {
     @Autowired
     private PaymentService _paymentService;
 
-
+    @Autowired
+    UserService _userService;
 
     //========================================APPOINTMENT===========================================
 
@@ -248,7 +252,36 @@ public class InformationController {
         // Thêm thông tin bệnh nhân vào model
         model.addAttribute("patient", patient);
         model.addAttribute("user", user);
+
+        model.addAttribute("changePasswordDTO", new ChangePasswordDTO());
+
         return "information/account/index";
+    }
+
+    @PostMapping("/account/change-password/{patientId}")
+    public String changePassword(
+            @PathVariable Integer patientId,
+            @ModelAttribute ChangePasswordDTO changePasswordDTO,
+            RedirectAttributes redirectAttributes,
+            Principal principal
+    ) {
+
+
+        System.out.println("Received PatientId: " + patientId);
+        System.out.println("Current Password: " + changePasswordDTO.getCurrentPassword());
+        System.out.println("New Password: " + changePasswordDTO.getNewPassword());
+        System.out.println("Confirm Password: " + changePasswordDTO.getConfirmNewPassword());
+
+        try {
+            _userService.changePassword(changePasswordDTO);
+            redirectAttributes.addFlashAttribute("successMessage", "Thay đổi mật khẩu thành công");
+
+            return "redirect:/information/account/" + patientId;
+        } catch (AppException e) {
+            // Xử lý các ngoại lệ
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/information/account/" + patientId;
+        }
     }
 
 

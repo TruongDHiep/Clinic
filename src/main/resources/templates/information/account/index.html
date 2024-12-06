@@ -119,16 +119,16 @@
             <div class="bg-white shadow-sm rounded-2 ">
                 <ul class="nav flex-column pt-3 pb-3">
                     <li class="p-3">
-                        <a href="../appointment/index.html" class="link-underline link-underline-opacity-0 text-dark w-100 item-active d-block w-100" >Lịch khám</a>
+                        <a th:href="@{/information/appointment/{patientId}(patientId=${user.patient.id})}" class="link-underline link-underline-opacity-0 text-dark w-100 item-active d-block w-100">Lịch khám</a>
                     </li>
                     <li class="p-3">
-                        <a href="./../history/index.html" class="link-underline link-underline-opacity-0 text-dark d-block w-100">Lịch sử thanh toán</a>
+                        <a th:href="@{/information/history/{patientId}(patientId=${user.patient.id})}" class="link-underline link-underline-opacity-0 text-dark d-block w-100">Lịch sử thanh toán</a>
                     </li>
                     <li class="p-3">
-                        <a href="./../userProfile/index.html" class="link-underline link-underline-opacity-0 text-dark d-block w-100">Hồ sơ</a>
+                        <a th:href="@{/information/userProfile/{patientId}(patientId=${user.patient.id})}" class="link-underline link-underline-opacity-0 text-dark d-block w-100">Hồ sơ</a>
                     </li>
                     <li class="p-3" >
-                        <a href="#" class="link-underline link-underline-opacity-0 text-dark d-block w-100">Tài khoản</a>
+                        <a href="../account/index.html" class="link-underline link-underline-opacity-0 text-dark d-block w-100">Tài khoản</a>
                     </li>
                     <li class="p-3">
                         <a href="" class="link-underline link-underline-opacity-0 text-dark d-block w-100">Đăng xuất</a>
@@ -168,18 +168,39 @@
                 </div>
                 <div class="bg-white d-flex flex-row shadow-sm rounded-2 col">
                     <div class="p-3 w-100">
-                        <h4>Thay đổi mật khẩu</h4>
-                        <div class="d-flex mt-3 flex-column">
-                            <span>Mật khẩu hiện tại <span class="text-danger">*</span> </span>
-                            <input type="text" class="form-control" placeholder="Mật khẩu hiện tại của bạn">
+
+                        <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                            <span th:text="${errorMessage}"></span>
                         </div>
-                        <div class="d-flex mt-3 flex-column">
-                            <span>Mật khẩu hiện tại <span class="text-danger">*</span> </span>
-                            <input type="text" class="form-control" placeholder="Nhập mật khẩu mới">
+
+                        <div th:if="${successMessage}" class="alert alert-success" role="alert">
+                            <span th:text="${successMessage}"></span>
                         </div>
-                        <div class="d-flex justify-content-end mt-3 ">
-                            <button type="button" class="btn btn-primary">Thay đổi</button>
-                        </div>
+
+                        <form
+                                id="changePasswordForm"
+                            th:action="@{/information/account/change-password/{patientId}(patientId=${user.patient.id})}"
+                            th:object="${changePasswordDTO}"
+                            method="post"
+                        >
+                            <h4>Thay đổi mật khẩu</h4>
+                            <div class="d-flex mt-3 flex-column">
+                                <span>Mật khẩu hiện tại <span class="text-danger">*</span> </span>
+                                <input type="password" class="form-control" placeholder="Mật khẩu hiện tại của bạn" name="currentPassword" id="currentPassword" required>
+                            </div>
+                            <div class="d-flex mt-3 flex-column">
+                                <span>Mật khẩu mới <span class="text-danger">*</span> </span>
+                                <input type="password" class="form-control" placeholder="Nhập mật khẩu mới" name="newPassword" id="newPassword" required>
+                            </div>
+                            <div class="d-flex mt-3 flex-column">
+                                <span>Xác nhận mật khẩu mới<span class="text-danger">*</span> </span>
+                                <input type="password" class="form-control" placeholder="Xác nhận mật khẩu mới" name="confirmNewPassword" id="confirmNewPassword" required>
+                            </div>
+                            <div class="d-flex justify-content-end mt-3 ">
+                                <button type="submit" class="btn btn-primary">Thay đổi</button>
+                            </div>
+                            <div id="errorMessages" class="text-danger mt-3"></div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -188,5 +209,32 @@
 </div>
 <th:block th:replace="layout :: footer"></th:block>
 <th:block th:replace="layout :: script"></th:block>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+            const errorMessages = document.getElementById('errorMessages');
+
+            errorMessages.innerHTML = '';
+
+            if(newPassword.length < 8) {
+                errorMessages.innerHTML += '<p>Mật khẩu phải dài hơn 8 ký tự</p>';
+                e.preventDefault();
+                return;
+            }
+
+            if (newPassword !== confirmNewPassword) {
+                errorMessages.innerHTML += '<p>Mật khẩu mới và xác nhận mật khẩu không khớp.</p>';
+                e.preventDefault();
+                return;
+            }
+        });
+    });
+</script>
+
+
 </body>
 </html>
