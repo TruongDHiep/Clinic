@@ -31,7 +31,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    private final String[] PUBLIC_ENDPOINT = {"/admin/**","/api/users/register","/login","/","/patients","/auth/login", "/booking/**", "/vnpay/**", "/payment/**"};
+    private final String[] PUBLIC_ENDPOINT = {"/api/users/register","/login","/","/patients","/auth/login",
+            "/booking/**", "/vnpay/**", "/payment/**", "/js/**","/images/**","/css/**", "/fonts/**"};
     private final Environment environment;
     @Autowired
     private CustomUserDetailsService customUserDetailsService;

@@ -50,6 +50,7 @@ public class AppointmentService {
         }
     }
 
+
     public void cancelAppointment(int id) {
         Optional<Appointment> appointmentOptional  = _appointmentRepository.findById(id);
         if(appointmentOptional .isPresent()) {

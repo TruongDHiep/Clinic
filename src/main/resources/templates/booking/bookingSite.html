@@ -20,7 +20,7 @@
         <div class="col-md-7 mr-4 bg-light shadow rounded p-4 left-content">
             <h3 class="mb-3 fw-bold">Đặt khám</h3>
             <div id="steps">
-                <div class="step mb-4" id="step-1">
+                <div class="step mb-4 service" id="step-1 service">
                     <div>
                         <span class="mr-3">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#007BFF" class="bi bi-1-circle-fill" viewBox="0 0 16 16">
@@ -30,20 +30,15 @@
                         <span class="text-primary" style="font-weight: bold">Loại hình khám</span>
                     </div>
                     <div class="border bg-secondary w-100 mt-2"></div>
-<!--                    <div class="options mt-2 d-flex flex-column ">-->
-<!--                        <button class="btn-option option w-100 d-flex justify-content-between" data-step="1" data-choice="Khám thường">-->
-<!--                            <span>Khám thường</span> <span>50,000đ</span>-->
-<!--                        </button>-->
-<!--                        <button class="btn-option option mt-2 w-100 d-flex justify-content-between" data-step="1" data-choice="Khám VIP">-->
-<!--                            <span>Khám VIP</span> <span>200,000đ</span>-->
-<!--                        </button>-->
-<!--                    </div>-->
+
                     <div class="options mt-2">
-                        <div th:each="service : ${services}" class="btn-option option ml-2 my-2"
+                        <div th:each="service : ${services}" class="btn-option option ml-2 my-2 "
                              data-step="1"
+                             th:data-id="${service.getId()}"
+                             th:data-price="${service.getPrice()}"
                              th:data-choice="${service.getServiceName()}">
                             <span th:text="${service.getServiceName()}">Tên dịch vụ</span>
-                         <span th:text="${service.getPrice()} + 'đ'">Giá tiền</span>
+                            <span th:text="${service.getPrice()} + 'đ'">Giá tiền</span>
                         </div>
                     </div>
                 </div>
@@ -63,7 +58,6 @@
                         <input type="text" id="date-choice" class="form-control" placeholder="Chọn ngày"/>
                     </div>
                 </div>
-
 
                 <div class="step mb-4" id="step-3" style="display: none;">
                     <div>
@@ -99,7 +93,7 @@
                     </div>
                     <div class="border bg-secondary w-100 mt-2"></div>
 
-                    <div class="options mt-2" th:each="patient : ${patients}">
+                    <div class="options mt-2">
                         <div class="card border-gray-300 rounded-lg" >
                             <div class="card-body d-flex justify-content-between align-items-center p-2">
                                 <div class="d-flex">
@@ -108,8 +102,8 @@
                                         <span class="text-white font-weight-bold">HI</span>
                                     </div>
                                     <div class="ml-3">
-                                        <span class="font-weight-bold text-dark">Truong Hiep</span><br>
-                                        <span class="text-muted">10/09/2003</span>
+                                        <span class="font-weight-bold text-dark" th:text="${user.getFullName()}" >Username</span><br>
+                                        <span class="text-muted" th:text="${user.getDob()}">User DOB</span>
                                     </div>
                                 </div>
                             </div>
@@ -118,11 +112,11 @@
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item d-flex justify-content-between text-dark">
                                         <span>Mã bệnh nhân</span>
-                                        <span class="font-weight-600" th:text="${patient.getId()}">YMP241958006</span>
+                                        <span class="font-weight-600" th:text="${user.getId()}">YMP241958006</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between text-dark">
                                         <span>Họ và tên</span>
-                                        <span class="font-weight-600" th:text="${patient.getFullName()}">Truong Hiep</span>
+                                        <span class="font-weight-600" th:text="${user.getFullName()}">Truong Hiep</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between text-dark">
                                         <span>Giới tính</span>
@@ -130,11 +124,11 @@
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between text-dark">
                                         <span>Ngày sinh</span>
-                                        <span class="font-weight-600" th:text="${patient.getDob()}">10/09/2003</span>
+                                        <span class="font-weight-600" th:text="${user.getDob()}">10/09/2003</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between text-dark">
                                         <span>Số điện thoại</span>
-                                        <span class="font-weight-600" th:text="${patient.getPhone()}">0965843332</span>
+                                        <span class="font-weight-600" th:text="${user.getPhone()}">0965843332</span>
                                     </li>
                                 </ul>
                                 <div class="mt-3 d-flex justify-content-end">
@@ -154,7 +148,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button class="btn-option option mt-2" data-step="4" th:data-choice="${patient.id}">Tiếp tục</button>
+                        <button class="btn-option option mt-2" data-step="4" th:data-choice="${user.id}">Tiếp tục</button>
                     </div>
 
 <!--                    <div class="options mt-2">-->
@@ -201,14 +195,14 @@
             </div>
 
             <div class="border bg-secondary w-100 mt-2"></div>
-            <div>
+            <div class="d-flex justify-content-between">
                     <span>Thanh toán bằng MOMO</span>
                     <span>Method Icon</span>
             </div>
             <div class="border bg-secondary w-100 mt-2"></div>
-            <div class="mt-2">
+            <div class="mt-2 d-flex justify-content-between">
                 <span> Phí khám</span>
-                <span id="amountt" data-value="200000"> Giá tiền</span>
+                <span id="amountt" data-value=""> Giá tiền</span>
             </div>
                 <input type="hidden" name="orderInfo" id="orderInfo" >
                 <input type="hidden" name="amount" id="amount" >
@@ -222,37 +216,75 @@
 </body>
 
 <script>
-    $(document).ready(function() {
-        $(".option").click(function() {
-            const step = $(this).data("step");
-            const choice = $(this).data("choice");
 
-            // Xử lý hiển thị và cập nhật giá trị
-            $(`#step-${step} .option`).removeClass("selected");
-            $(`#choice-${step}`).text(choice).data("value", choice).show();
-            $(this).addClass("selected");
-            $(`#step-${step + 1}`).show();
+    $(document).ready(function () {
+        let selectedServices = [];
+        const maxServices = 3;
+
+        $(".option").click(function () {
+            const step = $(this).data("step");
+            const serviceName = $(this).data("choice");
+            const price = parseInt($(this).find("span:nth-child(2)").text()?.replace("đ", "").replace(",", "").trim() || 0, 10);
+
+            // Xử lý chỉ cho bước 1 được thêm vào selectedServices
+            if (step === 1) {
+                // Xử lý logic chọn dịch vụ
+                const serviceId = $(this).data("id");
+                if (!$(this).hasClass("selected")) {
+                    if (selectedServices.length < maxServices) {
+                        $(this).addClass("selected");
+                        selectedServices.push(serviceId);
+                    } else {
+                        alert("Bạn chỉ có thể chọn tối đa 3 dịch vụ.");
+                        return;
+                    }
+                } else {
+                    $(this).removeClass("selected");
+                    selectedServices = selectedServices.filter((service) => service.serviceName !== serviceName);
+                }
+
+                // Cập nhật hiển thị giá tiền và danh sách dịch vụ
+                let totalPrice = selectedServices.reduce((sum, service) => sum + price, 0);
+                $("#amountt")
+                    .text(`${totalPrice.toLocaleString()}đ`) // Hiển thị giá tiền định dạng
+                    .data("value", totalPrice);             // Lưu giá trị thực (số nguyên) trong data-value
+
+                // Hiển thị lựa chọn trong bước 1
+                if (selectedServices.length > 0) {
+                    $(`#choice-${step}`).text(
+                        selectedServices.map((service) => service.serviceName).join(", ")
+                    ).data("value", selectedServices).show();
+                    $(`#step-${step + 1}`).show(); // Hiển thị bước tiếp theo
+                } else {
+                    $(`#choice-${step}`).text("Chưa chọn").data("value", null).hide();
+                    $(`#step-${step + 1}`).hide(); // Ẩn bước tiếp theo
+                }
+            } else {
+                // Các bước khác chỉ cập nhật thông tin mà không ảnh hưởng đến selectedServices
+                $(`#choice-${step}`).text(serviceName).data("value", serviceName).show();
+                $(`#step-${step + 1}`).show();
+            }
         });
 
         // Flatpickr cho ngày
         $("#date-choice").flatpickr({
             dateFormat: "Y-m-d",
-            minDate: "today",
+            minDate: new Date().fp_incr(1),
             maxDate: new Date().fp_incr(14),
-            onChange: function(selectedDates, dateStr) {
+            onChange: function (selectedDates, dateStr) {
                 if (dateStr) {
                     $("#choice-2").text(dateStr).data("value", dateStr).show();
                     $("#step-3").show();
                 }
-            }
+            },
         });
 
         // Xử lý submit form
-        $("#btn-submit").click(function(e) {
+        $("#btn-submit").click(function (e) {
             e.preventDefault(); // Ngăn việc submit mặc định của form
 
             // Lấy thông tin từ các bước
-            const step1Choice = $("#choice-1").data("value") || "Chưa chọn";
+            const step1Choice = ($("#choice-1").data("value") || []).join(", ");
             const step2Choice = $("#choice-2").data("value") || "Chưa chọn";
             const step3Choice = $("#choice-3").data("value") || "Chưa chọn";
             const step4Choice = $("#choice-4").data("value") || "Chưa chọn";
@@ -270,7 +302,7 @@
                 step2Choice,
                 step3Choice,
                 step4Choice,
-                amount
+                amount,
             };
 
             // Đưa thông tin vào các input ẩn trong form
