@@ -16,6 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.security.core.userdetails.UserCache;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +50,6 @@ public class UserService{
         log.info("In method get users");
         return userRepo.findAll().stream().map(userMapper::toUserReponse).toList();
     }
-
     public UserReponse getByID(int id){
         return userMapper.toUserReponse(userRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found")));
@@ -62,11 +64,11 @@ public class UserService{
 //    }
 
     public Useracount createUser(UserRequest userRequest) {
-        if(userRepo.existsByUsername(userRequest.getUsername()))
+        if (userRepo.existsByUsername(userRequest.getUsername()))
             throw new AppException(ErrorCode.USER_EXISTED);
         Useracount user = userMapper.toUser(userRequest);
         user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-        try{
+        try {
             user = userRepo.save(user);
             Role role = roleRepository.findByRoleName(Roles.USER.name());
             UserRole userRole = userRoleRepository.save(UserRole.builder()
@@ -74,11 +76,18 @@ public class UserService{
                     .role(role)
                     .build());
             return userRepo.save(user);
-        } catch (Exception ex){
+        } catch (Exception ex) {
             throw ex;
         }
     }
 
+    public Useracount getByEmail(String email) {
+        try{
+            return userRepo.findByPatient_Email(email);
+        } catch (Exception ex){
+            throw new IllegalArgumentException("Could not find any customer with the email " + email);
+        }
+    }
 
 
     public Useracount getByName(String username) {
@@ -86,4 +95,22 @@ public class UserService{
         return optionalUser.orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
     }
 
+
+    public void updateResetPasswordToken(Useracount useracount, String token) {
+        useracount.setResetPasswordToken(token);
+        userRepo.save(useracount);
+    }
+
+    public void updatePassword(Useracount customer, String newPassword) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        customer.setPassword(encodedPassword);
+
+        customer.setResetPasswordToken(null);
+        userRepo.save(customer);
+    }
+
+    public Optional<Useracount> getByResetPasswordToken(String token) {
+        return userRepo.findByResetPasswordToken(token);
+    }
 }

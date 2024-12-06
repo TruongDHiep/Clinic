@@ -26,7 +26,7 @@ public class SecurityConfig {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
-    private final String[] PUBLIC_ENDPOINT = {"/","/login","/js/**","/images/**","/css/**", "/fonts/**","/register"};
+    private final String[] PUBLIC_ENDPOINT = {"verifytoken","/resetPass","/forgotpassword","/","/login","/js/**","/images/**","/css/**", "/fonts/**","/register"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {

@@ -34,4 +34,7 @@ public class Useracount {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     Set<UserRole> userRoles;
     boolean status;
+
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
 }

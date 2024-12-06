@@ -20,9 +20,6 @@ public class AdminController {
         return "admin/index";
     }
 
-    @GetMapping("/account")
-    public String test(){
-        return "/admin/account";
-    }
+
 
 }

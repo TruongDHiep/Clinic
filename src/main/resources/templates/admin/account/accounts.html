@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/fragment/head :: head"></head>
+<body class="hold-transition skin-blue sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
+
+    <div th:replace="admin/fragment/header :: header"></div>
+
+    <!-- =============================================== -->
+
+    <!-- Left side column. contains the sidebar -->
+    <div th:replace="admin/fragment/sidebar :: sidebar"></div>
+
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+
+
+        <!-- Main content -->
+
+
+            <!-- Default box -->
+            <div class="container-fluid ">
+                <h1 class="text-center" >Quản lý Tài Khoản</h1>
+                <button type="button" class="btn btn-success" style="width: 120px;font-size: 17px;">Người dùng</button>
+                <button type="button" class="btn btn-success" style="width: 120px;font-size: 17px;">Bác sĩ</button>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>DoctorId</th>
+                    <th>PatientId</th>
+                    <th>Trạng thái</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="useraccount : ${Useraccount}">
+                    <td th:text="${useraccount.id}"></td>
+                    <td th:text="${useraccount.username}"></td>
+                    <td th:text="${useraccount.password}"></td>
+                    <td th:text="${useraccount.doctor != null ? useraccount.doctor.fullName : 'No Doctor'}"></td>
+                    <td th:text="${useraccount.patient != null ? useraccount.patient.fullName : 'No Patient'}"></td>
+                    <td th:text="${useraccount.status}"></td>
+                </tr>
+                </tbody>
+            </table>
+            <!-- /.box -->
+
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <div th:replace="admin/fragment/footer :: footer"></div>
+
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery 3 -->
+<div th:replace="admin/fragment/script :: script"></div>
+
+</body>
+</html>

@@ -1,10 +1,14 @@
+
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Danh sách bệnh nhân</title>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head th:replace="admin/fragment/head :: head">
+    <title>Doctors</title>
 </head>
 <body>
 <h1>Danh sách bs</h1>
+<div th:if="${errorMessage}" class="alert alert-danger">
+    <p th:text="${errorMessage}"></p>
+</div>
 <table border="1">
     <thead>
     <tr>
@@ -16,16 +20,16 @@
     </tr>
     </thead>
     <tbody>
-    <p>hhhhhhh</p>
+    <p>Danh sách bác sĩ</p>
     <tr th:each="doctor : ${doctors}">
         <td th:text="${doctor.id}"></td>
         <td th:text="${doctor.fullName}"></td>
-        <td th:text="${doctor.specialization}"></td>
+        <td th:text="${doctor.specialization_id.id}"></td>
         <td th:text="${doctor.email}"></td>
         <td th:text="${doctor.phone}"></td>
     </tr>
     </tbody>
 </table>
-<a href="/patients/new">Thêm bac si moi</a>
+<a th:href="@{doctors/newDoctor}">Thêm bac si moi</a>
 </body>
 </html>

@@ -1,7 +1,6 @@
 package com.clinicmanagement.clinic.controller;
 
 import com.clinicmanagement.clinic.Entities.Useracount;
-import com.clinicmanagement.clinic.dto.auth.AuthenicationRequest;
 import com.clinicmanagement.clinic.dto.user.UserRequest;
 import com.clinicmanagement.clinic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

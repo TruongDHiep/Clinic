@@ -13,9 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserRequest {
-        @Size(min = 4,message = "USERNAME_INVALID")
         String username;
-        @Size(min = 8,message = "PASS_INVALID")
          String password;
         String fullname;
          Doctor doctor;

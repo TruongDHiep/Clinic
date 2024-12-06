@@ -10,7 +10,8 @@ import lombok.experimental.FieldDefaults;
 import java.util.Set;
 import java.util.logging.Level;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -20,6 +21,7 @@ public class UserReponse {
     String username;
     Doctor doctor;
     Patient patient;
+    String password;
     Set<String> role;
     boolean status;
 }
