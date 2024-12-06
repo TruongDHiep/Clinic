@@ -74,11 +74,44 @@ public class InformationController {
 
 
 
-    @GetMapping("/search")
+    /*@GetMapping("/search")
     public String searchAppointments(@RequestParam String keyword, Model model) {
         List<Appointment> appointments = _appointmentService.searchAppointments(keyword);
         model.addAttribute("appointments", appointments);
         model.addAttribute("keyword", keyword);  // Thêm keyword vào model
+        return "information/appointment/index";
+    }*/
+
+    @GetMapping("/appointment/search")
+    public String searchAppointments(
+            @RequestParam(required = false) String keyword,
+            Model model,
+            Principal principal
+    ) {
+        // Lấy thông tin người dùng hiện tại
+        var context = SecurityContextHolder.getContext();
+        String username = context.getAuthentication().getName();
+
+        Useraccount user = _userRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        // Thực hiện tìm kiếm
+        List<Appointment> appointments = _appointmentService.searchAppointments(keyword);
+
+        // Tạo map dịch vụ cho từng cuộc hẹn
+        Map<Integer, List<appointment_service>> appointmentServicesMap = new HashMap<>();
+        for (Appointment appointment : appointments) {
+            List<appointment_service> services =
+                    _appointmentService.getServiceByAppointment(appointment);
+            appointmentServicesMap.put(appointment.getId(), services);
+        }
+
+        // Thêm dữ liệu vào model
+        model.addAttribute("appointments", appointments);
+        model.addAttribute("appointmentServicesMap", appointmentServicesMap);
+        model.addAttribute("user", user);
+        model.addAttribute("keyword", keyword);
+
         return "information/appointment/index";
     }
 
@@ -139,6 +172,35 @@ public class InformationController {
             return "error";
         }
     }
+
+    @GetMapping("/history/search/{patientId}")
+    public String showPaymentHistory(
+            @PathVariable int patientId,
+            @RequestParam(required = false) String keyword,
+            Model model
+    ) {
+
+        var context = SecurityContextHolder.getContext();
+        String username = context.getAuthentication().getName();
+
+        Useraccount user = _userRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        List<payment> payments;
+
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            payments = _paymentService.searchPayments(keyword, patientId);
+        } else {
+            payments = _paymentService.findByPatientId(patientId);
+        }
+
+        model.addAttribute("user", user);
+        model.addAttribute("payments", payments);
+        return "information/history/index";
+    }
+
+
+    //========================================PROFILE===========================================
 
 
     @GetMapping("/userProfile/{patientId}")
