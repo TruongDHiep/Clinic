@@ -1,11 +1,15 @@
 package com.clinicmanagement.clinic.Entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 @Entity
 @Table(name="user_role")
-@Data
+@Setter
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserRole {
 
     @Id
@@ -15,7 +19,7 @@ public class UserRole {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private Useracount user;
+    private Useraccount user;
 
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id")

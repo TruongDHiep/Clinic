@@ -39,7 +39,7 @@ public class AdminDoctorController {
     public String showCreateForm(Model model) {
         model.addAttribute("doctor", new DoctorRequest());
         model.addAttribute("specializations", specializationService.getAllSpecialization());
-        return "admin/doctor/create"; // Trang form tạo bác sĩ
+        return "admin/doctor/create";
     }
 
     @PostMapping("/create")
@@ -103,3 +103,4 @@ public class AdminDoctorController {
         }
     }
 }
+

@@ -1,9 +1,9 @@
 package com.clinicmanagement.clinic.service;
 
 import com.clinicmanagement.clinic.Entities.Appointment;
+import com.clinicmanagement.clinic.Entities.Patient;
+import com.clinicmanagement.clinic.Entities.appointment_service;
 import com.clinicmanagement.clinic.repository.AppointmentRepository;
-import com.clinicmanagement.clinic.repository.DoctorRepository;
-import com.clinicmanagement.clinic.repository.PatientRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +20,50 @@ public class AppointmentService {
     private AppointmentRepository _appointmentRepository;
 
     @Autowired
-    private PatientRepository _patientRepository;
-
-    @Autowired
-    private DoctorRepository _doctorRepository;
-
     private static final Logger logger = LoggerFactory.getLogger(AppointmentService.class);
+
+    public List<Appointment> getAppointmentsByPatient(Patient patient) {
+        return _appointmentRepository.findByPatient(patient);
+    }
+
+    public List<appointment_service> getServiceByAppointment(Appointment appointment) {
+        return appointment.getAppointmentServices();
+    }
+    public List<Appointment> searchAppointments(String keyword) {
+        // Xử lý trường hợp keyword rỗng hoặc null
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return _appointmentRepository.findAll();
+        }
+
+        // Chuẩn hóa keyword
+        String normalizedKeyword = keyword.trim();
+
+        // Thực hiện tìm kiếm
+        List<Appointment> results = _appointmentRepository.searchAppointments(normalizedKeyword);
+
+        System.out.println("==== Thông Tin Tìm Kiếm ====");
+        System.out.println("Từ khóa: " + normalizedKeyword);
+        System.out.println("Số lượng kết quả: " + results.size());
+        System.out.println("============================");
+
+        return results;
+    }
+
+    public Appointment findById(Integer id) {
+        return _appointmentRepository.findById(id).orElse(null);
+    }
+
+
+    public Appointment save(Appointment appointment) {
+        return _appointmentRepository.save(appointment);
+    }
+
+
+
+
+
+
+
 
     @Transactional
     public List<Appointment> getAllAppointments() {
@@ -37,9 +75,12 @@ public class AppointmentService {
         return appointments;
     }
 
-    public List<Appointment> searchAppointments(String keyword) {
+
+
+
+    /*public List<Appointment> searchAppointments(String keyword) {
         return _appointmentRepository.searchAppointments(keyword);
-    }
+    }*/
 
     public void addAppointment(Appointment appointment) {
         try {
@@ -61,4 +102,7 @@ public class AppointmentService {
         }
 
     }
+
+
+
 }

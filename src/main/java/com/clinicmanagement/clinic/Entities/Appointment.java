@@ -39,4 +39,5 @@ public class Appointment {
     @OneToMany(mappedBy = "appointment_id", fetch = FetchType.LAZY)
     @JsonIgnoreProperties("appointment_id")
     private List<appointment_service> appointmentServices;
+
 }
