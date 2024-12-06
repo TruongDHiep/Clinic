@@ -2,8 +2,8 @@ package com.clinicmanagement.clinic.service;
 
 import com.clinicmanagement.clinic.Entities.Role;
 import com.clinicmanagement.clinic.Entities.UserRole;
-import com.clinicmanagement.clinic.Entities.Useracount;
-import com.clinicmanagement.clinic.dto.user.UserReponse;
+import com.clinicmanagement.clinic.Entities.Useraccount;
+import com.clinicmanagement.clinic.dto.user.UserResponse;
 import com.clinicmanagement.clinic.dto.user.UserRequest;
 import com.clinicmanagement.clinic.enums.Roles;
 import com.clinicmanagement.clinic.exception.AppException;
@@ -16,16 +16,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.data.crossstore.ChangeSetPersister;
-import org.springframework.security.core.userdetails.UserCache;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -46,12 +46,19 @@ public class UserService{
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public List<UserReponse> getAllUsers() {
-        log.info("In method get users");
-        return userRepo.findAll().stream().map(userMapper::toUserReponse).toList();
+    public List<UserResponse> getAllUsers() {
+        List<Useraccount> users = userRepo.findAll();
+        return users.stream()
+                .map(userMapper::toUserReponse)
+                .collect(Collectors.toList());
     }
 
-    public UserReponse getByID(int id){
+
+    public Page<UserResponse> getAllUsers(Pageable pageable) {
+        return userRepo.findAll(pageable).map(userMapper::toUserReponse);
+    }
+
+    public UserResponse getByID(int id){
         return userMapper.toUserReponse(userRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found")));
     }
@@ -64,10 +71,10 @@ public class UserService{
 //        return userMapper.toUserReponse(user);
 //    }
 
-    public Useracount createUser(UserRequest userRequest) {
+    public Useraccount createUser(UserRequest userRequest) {
         if (userRepo.existsByUsername(userRequest.getUsername()))
             throw new AppException(ErrorCode.USER_EXISTED);
-        Useracount user = userMapper.toUser(userRequest);
+        Useraccount user = userMapper.toUser(userRequest);
         user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         try {
             user = userRepo.save(user);
@@ -82,7 +89,7 @@ public class UserService{
         }
     }
 
-    public Useracount getByEmail(String email) {
+    public Useraccount getByEmail(String email) {
         try{
             return userRepo.findByPatient_Email(email);
         } catch (Exception ex){
@@ -91,18 +98,18 @@ public class UserService{
     }
 
 
-    public Useracount getByName(String username) {
-        Optional<Useracount> optionalUser = userRepo.findByUsername(username);
+    public Useraccount getByName(String username) {
+        Optional<Useraccount> optionalUser = userRepo.findByUsername(username);
         return optionalUser.orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
     }
 
 
-    public void updateResetPasswordToken(Useracount useracount, String token) {
-        useracount.setResetPasswordToken(token);
-        userRepo.save(useracount);
+    public void updateResetPasswordToken(Useraccount useraccount, String token) {
+        useraccount.setResetPasswordToken(token);
+        userRepo.save(useraccount);
     }
 
-    public void updatePassword(Useracount customer, String newPassword) {
+    public void updatePassword(Useraccount customer, String newPassword) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(newPassword);
         customer.setPassword(encodedPassword);
@@ -111,7 +118,7 @@ public class UserService{
         userRepo.save(customer);
     }
 
-    public Optional<Useracount> getByResetPasswordToken(String token) {
+    public Optional<Useraccount> getByResetPasswordToken(String token) {
         return userRepo.findByResetPasswordToken(token);
     }
 }

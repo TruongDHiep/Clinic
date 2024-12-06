@@ -1,10 +1,7 @@
 package com.clinicmanagement.clinic.service;
 
 import com.clinicmanagement.clinic.Entities.Services;
-import com.clinicmanagement.clinic.Entities.Useracount;
 import com.clinicmanagement.clinic.dto.ServiceDTO;
-import com.clinicmanagement.clinic.exception.AppException;
-import com.clinicmanagement.clinic.exception.ErrorCode;
 import com.clinicmanagement.clinic.mapper.ServiceMapper;
 import com.clinicmanagement.clinic.repository.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;

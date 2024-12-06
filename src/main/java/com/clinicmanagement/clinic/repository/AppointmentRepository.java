@@ -2,7 +2,6 @@ package com.clinicmanagement.clinic.repository;
 
 import com.clinicmanagement.clinic.Entities.Appointment;
 import com.clinicmanagement.clinic.Entities.Patient;
-import com.clinicmanagement.clinic.Entities.Useracount;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

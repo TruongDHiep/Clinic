@@ -19,7 +19,7 @@ public class UserRole {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private Useracount user;
+    private Useraccount user;
 
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id")

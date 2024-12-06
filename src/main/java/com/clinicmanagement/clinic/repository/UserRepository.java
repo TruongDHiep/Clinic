@@ -1,16 +1,15 @@
 package com.clinicmanagement.clinic.repository;
 
-import com.clinicmanagement.clinic.Entities.Useracount;
+import com.clinicmanagement.clinic.Entities.Useraccount;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<Useracount, Integer> {
+public interface UserRepository extends JpaRepository<Useraccount, Integer> {
     boolean existsByUsername(String username);
-    Optional<Useracount> findByUsername(String username);
-   Useracount findByPatient_Email(String email);
-    Optional<Useracount> findByResetPasswordToken(String token);
+    Optional<Useraccount> findByUsername(String username);
+   Useraccount findByPatient_Email(String email);
+    Optional<Useraccount> findByResetPasswordToken(String token);
 }

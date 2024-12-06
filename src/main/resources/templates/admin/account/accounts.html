@@ -11,31 +11,56 @@
 <div layout:fragment="content" class="content">
             <div class="container-fluid ">
                 <h1 class="text-center" >Quản lý Tài Khoản</h1>
-                <button type="button" class="btn btn-success" style="width: 120px;font-size: 17px;">Người dùng</button>
-                <button type="button" class="btn btn-success" style="width: 120px;font-size: 17px;">Bác sĩ</button>
+                <a th:href="@{/admin/accounts/new}" class="btn btn-success" style="width: 180px;font-size: 17px;">
+                    Thêm tài khoản (chỉ bác sĩ)
+                </a>
+
             </div>
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Username</th>
-                    <th>Password</th>
-                    <th>DoctorId</th>
-                    <th>PatientId</th>
-                    <th>Trạng thái</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="useraccount : ${Useraccount}">
-                    <td th:text="${useraccount.id}"></td>
-                    <td th:text="${useraccount.username}"></td>
-                    <td th:text="${useraccount.password}"></td>
-                    <td th:text="${useraccount.doctor != null ? useraccount.doctor.fullName : 'No Doctor'}"></td>
-                    <td th:text="${useraccount.patient != null ? useraccount.patient.fullName : 'No Patient'}"></td>
-                    <td th:text="${useraccount.status}"></td>
-                </tr>
-                </tbody>
-            </table>
+            <br>
+    <div class="card-body">
+        <table class="table table-head-fixed text-nowrap">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Doctor</th>
+                <th>Patient</th>
+                <th>Trạng thái</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${useraccount}">
+                <td th:text="${user.id}"></td>
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.password}"></td>
+                <td th:text="${user.doctor != null ? user.doctor.fullName : 'None Doctor'}"></td>
+                <td th:text="${user.patient != null ? user.patient.fullName : 'None Patient'}"></td>
+                <td th:text="${user.status}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <nav aria-label="Page navigation" class="d-flex justify-content-center">
+            <ul class="pagination">
+                <!-- Nút Previous -->
+                <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                    <a class="page-link" th:href="@{/admin/accounts(page=${currentPage - 1}, size=${size})}">Previous</a>
+                </li>
+
+                <!-- Số trang -->
+                <li class="page-item" th:each="pageNum : ${#numbers.sequence(1, totalPages)}"
+                    th:classappend="${currentPage == pageNum} ? 'active'">
+                    <a class="page-link" th:href="@{/admin/accounts(page=${pageNum}, size=${size})}" th:text="${pageNum}"></a>
+                </li>
+
+                <!-- Nút Next -->
+                <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                    <a class="page-link" th:href="@{/admin/accounts(page=${currentPage + 1}, size=${size})}">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
 </div>
 </body>
 </html>

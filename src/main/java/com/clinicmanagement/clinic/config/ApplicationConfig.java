@@ -2,8 +2,7 @@ package com.clinicmanagement.clinic.config;
 
 import com.clinicmanagement.clinic.Entities.Role;
 import com.clinicmanagement.clinic.Entities.UserRole;
-import com.clinicmanagement.clinic.Entities.Useracount;
-import com.clinicmanagement.clinic.enums.Roles;
+import com.clinicmanagement.clinic.Entities.Useraccount;
 import com.clinicmanagement.clinic.repository.RoleRepository;
 import com.clinicmanagement.clinic.repository.UserRepository;
 import com.clinicmanagement.clinic.repository.UserRoleRepository;
@@ -19,8 +18,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
 
 @Configuration
 @RequiredArgsConstructor
@@ -62,7 +59,7 @@ public class ApplicationConfig {
 
             if(userRepository.findByUsername("admin").isEmpty()){
                 Role adminRole = roleRepository.findByRoleName("ADMIN");
-                Useracount user = Useracount.builder()
+                Useraccount user = Useraccount.builder()
                         .username("admin")
                         .password(passwordEncoder.encode("admin1234"))
                         .status(true)

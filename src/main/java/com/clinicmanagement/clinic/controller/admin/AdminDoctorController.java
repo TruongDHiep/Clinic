@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/admin/doctors")
 public class AdminDoctorController {
 
     @Autowired
@@ -26,17 +26,31 @@ public class AdminDoctorController {
     @Autowired
     private DoctorMapper doctorMapper;
 
-    @GetMapping("/doctors")
-    public String showAllDoctors(Model model) {
-        model.addAttribute("doctors", doctorService.findAllByStatus(true));
+    @GetMapping
+    public String getAllDoctors(Model model) {
+        System.out.println("Get all doctors");
+        List<Doctor> doctors = doctorService.getAllDoctors();
+        model.addAttribute("doctors", doctors);
         return "admin/doctor/doctors";
     }
+//
+//    @GetMapping("/admin/doctors/{id}")
+//    public String showDoctorById(@PathVariable("id") Integer id, Model model) {
+//        try {
+//            var doctor = doctorService.findById(id);
+//            model.addAttribute("doctors", doctor);
+//            return "admin/doctor/doctors";
+//        } catch (Exception e) {
+//            model.addAttribute("errorMessage", "Không tìm thấy bác sĩ với ID: " + id);
+//            return "admin/doctor/doctors";
+//        }
+//    }
 
-    @GetMapping("/doctors/create")
+    @GetMapping("/create")
     public String showCreateForm(Model model) {
         model.addAttribute("doctor", new DoctorCreateRequest());
         model.addAttribute("specializations", specializationService.getAllSpecialization());
-        return "admin/doctor/create"; // Trang form tạo bác sĩ
+        return "admin/doctor/create";
     }
 
     @PostMapping("/create")
@@ -52,3 +66,4 @@ public class AdminDoctorController {
         return "redirect:/admin/doctors";
     }
 }
+

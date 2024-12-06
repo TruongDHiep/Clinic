@@ -1,23 +1,19 @@
 package com.clinicmanagement.clinic.controller;
 
-import com.clinicmanagement.clinic.Entities.Doctor;
 import com.clinicmanagement.clinic.Entities.Patient;
-import com.clinicmanagement.clinic.Entities.Useracount;
+import com.clinicmanagement.clinic.Entities.Useraccount;
 import com.clinicmanagement.clinic.dto.user.UserRequest;
 import com.clinicmanagement.clinic.mapper.UserMapper;
 import com.clinicmanagement.clinic.service.DoctorService;
 import com.clinicmanagement.clinic.service.EmailService;
 import com.clinicmanagement.clinic.service.PatientService;
 import com.clinicmanagement.clinic.service.UserService;
-import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -69,10 +64,10 @@ public class UserController {
         return "redirect:/login";
     }
 
-    @GetMapping("/myInfo")
-    public String myinfo(){
-        return "test/getuser";
-    }
+//    @GetMapping("/myInfo")
+//    public String myinfo(){
+//        return "/test/getuser";
+//    }
 
     @GetMapping("/forgotpassword")
     public String forgotpass(){
@@ -83,7 +78,7 @@ public class UserController {
     public String processForgotPass(HttpServletRequest request, Model model){
         String email = request.getParameter("email");
         String token = String.valueOf(ThreadLocalRandom.current().nextInt(100000, 1000000));
-        Useracount user = userService.getByEmail(email);
+        Useraccount user = userService.getByEmail(email);
         if (user == null) {
             model.addAttribute("error", "Không tìm thấy tài khoản với email này.");
             return "/login/forgot_password";
@@ -106,7 +101,7 @@ public class UserController {
 
     @PostMapping("/verifytoken")
     public String showResetPasswordForm(@Param(value = "token") String token, Model model) {
-        Optional<Useracount> user = userService.getByResetPasswordToken(token);
+        Optional<Useraccount> user = userService.getByResetPasswordToken(token);
         if (user.isPresent()) {
             System.out.println(user.get().getUsername());
             return "redirect:/resetPass?token=" + token;
@@ -123,7 +118,7 @@ public class UserController {
             RedirectAttributes redirectAttributes) {
         String newPass = request.getParameter("newPass");
         System.out.println("Token: "+ token);
-        Optional<Useracount> user = userService.getByResetPasswordToken(token);
+        Optional<Useraccount> user = userService.getByResetPasswordToken(token);
 
         if (user.isEmpty()) {
             model.addAttribute("error", "Mã xác thực không hợp lệ.");
