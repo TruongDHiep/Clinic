@@ -15,12 +15,13 @@ public interface PaymentRepository extends JpaRepository<payment, Integer> {
     List<payment> findByPatientId(Integer patientId);
 
     @Query("SELECT p FROM payment p " +
-            "JOIN p.appointment a " +
-            "WHERE a.patient.id = :patientId " +
-            "AND (CAST(p.id AS string) LIKE %:keyword% " +
-            "OR CAST(a.id AS string) LIKE %:keyword% " +
-            "OR p.paymentMethod LIKE %:keyword% " +
-            "OR p.status LIKE %:keyword%) " +
-            "ORDER BY p.paymentDate DESC")
-    List<payment> searchPayments(@Param("patientId") Integer patientId, @Param("keyword") String keyword);
+            "WHERE p.appointment.patient.id = :patientId AND " +
+            "(LOWER(CAST(p.id AS string)) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+            "OR LOWER(CAST(p.appointment.id AS string)) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+            "OR LOWER(p.paymentMethod) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+            "OR LOWER(p.status) LIKE LOWER(CONCAT('%', :keyword, '%')))")
+    List<payment> findByKeywordAndPatient(
+            @Param("keyword") String keyword,
+            @Param("patientId") int patientId
+    );
 }

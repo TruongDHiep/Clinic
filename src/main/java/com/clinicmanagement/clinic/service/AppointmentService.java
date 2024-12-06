@@ -2,12 +2,8 @@ package com.clinicmanagement.clinic.service;
 
 import com.clinicmanagement.clinic.Entities.Appointment;
 import com.clinicmanagement.clinic.Entities.Patient;
-import com.clinicmanagement.clinic.Entities.Useracount;
 import com.clinicmanagement.clinic.Entities.appointment_service;
 import com.clinicmanagement.clinic.repository.AppointmentRepository;
-import com.clinicmanagement.clinic.repository.DoctorRepository;
-import com.clinicmanagement.clinic.repository.PatientRepository;
-import com.clinicmanagement.clinic.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +28,25 @@ public class AppointmentService {
 
     public List<appointment_service> getServiceByAppointment(Appointment appointment) {
         return appointment.getAppointmentServices();
+    }
+    public List<Appointment> searchAppointments(String keyword) {
+        // Xử lý trường hợp keyword rỗng hoặc null
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return _appointmentRepository.findAll();
+        }
+
+        // Chuẩn hóa keyword
+        String normalizedKeyword = keyword.trim();
+
+        // Thực hiện tìm kiếm
+        List<Appointment> results = _appointmentRepository.searchAppointments(normalizedKeyword);
+
+        System.out.println("==== Thông Tin Tìm Kiếm ====");
+        System.out.println("Từ khóa: " + normalizedKeyword);
+        System.out.println("Số lượng kết quả: " + results.size());
+        System.out.println("============================");
+
+        return results;
     }
 
     public Appointment findById(Integer id) {
@@ -60,9 +75,9 @@ public class AppointmentService {
 
 
 
-    public List<Appointment> searchAppointments(String keyword) {
+    /*public List<Appointment> searchAppointments(String keyword) {
         return _appointmentRepository.searchAppointments(keyword);
-    }
+    }*/
 
     public void addAppointment(Appointment appointment) {
         try {

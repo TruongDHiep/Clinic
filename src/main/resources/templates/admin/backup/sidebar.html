@@ -1,49 +1,55 @@
-<!--<aside class="main-sidebar" th:fragment="sidebar">-->
-<!--    &lt;!&ndash; sidebar: style can be found in sidebar.less &ndash;&gt;-->
-<!--    <section class="sidebar">-->
-<!--        &lt;!&ndash; Sidebar user panel &ndash;&gt;-->
-<!--        <div class="user-panel">-->
-<!--            <div class="pull-left image">-->
-<!--                <img th:src="@{/images/user2-160x160.jpg}" class="img-circle" alt="User Image">-->
-<!--            </div>-->
-<!--            <div class="pull-left info">-->
-<!--                <p><span th:text="${#authentication.name}">Username</span></p>-->
-<!--                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>-->
-<!--            </div>-->
-<!--        </div>-->
+<aside class="main-sidebar" th:fragment="sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        <!-- Sidebar user panel -->
+        <div class="user-panel">
+            <div class="pull-left image">
+                <img th:src="@{/images/user2-160x160.jpg}" class="img-circle" alt="User Image">
+            </div>
+            <div class="pull-left info">
+                <p><span th:text="${#authentication.name}">Username</span></p>
+                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+            </div>
+        </div>
 
-<!--        &lt;!&ndash; sidebar menu: : style can be found in sidebar.less &ndash;&gt;-->
+        <!-- sidebar menu: : style can be found in sidebar.less -->
 
-<!--        <ul class="sidebar-menu" data-widget="tree">-->
+        <ul class="sidebar-menu" data-widget="tree">
 
-<!--            <li class="treeview">-->
-<!--                <a href="#">-->
-<!--                    <i class="fa fa-dashboard"></i>-->
-<!--                    <span>Quản lý-->
-<!--                    </span>-->
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Quản lý
+                    </span>
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="nav-item">
+                        <a href="/admin/accounts" class="nav-link active">
+                            <i class="fa fa-user-md"></i>
+                            <p class="ms-2">Tài khoản</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/doctors" class="nav-link active">
+                            <i class="fa fa-user-md"></i>
+                            <p class="ms-2">Bác sĩ</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/admin/doctors" class="nav-link active">
+                            <i class="fa fa-user-md"></i>
+                            <p class="ms-2">Bác sĩ</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
-<!--                    <span class="pull-right-container">-->
-<!--              <i class="fa fa-angle-left pull-right"></i>-->
-<!--            </span>-->
-<!--                </a>-->
-<!--                <ul class="treeview-menu">-->
-<!--                    <li><a href="/admin/doctors"><i class="fa fa-user-md"></i> Bác sĩ</a></li>-->
-<!--                    <li><a href=""><i class="fa fa-file-text-o"></i> Dịch vụ</a></li>-->
-<!--                    <li><a href=""><i class="fa fa-calendar-check-o"></i> Lịch đặt hẹn</a></li>-->
-<!--                    <li><a href=""><i class="fa fa-circle-o"></i> vân vân</a></li>-->
-<!--                </ul>-->
-<!--            </li>-->
 
-<!--            <li>-->
-<!--                <a href="">-->
-<!--                    <i class="fa fa-th"></i> <span>Chức năng khác</span>-->
-<!--                    <span class="pull-right-container">-->
-<!--              <small class="label pull-right bg-green">Hot</small>-->
-<!--            </span>-->
-<!--                </a>-->
-<!--            </li>-->
 
-<!--        </ul>-->
-<!--    </section>-->
-<!--    &lt;!&ndash; /.sidebar &ndash;&gt;-->
-<!--</aside>-->
+        </ul>
+    </section>
+
+</aside>

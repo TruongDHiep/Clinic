@@ -32,6 +32,6 @@ public class Doctor {
     @JoinColumn(name = "specialization_id")
     private Specialization specialization;
 
-    private boolean status = true;
+    private Boolean status;
 }
 

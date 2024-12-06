@@ -26,7 +26,6 @@ public class appointment_service {
     @JoinColumn(name = "serviceId")
     private Services services;
 
-
     private String note;
 
 }

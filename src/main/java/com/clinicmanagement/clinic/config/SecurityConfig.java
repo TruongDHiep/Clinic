@@ -31,14 +31,15 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    private final String[] PUBLIC_ENDPOINT = {"/api/users/register","/login","/","/patients","/auth/login"
-            , "/vnpay/**", "/payment/**", "/js/**","/images/**","/css/**", "/fonts/**", "/about", "/check-appointment"};
+    // private final String[] PUBLIC_ENDPOINT = {"/api/users/register","/login","/","/patients","/auth/login"
+    //         , "/vnpay/**", "/payment/**", "/js/**","/images/**","/css/**", "/fonts/**", "/about", "/check-appointment"};
     private final Environment environment;
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
 //    private final String[] PUBLIC_ENDPOINT = {"/","/login","/js/**","/images/**","/css/**", "/fonts/**"};
     private final String[] AUTHENICATE_ENDPOINT = {"/myInfo", "/booking"};
+    private final String[] PUBLIC_ENDPOINT = {"verifytoken","/resetPass","/forgotpassword","/","/login","/js/**","/images/**","/css/**", "/fonts/**","/register"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -46,9 +47,9 @@ public class SecurityConfig {
               request.requestMatchers(PUBLIC_ENDPOINT).permitAll()
                       .requestMatchers("/images/**", "/css/**", "/js/**","/fonts/**").permitAll()
                       .requestMatchers("/admin/**").hasAuthority("ADMIN")
-                      .requestMatchers("/**").hasAuthority("USER")
+                      .requestMatchers("/**").hasAnyAuthority("DOCTOR","USER")
                       .requestMatchers("/doctor/**").hasAuthority("DOCTOR")
-                      .requestMatchers(AUTHENICATE_ENDPOINT).authenticated()
+                      .requestMatchers("/myInfo").authenticated()
                       .anyRequest().authenticated()
       )
                 .formLogin(form ->
@@ -67,15 +68,20 @@ public class SecurityConfig {
                                         case "USER":
                                             response.sendRedirect("/");
                                             break;
-//                                        case "DOCTOR":
-//                                            response.sendRedirect("/doctor");
-//                                            break;
+                                        case "DOCTOR":
+                                            response.sendRedirect("/doctor");
+                                            break;
                                         default:
                                             response.sendRedirect("/login?error=true");
                                     }
                                 })
                                 .failureUrl("/login?error=true")
-        )
+
+                                )
+//                .exceptionHandling(exceptionHandling ->
+//                exceptionHandling
+//                        .accessDeniedPage("/access-denied")  // Redirect to access-denied page on access denied
+//        )
                 .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/"))
         ;
         httpSecurity.csrf(AbstractHttpConfigurer::disable);

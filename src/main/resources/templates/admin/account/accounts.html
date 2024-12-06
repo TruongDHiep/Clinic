@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/index}">
+<head>
+    <meta charset="UTF-8">
+    <title>Account</title>
+</head>
+<body>
+<div layout:fragment="content">
+        <div class="container-fluid ">
+                <h1 class="text-center" >Quản lý Tài Khoản</h1>
+                <a th:href="@{/admin/accounts/new}" class="btn btn-success" style="width: 180px;font-size: 17px;">
+                    Thêm tài khoản (chỉ bác sĩ)
+                </a>
+            </div>
+            <br>
+    <div class="card-body">
+        <table class="table table-head-fixed text-nowrap">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Doctor</th>
+                <th>Patient</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Kiểm tra nếu userResponse không rỗng -->
+            <tr th:if="${#lists.isEmpty(userResponse)}">
+                <td colspan="6" class="text-center">Không có tài khoản nào.</td>
+            </tr>
+
+            <tr th:each="user : ${userResponse}">
+                <td th:text="${user.id}"></td>
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.password}"></td>
+                <td th:text="${user.doctor != null ? user.doctor.fullName : 'None Doctor'}"></td>
+                <td th:text="${user.patient != null ? user.patient.fullName : 'None Patient'}"></td>
+                <td th:text="${user.status}"></td>
+                <td>
+                    <form th:action="@{/admin/accounts/disable/{id}(id=${user.id})}" method="post" th:if="${user.status}">
+                        <button type="submit" class="btn btn-danger">Disable</button>
+                    </form>
+                    <form th:action="@{/admin/accounts/enable/{id}(id=${user.id})}" method="post" th:if="${not user.status}">
+                        <button type="submit" class="btn btn-success">Enable</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <nav aria-label="Page navigation" class="d-flex justify-content-center">
+            <ul class="pagination">
+                <!-- Nút Previous -->
+                <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                    <a class="page-link" th:href="@{/admin/accounts(page=${currentPage - 1}, size=${size})}">Previous</a>
+                </li>
+
+                <!-- Dấu ba chấm trước khi currentPage > 2 -->
+                <li class="page-item" th:if="${currentPage > 3}">
+                    <span class="page-link">...</span>
+                </li>
+
+                <!-- Hiển thị các trang gần currentPage -->
+                <li class="page-item" th:each="pageNum : ${#numbers.sequence(currentPage - 1, currentPage + 1)}"
+                    th:if="${pageNum >= 1 and pageNum <= totalPages}"
+                    th:classappend="${currentPage == pageNum} ? 'active'">
+                    <a class="page-link" th:href="@{/admin/accounts(page=${pageNum}, size=${size})}" th:text="${pageNum}"></a>
+                </li>
+
+                <!-- Dấu ba chấm sau nếu currentPage < totalPages - 2 -->
+                <li class="page-item" th:if="${currentPage < totalPages - 2}">
+                    <span class="page-link">...</span>
+                </li>
+
+                <!-- Hiển thị các trang cuối -->
+                <li class="page-item" th:if="${currentPage < totalPages - 3}">
+                    <a class="page-link" th:href="@{/admin/accounts(page=${totalPages}, size=${size})}" th:text="${totalPages}"></a>
+                </li>
+
+                <!-- Nút Next -->
+                <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                    <a class="page-link" th:href="@{/admin/accounts(page=${currentPage + 1}, size=${size})}">Next</a>
+                </li>
+            </ul>
+        </nav>
+
+
+
+    </div>
+</div>
+</body>
+
+</html>

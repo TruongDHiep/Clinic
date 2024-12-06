@@ -1,12 +1,14 @@
 package com.clinicmanagement.clinic.controller;
 
 import com.clinicmanagement.clinic.Entities.*;
+import com.clinicmanagement.clinic.dto.ChangePasswordDTO;
 import com.clinicmanagement.clinic.exception.AppException;
 import com.clinicmanagement.clinic.exception.ErrorCode;
 import com.clinicmanagement.clinic.repository.UserRepository;
 import com.clinicmanagement.clinic.service.AppointmentService;
 import com.clinicmanagement.clinic.service.PatientService;
 import com.clinicmanagement.clinic.service.PaymentService;
+import com.clinicmanagement.clinic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -14,9 +16,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 @Controller
 @RequestMapping("/information")
@@ -33,7 +37,8 @@ public class InformationController {
     @Autowired
     private PaymentService _paymentService;
 
-
+    @Autowired
+    private UserService _userService;
 
     //========================================APPOINTMENT===========================================
 
@@ -43,7 +48,7 @@ public class InformationController {
         String username = context.getAuthentication().getName();
 
         // Tìm Useracount dựa trên username
-        Useracount user = _userRepository.findByUsername(username)
+        Useraccount user = _userRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         // Lấy danh sách các cuộc hẹn của bệnh nhân
@@ -69,11 +74,44 @@ public class InformationController {
 
 
 
-    @GetMapping("/search")
+    /*@GetMapping("/search")
     public String searchAppointments(@RequestParam String keyword, Model model) {
         List<Appointment> appointments = _appointmentService.searchAppointments(keyword);
         model.addAttribute("appointments", appointments);
         model.addAttribute("keyword", keyword);  // Thêm keyword vào model
+        return "information/appointment/index";
+    }*/
+
+    @GetMapping("/appointment/search")
+    public String searchAppointments(
+            @RequestParam(required = false) String keyword,
+            Model model,
+            Principal principal
+    ) {
+        // Lấy thông tin người dùng hiện tại
+        var context = SecurityContextHolder.getContext();
+        String username = context.getAuthentication().getName();
+
+        Useraccount user = _userRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        // Thực hiện tìm kiếm
+        List<Appointment> appointments = _appointmentService.searchAppointments(keyword);
+
+        // Tạo map dịch vụ cho từng cuộc hẹn
+        Map<Integer, List<appointment_service>> appointmentServicesMap = new HashMap<>();
+        for (Appointment appointment : appointments) {
+            List<appointment_service> services =
+                    _appointmentService.getServiceByAppointment(appointment);
+            appointmentServicesMap.put(appointment.getId(), services);
+        }
+
+        // Thêm dữ liệu vào model
+        model.addAttribute("appointments", appointments);
+        model.addAttribute("appointmentServicesMap", appointmentServicesMap);
+        model.addAttribute("user", user);
+        model.addAttribute("keyword", keyword);
+
         return "information/appointment/index";
     }
 
@@ -121,7 +159,7 @@ public class InformationController {
             var context = SecurityContextHolder.getContext();
             String username = context.getAuthentication().getName();
 
-            Useracount user = _userRepository.findByUsername(username)
+            Useraccount user = _userRepository.findByUsername(username)
                     .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
             List<payment> payments = _paymentService.getPaymentsByPatient(patientId);
@@ -135,21 +173,43 @@ public class InformationController {
         }
     }
 
+    @GetMapping("/history/search/{patientId}")
+    public String showPaymentHistory(
+            @PathVariable int patientId,
+            @RequestParam(required = false) String keyword,
+            Model model
+    ) {
+
+        var context = SecurityContextHolder.getContext();
+        String username = context.getAuthentication().getName();
+
+        Useraccount user = _userRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        List<payment> payments;
+
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            payments = _paymentService.searchPayments(keyword, patientId);
+        } else {
+            payments = _paymentService.findByPatientId(patientId);
+        }
+
+        model.addAttribute("user", user);
+        model.addAttribute("payments", payments);
+        return "information/history/index";
+    }
 
 
+    //========================================PROFILE===========================================
 
 
-
-
-    //==================================User-Profile========================================
     @GetMapping("/userProfile/{patientId}")
-
     public String getUserProfileByPatient (@PathVariable Integer patientId, Model model) {
         var context = SecurityContextHolder.getContext();
         String username = context.getAuthentication().getName();
 
         // Tìm Useracount dựa trên username
-        Useracount user = _userRepository.findByUsername(username)
+        Useraccount user = _userRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         Patient patient = user.getPatient();
@@ -175,7 +235,7 @@ public class InformationController {
         var context = SecurityContextHolder.getContext();
         String username = context.getAuthentication().getName();
 
-        Useracount user = _userRepository.findByUsername(username)
+        Useraccount user = _userRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         Patient patient = user.getPatient();
@@ -222,6 +282,76 @@ public class InformationController {
             return "redirect:/information/userProfile/edit/" + patient.getId();
         }
     }
+
+    @GetMapping("/account/{patientId}")
+    public String getUserAccount (@PathVariable Integer patientId, Model model) {
+        var context = SecurityContextHolder.getContext();
+        String username = context.getAuthentication().getName();
+
+        // Tìm Useracount dựa trên username
+        Useraccount user = _userRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        Patient patient = user.getPatient();
+
+        if (patient == null) {
+            System.out.println("Patient ID: " + patientId);
+        }
+
+        // Kiểm tra xem patientId có khớp với patient từ user không
+        if (!patient.getId().equals(patientId)) {
+            System.out.println("Patient ID: " + patientId);
+        }
+
+        // Thêm thông tin bệnh nhân vào model
+        model.addAttribute("patient", patient);
+        model.addAttribute("user", user);
+
+        model.addAttribute("changePasswordDTO", new ChangePasswordDTO());
+
+        return "information/account/index";
+    }
+
+    @PostMapping("/account/change-password/{patientId}")
+    public String changePassword(
+            @PathVariable Integer patientId,
+            @ModelAttribute ChangePasswordDTO changePasswordDTO,
+            RedirectAttributes redirectAttributes,
+            Principal principal
+    ) {
+
+
+        System.out.println("Received PatientId: " + patientId);
+        System.out.println("Current Password: " + changePasswordDTO.getCurrentPassword());
+        System.out.println("New Password: " + changePasswordDTO.getNewPassword());
+        System.out.println("Confirm Password: " + changePasswordDTO.getConfirmNewPassword());
+
+        try {
+            _userService.changePassword(changePasswordDTO);
+            redirectAttributes.addFlashAttribute("successMessage", "Thay đổi mật khẩu thành công");
+
+            return "redirect:/information/account/" + patientId;
+        } catch (AppException e) {
+            // Xử lý các ngoại lệ
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/information/account/" + patientId;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

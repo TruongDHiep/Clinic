@@ -1,6 +1,6 @@
 package com.clinicmanagement.clinic.config;
 
-import com.clinicmanagement.clinic.Entities.Useracount;
+import com.clinicmanagement.clinic.Entities.Useraccount;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,7 +16,7 @@ import java.util.List;
 @Setter
 public class CustomUserDetails implements UserDetails {
 
-    private Useracount useracount;
+    private Useraccount useraccount;
 
     private Collection<? extends GrantedAuthority> authorities;
 
@@ -28,12 +27,12 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return useracount.getPassword();
+        return useraccount.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return useracount.getUsername();
+        return useraccount.getUsername();
     }
 
     @Override

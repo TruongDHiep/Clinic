@@ -5,10 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDate;
@@ -19,6 +16,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @Table(name="patient")
 public class Patient {
     @Id
@@ -28,8 +26,8 @@ public class Patient {
     @NotBlank(message = "Full name is required")
     private String fullName;
     private LocalDate dob;
-    @NotBlank(message = "Address is required")
     private String address;
+//    private boolean gender;
 
     @Column(name = "email", length = 50, unique = true)
     @Size(max = 50, message = "Email must be less than 50 characters")
