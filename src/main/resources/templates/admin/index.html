@@ -12,22 +12,22 @@
 <!--<body class="hold-transition skin-blue sidebar-mini">-->
 <!-- Site wrapper -->
 <body class="hold-transition sidebar-mini layout-fixed">
-    <div class="wrapper">
+<div class="wrapper">
 
-        <div th:replace="admin/fragment/header"></div>
+    <div th:replace="admin/fragment/header"></div>
 
-        <div th:replace="admin/fragment/left_side"></div>
+    <div th:replace="admin/fragment/left_side"></div>
 
-        <div class="content-wrapper">
-            <div layout:fragment="content" class="content">
-                <p>
-                    Trang chính
-                </p>
-            </div>
+    <div class="content-wrapper">
+        <div layout:fragment="content" class="content">
+            <p>
+                Trang chính
+            </p>
         </div>
-
-        <div th:replace="admin/fragment/footer"></div>
     </div>
+
+    <div th:replace="admin/fragment/footer"></div>
+</div>
 
 <div th:replace="admin/fragment/script"></div>
 

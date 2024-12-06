@@ -12,7 +12,8 @@ public enum ErrorCode {
     EXISTED(1006,"Đã tồn tại"),
     INVALID_PASSWORD(1007,"Mật khẩu không đúng"),
     PASSWORD_NOT_MATCH(1008,"Mật khẩu xác nhận không khớp"),
-    PASSWORD_TOO_SHORT(1009,"Mật khẩu phải có ít nhất 8 ký tự");
+    PASSWORD_TOO_SHORT(1009,"Mật khẩu phải có ít nhất 8 ký tự"),
+    USER_ACCOUNT_INACTIVE(1010,"Tài khoản đang tạm khóa");
 
     ErrorCode(int code,String message){
         this.code = code;
