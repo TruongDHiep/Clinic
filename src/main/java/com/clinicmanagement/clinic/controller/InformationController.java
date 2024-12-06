@@ -1,40 +1,73 @@
 package com.clinicmanagement.clinic.controller;
 
-import com.clinicmanagement.clinic.Entities.Appointment;
-import com.clinicmanagement.clinic.Entities.Patient;
-import com.clinicmanagement.clinic.Entities.Services;
+import com.clinicmanagement.clinic.Entities.*;
+import com.clinicmanagement.clinic.exception.AppException;
+import com.clinicmanagement.clinic.exception.ErrorCode;
+import com.clinicmanagement.clinic.repository.UserRepository;
 import com.clinicmanagement.clinic.service.AppointmentService;
 import com.clinicmanagement.clinic.service.PatientService;
+import com.clinicmanagement.clinic.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-@RequestMapping("/information")
 @Controller
+@RequestMapping("/information")
 public class InformationController {
     @Autowired
     private AppointmentService _appointmentService;
 
     @Autowired
+    private UserRepository _userRepository;
+
+    @Autowired
     private PatientService _patientService;
 
+    @Autowired
+    private PaymentService _paymentService;
 
 
-    @GetMapping("/appointment")
-    public String GetAllAppointments(Model model) {
-        try {
-            List<Appointment> appointments = _appointmentService.getAllAppointments();
-            model.addAttribute("appointments", appointments);
-            return "information/appointment/index";
-        } catch (Exception e) {
-            e.printStackTrace();  // Log exception for debugging
-            model.addAttribute("errorMessage", "An error occurred while fetching appointments.");
-            return "error";
+
+    //========================================APPOINTMENT===========================================
+
+    @GetMapping("/appointment/{patientId}")
+    public String getAppointmentsByPatient(@PathVariable Integer patientId, Model model) {
+        var context = SecurityContextHolder.getContext();
+        String username = context.getAuthentication().getName();
+
+        // Tìm Useracount dựa trên username
+        Useracount user = _userRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        // Lấy danh sách các cuộc hẹn của bệnh nhân
+        List<Appointment> appointments = _appointmentService.getAppointmentsByPatient(user.getPatient());
+
+        // Tạo một danh sách để lưu dịch vụ cho từng cuộc hẹn
+        Map<Integer, List<appointment_service>> appointmentServicesMap = new HashMap<>();
+
+        // Lặp qua từng cuộc hẹn để lấy dịch vụ
+        for (Appointment appointment : appointments) {
+            List<appointment_service> services = _appointmentService.getServiceByAppointment(appointment);
+            appointmentServicesMap.put(appointment.getId(), services);
         }
+
+        // Thêm danh sách cuộc hẹn và dịch vụ vào model
+        model.addAttribute("appointments", appointments);
+        model.addAttribute("appointmentServicesMap", appointmentServicesMap);
+        model.addAttribute("user", user);
+
+        System.out.println("Patient ID: " + username);
+        return "information/appointment/index"; // Trả về view
     }
+
+
 
     @GetMapping("/search")
     public String searchAppointments(@RequestParam String keyword, Model model) {
@@ -43,6 +76,159 @@ public class InformationController {
         model.addAttribute("keyword", keyword);  // Thêm keyword vào model
         return "information/appointment/index";
     }
+
+
+    @PostMapping("/appointment/cancel")
+    public String cancelAppointment(@RequestParam("id") Integer appointmentId,
+                                    RedirectAttributes redirectAttributes) {
+
+        Appointment appointment = _appointmentService.findById(appointmentId);
+
+
+        try {
+            // Tìm appointment cần hủy
+
+            // Kiểm tra nếu appointment còn hiệu lực để hủy
+            if (appointment != null && appointment.getStatus() != "0") {
+                // Cập nhật trạng thái thành 0 (đã hủy)
+                appointment.setStatus("0");
+                _appointmentService.save(appointment);
+
+                // Thêm thông báo thành công
+                redirectAttributes.addFlashAttribute("successMessage", "Hủy lịch khám thành công");
+            } else {
+                // Thêm thông báo lỗi nếu không thể hủy
+                redirectAttributes.addFlashAttribute("errorMessage", "Không thể hủy lịch khám này");
+            }
+
+            // Quay lại trang danh sách với các thông tin đã lưu
+            return "redirect:/information/appointment/" + appointment.getPatient().getId();
+        } catch (Exception e) {
+            // Xử lý nếu có lỗi
+            redirectAttributes.addFlashAttribute("errorMessage", "Có lỗi xảy ra khi hủy lịch");
+            return "redirect:/information/appointment/" + appointment.getPatient().getId();
+        }
+    }
+
+
+
+    //========================================History===========================================
+
+    @GetMapping("/history/{patientId}")
+    public String GetPatients(@PathVariable Integer patientId, Model model) {
+        try {
+
+            var context = SecurityContextHolder.getContext();
+            String username = context.getAuthentication().getName();
+
+            Useracount user = _userRepository.findByUsername(username)
+                    .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+            List<payment> payments = _paymentService.getPaymentsByPatient(patientId);
+            model.addAttribute("payments", payments);
+            model.addAttribute("user", user);
+            return "information/history/index";
+        } catch (Exception e) {
+            e.printStackTrace();  // Log exception for debugging
+            model.addAttribute("errorMessage", "An error occurred while fetching patients.");
+            return "error";
+        }
+    }
+
+
+
+
+
+
+
+    //==================================User-Profile========================================
+    @GetMapping("/userProfile/{patientId}")
+
+    public String getUserProfileByPatient (@PathVariable Integer patientId, Model model) {
+        var context = SecurityContextHolder.getContext();
+        String username = context.getAuthentication().getName();
+
+        // Tìm Useracount dựa trên username
+        Useracount user = _userRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        Patient patient = user.getPatient();
+
+        if (patient == null) {
+            System.out.println("Patient ID: " + patientId);
+        }
+
+        // Kiểm tra xem patientId có khớp với patient từ user không
+        if (!patient.getId().equals(patientId)) {
+            System.out.println("Patient ID: " + patientId);
+        }
+
+        // Thêm thông tin bệnh nhân vào model
+        model.addAttribute("patient", patient);
+        model.addAttribute("user", user);
+        return "information/userProfile/index";
+    }
+
+    @GetMapping("/userProfile/detail/{patientId}")
+    public String showEditProfileForm(@PathVariable Integer patientId, Model model) {
+        // Lấy thông tin patient từ user hiện tại
+        var context = SecurityContextHolder.getContext();
+        String username = context.getAuthentication().getName();
+
+        Useracount user = _userRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        Patient patient = user.getPatient();
+
+        // Kiểm tra quyền truy cập
+        if (patient == null || !patient.getId().equals(patientId)) {
+            System.out.println("Patient ID: " + patientId);
+        }
+        System.out.println("DOB: " + patient.getDob());
+        // Thêm patient vào model để điền dữ liệu vào form
+        model.addAttribute("patient", patient);
+        model.addAttribute("user", user);
+
+        return "information/userProfile/detail"; // Trang chỉnh sửa
+    }
+
+    @PostMapping("/userProfile/update")
+    public String updateUserProfile(@ModelAttribute Patient patient,
+                                    RedirectAttributes redirectAttributes) {
+        try {
+            Patient existingPatient = _patientService.findById(patient.getId());
+
+            Patient patientWithEmail = _patientService.findByEmail(patient.getEmail());
+
+            if (patientWithEmail != null && !patientWithEmail.getId().equals(patient.getId())) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Email đã được sử dụng bởi người khác");
+                return "redirect:/information/userProfile/detail/" + patient.getId();
+            }
+
+            existingPatient.setFullName(patient.getFullName());
+            existingPatient.setPhone(patient.getPhone());
+            existingPatient.setEmail(patient.getEmail());
+            existingPatient.setDob(patient.getDob());
+            existingPatient.setAddress(patient.getAddress());
+
+            _patientService.createPatient(existingPatient);
+            redirectAttributes.addFlashAttribute("errorMessage", "Cập nhật hồ sơ thành công");
+
+            return "redirect:/information/userProfile/" + existingPatient.getId();
+
+        } catch (Exception e) {
+            // Xử lý lỗi
+            redirectAttributes.addFlashAttribute("errorMessage", "Có lỗi xảy ra khi cập nhật");
+            return "redirect:/information/userProfile/edit/" + patient.getId();
+        }
+    }
+
+
+
+
+
+
+
 
     //Viết add controller ở đây nha hiệp
     @PostMapping("/cancel")
@@ -55,20 +241,16 @@ public class InformationController {
         }
     }
 
-
-
-    //============================================================================================
-
-//    @GetMapping("/profile")
-//    public String GetAllAppointments(Model model) {
-//        try {
-//            List<Patient> patients = _patientService.getAllPatients();
-//            model.addAttribute("appointments", appointments);
-//            return "information/appointment/index";
-//        } catch (Exception e) {
-//            e.printStackTrace();  // Log exception for debugging
-//            model.addAttribute("errorMessage", "An error occurred while fetching appointments.");
-//            return "error";
-//        }
-//    }
+    /*@GetMapping("/profile")
+    public String GetPatients(Model model) {
+        try {
+            List<Patient> patients = _patientService.getAllPatients();
+            model.addAttribute("appointments", appointments);
+            return "information/appointment/index";
+        } catch (Exception e) {
+            e.printStackTrace();  // Log exception for debugging
+            model.addAttribute("errorMessage", "An error occurred while fetching appointments.");
+            return "error";
+        }
+    }*/
 }
