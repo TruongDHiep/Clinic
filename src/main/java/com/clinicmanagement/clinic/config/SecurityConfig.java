@@ -75,11 +75,6 @@ public class SecurityConfig {
                                     }
                                 })
                                 .failureUrl("/login?error=true")
-
-                                )
-                .exceptionHandling(exceptionHandling ->
-                exceptionHandling
-                        .accessDeniedPage("/access-denied")  // Redirect to access-denied page on access denied
         )
                 .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/"))
         ;
