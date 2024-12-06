@@ -220,7 +220,7 @@
                             <td th:text="${payment.id}">ID</td>
                             <td th:text="${payment.appointment.id}">Mã Lịch Khám</td>
                             <td th:text="${#temporals.format(payment.paymentDate, 'dd/MM/yyyy')}">Ngày</td>
-                            <td th:text="${#numbers.formatCurrency(payment.totalAmount)}">Số Tiền</td>
+                            <td th:text="${payment.totalAmount} + ' VNĐ'">Số Tiền</td>
                             <td th:text="${payment.paymentMethod}">Phương Thức</td>
                             <td th:text="${payment.status}">Trạng Thái</td>
                         </tr>
