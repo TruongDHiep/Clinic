@@ -1,5 +1,8 @@
 package com.clinicmanagement.clinic.dto.doctor;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -10,14 +13,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.FieldDefaults;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class DoctorCreateRequest {
+public class DoctorRequest {
+
+    private Integer id;
 
     @NotBlank(message = "Full name is required")
     private String fullName;
@@ -36,4 +40,6 @@ public class DoctorCreateRequest {
 
     @NotNull(message = "Specialization is required")
     private Integer specialization_id;
+
+    private boolean status;
 }

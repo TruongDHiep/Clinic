@@ -2,7 +2,7 @@ package com.clinicmanagement.clinic.controller.admin;
 
 import com.clinicmanagement.clinic.Entities.Doctor;
 import com.clinicmanagement.clinic.Entities.Specialization;
-import com.clinicmanagement.clinic.dto.doctor.DoctorCreateRequest;
+import com.clinicmanagement.clinic.dto.doctor.DoctorRequest;
 import com.clinicmanagement.clinic.mapper.DoctorMapper;
 import com.clinicmanagement.clinic.service.DoctorService;
 import com.clinicmanagement.clinic.service.SpecializationService;
@@ -13,8 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.Console;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin/doctors")
@@ -35,44 +35,71 @@ public class AdminDoctorController {
         return "admin/doctor/doctors";
     }
 
-//    @GetMapping("/admin/doctors/{id}")
-//    public String showDoctorById(@PathVariable("id") Integer id, Model model) {
-//        try {
-//            var doctor = doctorService.findById(id);
-//            model.addAttribute("doctors", doctor);
-//            return "admin/doctor/doctors";
-//        } catch (Exception e) {
-//            model.addAttribute("errorMessage", "Không tìm thấy bác sĩ với ID: " + id);
-//            return "admin/doctor/doctors";
-//        }
-//    }
-
     @GetMapping("/create")
     public String showCreateForm(Model model) {
-        model.addAttribute("doctor", new DoctorCreateRequest());
+        model.addAttribute("doctor", new DoctorRequest());
         model.addAttribute("specializations", specializationService.getAllSpecialization());
         return "admin/doctor/create"; // Trang form tạo bác sĩ
     }
 
     @PostMapping("/create")
-    public String createDoctor(@Valid @ModelAttribute("doctor") DoctorCreateRequest doctorCreateRequest,
+    public String createDoctor(@Valid @ModelAttribute("doctor") DoctorRequest doctorRequest,
                                BindingResult result,
                                Model model) {
+        List<Specialization> specializations = specializationService.getAllSpecialization();
         if (result.hasErrors()) {
-            List<Specialization> specializations = specializationService.getAllSpecialization();
             model.addAttribute("specializations", specializations);
             return "admin/doctor/create";
         }
         try {
-            if(doctorService.findByEmail(doctorCreateRequest.getEmail()) != null){
+            if(doctorService.findByEmail(doctorRequest.getEmail()) != null){
                 model.addAttribute("errorMessage", "Email đã tồn tại");
+                model.addAttribute("specializations", specializations);
                 return "admin/doctor/create";
             }
-            doctorService.saveDoctor(doctorMapper.toDoctor(doctorCreateRequest));
+            Doctor doctor = doctorMapper.toDoctor(doctorRequest);
+            doctor.setStatus(true);
+            doctorService.saveDoctor(doctor);
             return "redirect:/admin/doctors";
         } catch (Exception e) {
             model.addAttribute("errorMessage", "Không thể tạo bác sĩ");
             return "admin/doctor/create";
+        }
+    }
+
+    @GetMapping("/update/{id}")
+    public String showUpdateForm(@PathVariable Integer id,Model model) {
+        Optional<Doctor> doctor = doctorService.findById(id);
+        System.out.println(doctor.get());
+        model.addAttribute("doctor", doctorMapper.toDoctorRequest(doctor.get()));
+        model.addAttribute("specializations", specializationService.getAllSpecialization());
+        return "admin/doctor/update";
+    }
+
+    @PostMapping("/update")
+    public String updateDoctor(@Valid @ModelAttribute("doctor") DoctorRequest doctorRequest,
+                               BindingResult result,
+                               Model model) {
+
+        List<Specialization> specializations = specializationService.getAllSpecialization();
+
+        if (result.hasErrors()) {
+            model.addAttribute("specializations", specializations);
+            return "admin/doctor/update";
+        }
+
+        if (doctorService.findByEmailAndNotId(doctorRequest.getEmail(), doctorRequest.getId()).isPresent()) {
+            model.addAttribute("specializations", specializations);
+            result.rejectValue("email", "error.doctor", "Email đã tồn tại");
+            return "admin/doctor/update"; // Trả về trang form nếu có lỗi
+        }
+        try {
+            doctorService.saveDoctor(doctorMapper.toDoctor(doctorRequest));
+            return "redirect:/admin/doctors";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "Không thể cập nhật bác sĩ");
+            model.addAttribute("specializations", specializations);
+            return "admin/doctor/update";
         }
     }
 }

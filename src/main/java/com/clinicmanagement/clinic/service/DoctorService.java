@@ -2,9 +2,7 @@ package com.clinicmanagement.clinic.service;
 
 import com.clinicmanagement.clinic.Entities.Doctor;
 import com.clinicmanagement.clinic.repository.DoctorRepository;
-import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +22,14 @@ public class DoctorService {
         return doctorRepository.findAllByStatus(status);
     }
 
+    public Optional<Doctor> findByEmailAndNotId(String email, Integer id) {
+        return doctorRepository.findByEmailAndNotId(email, id);
+    }
+
+    public Optional<Doctor> findById(Integer id) {
+        return doctorRepository.findById(id);
+    }
+
     public Doctor findByEmail(String email) {
         return doctorRepository.findByEmail(email);
     }
@@ -32,13 +38,4 @@ public class DoctorService {
             return doctorRepository.save(doctor);
     }
 
-    public Doctor updateDoctor(Integer id, Doctor doctor) {
-        Optional<Doctor> existingDoctor = doctorRepository.findById(id);
-        if (existingDoctor.isPresent()) {
-            doctor.setId(id);
-            return doctorRepository.save(doctor);
-        } else {
-            throw new IllegalArgumentException("Doctor not found");
-        }
-    }
 }

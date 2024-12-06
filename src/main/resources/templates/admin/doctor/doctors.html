@@ -8,20 +8,21 @@
 </head>
 <body>
         <div layout:fragment="content">
-            <div class="box">
-                <div class="box-body">
-                    <h1 class="mb-4 text-center">Danh sách bác sĩ</h1>
-                    <!-- Butt   on thêm bác sĩ -->
-                    <div class="text-end">
-                        <a class="btn btn-primary" th:href="@{doctors/create}">Thêm bác sĩ mới</a>
-                    </div>
-                    <!-- Thông báo lỗi -->
-                    <div class="alert alert-danger" th:if="${errorMessage}">
-                        <p th:text="${errorMessage}"></p>
-                    </div>
+            <br>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">DANH SÁCH BÁC SĨ</h3>
+                </div>
+                <!-- Thông báo lỗi -->
+                <div class="alert alert-danger" th:if="${errorMessage}">
+                    <p th:text="${errorMessage}"></p>
+                </div>
+                <div class="text-end w-auto mx-4 mt-2">
+                    <a class="btn btn-primary float-right" th:href="@{doctors/create}">Thêm bác sĩ</a>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
 
-                    <!-- Bảng danh sách bác sĩ -->
-                    <p class="fw-bold">Danh sách bác sĩ</p>
                     <table class="table table-bordered">
                         <thead>
                         <tr>
@@ -46,7 +47,7 @@
                             <td th:text="${doctor.status ? 'Hoạt động' : 'Không hoạt động'}"></td> <!-- Cột status -->
                             <td>
                                 <!-- Biểu tượng chỉnh sửa -->
-                                <a class="btn btn-warning btn-sm" th:href="@{doctors/edit/{id}(id=${doctor.id})}">Chỉnh
+                                <a class="btn btn-warning btn-sm" th:href="@{doctors/update/{id}(id=${doctor.id})}">Chỉnh
                                     sửa</a>
                                 <!-- Biểu tượng xóa -->
                                 <a class="btn btn-danger btn-sm"
@@ -56,6 +57,16 @@
                         </tr>
                         </tbody>
                     </table>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer clearfix">
+                    <ul class="pagination pagination-sm m-0 float-right">
+                        <li class="page-item"><a class="page-link" href="#">«</a></li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">»</a></li>
+                    </ul>
                 </div>
             </div>
         </div>
