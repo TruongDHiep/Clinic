@@ -9,8 +9,87 @@
     <link rel="stylesheet" href="./../../static/css/schedule.css">
     <th:block th:replace="layout :: link-css"></th:block>
     <style>
-        body {
-            background-color: #f3f4f6;
+        @import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700,900&display=swap');
+
+        body{
+            padding: 100px 0;
+            background: #ecf0f4;
+            width: 100%;
+            height: 100%;
+            font-size: 18px;
+            line-height: 1.5;
+            font-family: 'Roboto', sans-serif;
+            color: #222;
+        }
+        .container{
+            position: relative;
+            max-width: 1230px;
+            width: 100%;
+        }
+
+        h1{
+            font-weight: 700;
+            font-size: 45px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        h4{
+            font-weight: 700;
+            font-size: 24px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        span {
+            font-size: 24px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .btn{
+            padding: .657rem .75rem;
+            font-size: 18px;
+            letter-spacing: 0.050em;
+            -webkit-transition: all 0.3s ease-in-out;
+            -moz-transition: all 0.3s ease-in-out;
+            -o-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn-primary {
+            color: #fff;
+            background-color: #00bcd9;
+            border-color: #00bcd9;
+        }
+
+        .btn-primary:hover {
+            color: #00bcd9;
+            background-color: #ffffff;
+            border-color: #00bcd9;
+            -webkit-box-shadow: 0px 0px 20px rgba(0, 0, 0, .1);
+            -moz-box-shadow: 0px 0px 20px rgba(0, 0, 0, .1);
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, .1);
+        }
+
+        .btn-primary:focus, .btn-primary.focus {
+            color: #00bcd9;
+            background-color: #ffffff;
+            border-color: #00bcd9;
+            -webkit-box-shadow: 0px 0px 20px rgba(0, 0, 0, .1);
+            -moz-box-shadow: 0px 0px 20px rgba(0, 0, 0, .1);
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, .1);
+        }
+
+        .btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active,
+        .show > .btn-primary.dropdown-toggle {
+            color: #00bcd9;
+            background-color: #ffffff;
+            border-color: #00bcd9;
+        }
+
+        .btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus,
+        .show > .btn-primary.dropdown-toggle:focus {
+            -webkit-box-shadow: 0px 0px 20px rgba(0, 0, 0, .1);
+            -moz-box-shadow: 0px 0px 20px rgba(0, 0, 0, .1);
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, .1);
         }
     </style>
 </head>
@@ -22,10 +101,10 @@
             <div class="bg-white shadow-sm rounded-2 ">
                 <ul class="nav flex-column pt-3 pb-3">
                     <li class="p-3">
-                        <a class="link-underline link-underline-opacity-0 text-dark w-100 item-active d-block w-100" th:href="@{/information/appointment}" >Lịch khám</a>
+                        <a class="link-underline link-underline-opacity-0 text-dark w-100 item-active d-block w-100" th:href="@{/information/appointment/{patientId}(patientId=${user.patient.id})}" >Lịch khám</a>
                     </li>
                     <li class="p-3">
-                        <a href="./../history/index.html" class="link-underline link-underline-opacity-0 text-dark d-block w-100">Lịch sử thanh toán</a>
+                        <a th:href="@{/information/history/{patientId}(patientId=${user.patient.id})}" class="link-underline link-underline-opacity-0 text-dark d-block w-100">Lịch sử thanh toán</a>
                     </li>
                     <li class="p-3">
                         <a href="#" class="link-underline link-underline-opacity-0 text-dark d-block w-100">Hồ sơ</a>
@@ -40,6 +119,9 @@
             </div>
         </div>
         <div class="col-span-9 col-md-9">
+            <div th:if="${errorMessage}" id="errorMessage" class="alert alert-success">
+                [[${errorMessage}]]
+            </div>
             <div class="d-flex items-center justify-content-between align-items-center">
                 <h1 class="text-xl">Hồ sơ</h1>
             </div>
@@ -52,59 +134,35 @@
                             </div>
                         </div>
                         <div>
-                            <h3>Đức Toàn</h3>
-                            <p>Mã bệnh nhân</p>
+                            <h3 th:text="${patient.fullName}">Đức Toàn</h3>
+                            <p th:text="${'Mã bệnh nhân: ' + patient.id}">Mã bệnh nhân</p>
                         </div>
                     </div>
-                    <div class="p-3">
+                    <div class="p-3" style="margin: 0 40px">
                         <h4>Thông tin cơ bản</h4>
                         <div class="d-flex justify-content-between mt-3 fs-5 ">
                             <span>Họ và tên</span>
-                            <span>Đức Toàn</span>
+                            <span th:text="${patient.fullName}">Name</span>
+                        </div>
+                        <div class="d-flex justify-content-between mt-3 fs-5 ">
+                            <span>Ngày sinh</span>
+                            <span th:text="${patient.dob}"></span>
+                        </div>
+                        <div class="d-flex justify-content-between mt-3 fs-5">
+                            <span>Địa chỉ</span>
+                            <span th:text="${patient.address}">Đức Toàn</span>
                         </div>
                         <div class="d-flex justify-content-between mt-3 fs-5">
                             <span>Số điện thoại</span>
-                            <span>Đức Toàn</span>
-                        </div>
-                        <div class="d-flex justify-content-between mt-3 fs-5">
-                            <span>Họ và tên</span>
-                            <span>Đức Toàn</span>
+                            <span th:text="${patient.phone ?: 'Chưa cập nhật'}">Đức Toàn</span>
                         </div>
                         <div class="d-flex justify-content-between mt-3 fs-5">
                             <span>Email</span>
-                            <span>Đức Toàn</span>
-                        </div>
-                        <div class="d-flex justify-content-between mt-3 fs-5">
-                            <span>Ngày sinh</span>
-                            <span>Đức Toàn</span>
-                        </div>
-
-                    </div>
-                    <div class="p-3 ">
-                        <h4>Thông tin bổ sung</h4>
-                        <div class="d-flex justify-content-between mt-3 fs-5 ">
-                            <span>Họ và tên</span>
-                            <span>Đức Toàn</span>
-                        </div>
-                        <div class="d-flex justify-content-between mt-3 fs-5">
-                            <span>Số điện thoại</span>
-                            <span>Đức Toàn</span>
-                        </div>
-                        <div class="d-flex justify-content-between mt-3 fs-5">
-                            <span>Họ và tên</span>
-                            <span>Đức Toàn</span>
-                        </div>
-                        <div class="d-flex justify-content-between mt-3 fs-5">
-                            <span>Họ và tên</span>
-                            <span>Đức Toàn</span>
-                        </div>
-                        <div class="d-flex justify-content-between mt-3 fs-5">
-                            <span>Họ và tên</span>
-                            <span>Đức Toàn</span>
+                            <span th:text="${patient.email ?: 'Chưa cập nhật'}">Đức Toàn</span>
                         </div>
                     </div>
-                    <div class="p-3 d-flex justify-content-end gap-6">
-                        <button type="button" class="btn btn-primary">Thay đổi thông tin</button>
+                    <div class="p-3 d-flex justify-content-end gap-6" style="margin: 0 40px">
+                        <a th:href="@{/information/userProfile/detail/{patientId}(patientId=${user.patient.id})}" type="button" class="btn btn-primary">Thay đổi thông tin</a>
                     </div>
                 </div>
             </div>
@@ -113,5 +171,26 @@
 </div>
 <th:block th:replace="layout :: footer"></th:block>
 <th:block th:replace="layout :: script"></th:block>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const errorMessageDiv = document.getElementById("errorMessage");
+        if (errorMessageDiv) {
+            // Thêm class "show" để kích hoạt hiệu ứng hiện
+            errorMessageDiv.classList.add("show");
+
+            // Sau 2 giây, thêm class "hide" để kích hoạt hiệu ứng ẩn
+            setTimeout(() => {
+                errorMessageDiv.classList.add("hide");
+                // Sau khi ẩn hoàn toàn, xóa nó khỏi DOM
+                setTimeout(() => {
+                    errorMessageDiv.style.display = "none";
+                }, 500); // Thời gian trùng với "transition" trong CSS
+            }, 2000);
+        }
+    });
+</script>
+
 </body>
+
 </html>
