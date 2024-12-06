@@ -50,7 +50,7 @@ public class BookingController {
         var context = SecurityContextHolder.getContext();
         String name = context.getAuthentication().getName();
         System.out.println("ten: "+name);
-        Useracount user = userRepo.findByUsername(name).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        Useraccount user = userRepo.findByUsername(name).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         System.out.println("username" +user.getPassword() + "-------iduser: " +user.getPatient());
 
 
@@ -103,7 +103,7 @@ public class BookingController {
             model.addAttribute("appointmentDetails", appointmentDetails);
         }
 
-        return "public/check-appointment";
+        return "home/check-appointment";
     }
 
 

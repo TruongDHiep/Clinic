@@ -38,8 +38,8 @@ public class SecurityConfig {
     private CustomUserDetailsService customUserDetailsService;
 
 //    private final String[] PUBLIC_ENDPOINT = {"/","/login","/js/**","/images/**","/css/**", "/fonts/**"};
-    private final String[] AUTHENICATE_ENDPOINT = {"/myInfo", "/booking"};
-    private final String[] PUBLIC_ENDPOINT = {"verifytoken","/resetPass","/forgotpassword","/","/login","/js/**","/images/**","/css/**", "/fonts/**","/register"};
+//    private final String[] AUTHENICATE_ENDPOINT = {"/myInfo", "/booking"};
+    private final String[] PUBLIC_ENDPOINT = {"verifytoken","/resetPass","/forgotpassword","/","/login","/js/**","/images/**","/css/**", "/fonts/**","/register", "/check-appointment", "/about"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {

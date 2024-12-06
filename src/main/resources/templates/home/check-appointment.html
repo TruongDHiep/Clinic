@@ -12,11 +12,13 @@
 <th:block th:replace="layout :: header"></th:block>
 
 <div class="container text-center">
-    <h1 class="mt-5">Kiểm tra Lịch Hẹn</h1>
+    <div class="bg-white p-4" style="margin-top: 30px; border-radius: 20px">
+    <h1 class="">Kiểm tra Lịch Hẹn</h1>
     <form method="post" action="/check-appointment" class="mt-4">
         <input type="text" name="appointmentCode" class="form-control text-center" placeholder="Nhập mã lịch hẹn" required>
         <button type="submit" class="btn btn-primary mt-3">Tìm kiếm</button>
     </form>
+    </div>
 
     <!-- Thông báo lỗi -->
     <div class="alert alert-danger mt-4" th:if="${errorMessage}">
@@ -24,7 +26,7 @@
     </div>
 
     <!-- Hiển thị thông tin lịch hẹn -->
-    <div class="mt-4" th:if="${appointmentDetails}">
+    <div class="bg-white p-3 mt-4" th:if="${appointmentDetails}" style="border-radius: 20px">
         <h2>Thông tin Lịch Hẹn</h2>
         <table class="table table-bordered mt-3">
             <tbody>
