@@ -1,7 +1,6 @@
 package com.clinicmanagement.clinic.service;
 
 import com.clinicmanagement.clinic.Entities.Doctor;
-import com.clinicmanagement.clinic.exception.DuplicateEmailException;
 import com.clinicmanagement.clinic.repository.DoctorRepository;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,20 +24,12 @@ public class DoctorService {
         return doctorRepository.findAllByStatus(status);
     }
 
-    public Doctor findById(Integer doctorID) {
-        return doctorRepository.findById(doctorID)
-                .orElseThrow(() -> new RuntimeException("Doctor not found"));
+    public Doctor findByEmail(String email) {
+        return doctorRepository.findByEmail(email);
     }
 
-    public Doctor saveDoctor(Doctor doctor) throws DuplicateEmailException {
-        try {
+    public Doctor saveDoctor(Doctor doctor) {
             return doctorRepository.save(doctor);
-        } catch (DataIntegrityViolationException ex) {
-            if (ex.getCause() instanceof ConstraintViolationException) {
-                throw new DuplicateEmailException("Email already exists: " + doctor.getEmail());
-            }
-            throw ex; // Ném lại nếu là lỗi khác
-        }
     }
 
     public Doctor updateDoctor(Integer id, Doctor doctor) {

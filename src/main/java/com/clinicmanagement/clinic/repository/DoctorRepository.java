@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
     List<Doctor> findAllByStatus(Boolean status);
+    Doctor findByEmail(String email);
 }
 

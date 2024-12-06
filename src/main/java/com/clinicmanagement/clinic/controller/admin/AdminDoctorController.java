@@ -34,7 +34,7 @@ public class AdminDoctorController {
         model.addAttribute("doctors", doctors);
         return "admin/doctor/doctors";
     }
-//
+
 //    @GetMapping("/admin/doctors/{id}")
 //    public String showDoctorById(@PathVariable("id") Integer id, Model model) {
 //        try {
@@ -63,7 +63,16 @@ public class AdminDoctorController {
             model.addAttribute("specializations", specializations);
             return "admin/doctor/create";
         }
-        doctorService.saveDoctor(doctorMapper.toDoctor(doctorCreateRequest));
-        return "redirect:/admin/doctors";
+        try {
+            if(doctorService.findByEmail(doctorCreateRequest.getEmail()) != null){
+                model.addAttribute("errorMessage", "Email đã tồn tại");
+                return "admin/doctor/create";
+            }
+            doctorService.saveDoctor(doctorMapper.toDoctor(doctorCreateRequest));
+            return "redirect:/admin/doctors";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "Không thể tạo bác sĩ");
+            return "admin/doctor/create";
+        }
     }
 }
