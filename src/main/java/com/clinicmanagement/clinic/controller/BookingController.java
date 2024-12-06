@@ -64,9 +64,6 @@ public class BookingController {
 
         model.addAttribute("timeSlots", Time.values());
 
-
-
-
         return "booking/bookingSite";}
 
     catch (Exception e) {

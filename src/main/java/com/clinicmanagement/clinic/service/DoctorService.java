@@ -35,18 +35,21 @@ public class DoctorService {
     private AppointmentRepository appointmentRepository;
 
     public Optional<Doctor> findFirstAvailableDoctor(LocalDate date, LocalTime startTime, LocalTime endTime) {
-        // Lấy danh sách tất cả các bác sĩ
-        List<Doctor> allDoctors = doctorRepository.findAll();
+        // Lấy danh sách tất cả bác sĩ đang hoạt động (status = true)
+        List<Doctor> allDoctors = doctorRepository.findAllByStatus(true);
 
+        // Duyệt qua từng bác sĩ và kiểm tra lịch trống
         for (Doctor doctor : allDoctors) {
-            // Lấy danh sách các cuộc hẹn của bác sĩ trong ngày cụ thể
-            List<Appointment> appointments = appointmentRepository.findByDoctorAndAppointmentDate(doctor, date);
+            // Lấy danh sách các cuộc hẹn của bác sĩ vào ngày yêu cầu
+            List<Appointment> doctorAppointments = appointmentRepository.findByDoctorAndAppointmentDate(doctor, date);
 
-            // Kiểm tra xem bác sĩ có trống trong khoảng thời gian không
-            boolean isAvailable = appointments.stream()
+            // Kiểm tra xem bác sĩ có lịch hẹn nào xung đột không
+            boolean isAvailable = doctorAppointments.stream()
                     .noneMatch(appointment ->
-                            (startTime.isBefore(appointment.getAppointmentTime().plusHours(1)) &&
-                                    endTime.isAfter(appointment.getAppointmentTime()))
+                            !(
+                                    appointment.getAppointmentTime().isAfter(endTime) || // Sau giờ kết thúc
+                                            appointment.getAppointmentTime().plusHours(1).isBefore(startTime) // Trước giờ bắt đầu
+                            )
                     );
 
             if (isAvailable) {
@@ -54,7 +57,8 @@ public class DoctorService {
             }
         }
 
-        return Optional.empty(); // Không tìm thấy bác sĩ phù hợp
+        // Không tìm thấy bác sĩ nào
+        return Optional.empty();
     }
 
     public void createDoctor(Doctor doctor) {

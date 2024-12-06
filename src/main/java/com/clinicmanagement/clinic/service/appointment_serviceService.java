@@ -6,6 +6,8 @@ import com.clinicmanagement.clinic.repository.appointment_serviceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class appointment_serviceService {
     @Autowired
@@ -23,5 +25,9 @@ public class appointment_serviceService {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public void saveAll(List<appointment_service> appointment_services) {
+        _appointment_serviceRepository.saveAll(appointment_services);
     }
 }

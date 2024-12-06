@@ -75,10 +75,11 @@
 <!--                    </div>-->
 
                     <div class="options mt-2">
-                        <div th:each="slot : ${timeSlots}" class="btn-option option ml-2 my-2"
+                        <div th:each="slot : ${timeSlots}"
+                             class="btn-option option ml-2 my-2"
                              data-step="3"
-                             th:data-choice="${slot}"
-                             th:text="${slot.slot}">
+                             th:data-choice="${slot.displayTime}"
+                             th:text="${slot.displayTime}">
                         </div>
                     </div>
                 </div>

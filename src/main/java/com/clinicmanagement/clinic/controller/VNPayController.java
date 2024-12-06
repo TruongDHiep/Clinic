@@ -72,8 +72,6 @@ public class VNPayController {
     public String GetMapping(HttpServletRequest request, Model model) {
         int paymentStatus = vnPayService.orderReturn(request);
 
-//        System.out.println("day la request: "+request);
-
         String orderInfo = request.getParameter("vnp_OrderInfo");
         String paymentTime = request.getParameter("vnp_PayDate");
         String transactionId = request.getParameter("vnp_TransactionNo");
@@ -84,14 +82,12 @@ public class VNPayController {
         model.addAttribute("paymentTime", paymentTime);
         model.addAttribute("transactionId", transactionId);
 
-        System.out.println("orderId: " + orderInfo);
-
         if (paymentStatus == 1) {
             try {
                 handlePaymentSuccess(orderInfo, totalPrice); // Xử lý thanh toán thành công
-            } catch (Exception e) {
+            } catch (RuntimeException e) {
                 e.printStackTrace();
-                return "booking/orderfail";
+                return "booking/orderfail"; // Chuyển tới trang lỗi nếu có exception
             }
         }
 
@@ -109,16 +105,19 @@ public class VNPayController {
         LocalTime endTime = LocalTime.parse(parts[5].replace("h", ":"));
 
         Integer patientId = Integer.parseInt(parts[6]);
-        String phoneNumber = parts[7];
+
+        // Tìm bác sĩ
+        Doctor availableDoctor = _doctorService.findFirstAvailableDoctor(appointmentDate, startTime, endTime)
+                .orElseThrow(() -> new RuntimeException("No available doctor found"));
 
         // Tạo Appointment
         Appointment appointment = new Appointment();
         appointment.setPatient(_patientService.findById(patientId));
-        appointment.setDoctor(findAvailableDoctor(appointmentDate, startTime, endTime)); // Logic tìm bác sĩ
+        appointment.setDoctor(availableDoctor);
         appointment.setAppointmentDate(appointmentDate);
         appointment.setAppointmentTime(startTime);
         appointment.setStatus("CONFIRMED");
-        Appointment savedAppointment = _appointmentService.addAppointment(appointment);
+        Appointment savedAppointment = _appointmentService.save(appointment);
 
         // Tạo AppointmentService
         List<appointment_service> appointmentServices = serviceIdList.stream()
@@ -131,7 +130,7 @@ public class VNPayController {
                     return appointmentService;
                 })
                 .collect(Collectors.toList());
-//        appointment_serviceService.add(appointmentServices);
+        appointment_serviceService.saveAll(appointmentServices);
 
         // Tạo Payment
         payment payment = new payment();
@@ -140,11 +139,11 @@ public class VNPayController {
         payment.setTotalAmount(Double.parseDouble(totalPrice) / 100); // Chuyển từ đơn vị VNĐ nhỏ
         payment.setPaymentMethod("VNPay");
         payment.setStatus("SUCCESS");
-        _paymentService.createPayment(payment);
+        _paymentService.save(payment);
     }
 
+
     private Doctor findAvailableDoctor(LocalDate date, LocalTime startTime, LocalTime endTime) {
-        // Logic để tìm bác sĩ có lịch trống
         return _doctorService.findFirstAvailableDoctor(date, startTime, endTime)
                 .orElseThrow(() -> new RuntimeException("No available doctor found"));
     }
