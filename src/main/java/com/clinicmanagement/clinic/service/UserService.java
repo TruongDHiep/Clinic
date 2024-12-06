@@ -2,6 +2,7 @@ package com.clinicmanagement.clinic.service;
 
 import com.clinicmanagement.clinic.Entities.Role;
 import com.clinicmanagement.clinic.Entities.Useracount;
+import com.clinicmanagement.clinic.dto.ChangePasswordDTO;
 import com.clinicmanagement.clinic.dto.user.UserReponse;
 import com.clinicmanagement.clinic.dto.user.UserRequest;
 import com.clinicmanagement.clinic.exception.AppException;
@@ -12,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -75,5 +77,46 @@ public class UserService{
         Optional<Useracount> optionalUser = userRepo.findByUsername(username);
         return optionalUser.orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
     }
+
+
+    //================================TOANLD===============================
+    public void changePassword(ChangePasswordDTO changePasswordDTO) {
+        var context = SecurityContextHolder.getContext();
+        String username = context.getAuthentication().getName();
+
+        Useracount user = userRepo.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        System.out.println("Current Password from DTO: " + changePasswordDTO.getCurrentPassword());
+        System.out.println("Current Password: " + user.getPassword());
+
+        //Kiểm tra mật khẩu hiện tại
+        if (!passwordEncoder.matches(changePasswordDTO.getCurrentPassword(), user.getPassword())) {
+            throw new AppException(ErrorCode.INVALID_PASSWORD);
+        }
+
+        // Kiểm tra mật khẩu mới và xác nhận mật khẩu
+        if (!changePasswordDTO.getNewPassword().equals(changePasswordDTO.getConfirmNewPassword())) {
+            System.out.println("New Password: " + changePasswordDTO.getNewPassword());
+        }
+
+        // Kiểm tra độ dài mật khẩu
+        if (changePasswordDTO.getNewPassword().length() < 8) {
+            System.out.println("Mat khau co do dai nho hon 8 ky tu");
+        }
+
+
+        String encodedPassword = passwordEncoder.encode(changePasswordDTO.getNewPassword());
+
+        user.setPassword(encodedPassword);
+        userRepo.save(user);
+
+    }
+
+
+
+
+
+
 
 }
