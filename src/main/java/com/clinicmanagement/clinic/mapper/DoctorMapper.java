@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface DoctorMapper {
 
-    @Mapping(target = "specialization", expression = "java(mapSpecialization(doctorCreateRequest.getSpecialization_id()))")
+    @Mapping(target = "specialization_id", expression = "java(mapSpecialization(doctorCreateRequest.getSpecialization_id()))")
     Doctor toDoctor(DoctorCreateRequest doctorCreateRequest);
 
     default Specialization mapSpecialization(Integer specializationId) {

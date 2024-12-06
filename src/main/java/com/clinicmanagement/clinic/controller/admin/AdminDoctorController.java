@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.Console;
 import java.util.List;
 
 @Controller
@@ -51,7 +50,7 @@ public class AdminDoctorController {
     public String showCreateForm(Model model) {
         model.addAttribute("doctor", new DoctorCreateRequest());
         model.addAttribute("specializations", specializationService.getAllSpecialization());
-        return "admin/doctor/create"; // Trang form tạo bác sĩ
+        return "admin/doctor/create";
     }
 
     @PostMapping("/create")
@@ -67,3 +66,4 @@ public class AdminDoctorController {
         return "redirect:/admin/doctors";
     }
 }
+

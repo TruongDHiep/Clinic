@@ -18,7 +18,7 @@ function showDetails(element) {
     services.forEach(service => {
         serviceNames.push(service.textContent);  // Lấy tên dịch vụ
     });
-    const serviceName = serviceNames.join(', ');  // Nối các dịch vụ bằng dấu phẩy
+    const serviceName = serviceNames.join(', ');
 
     // Điền dữ liệu vào form chi tiết
     document.getElementById('detailId').value = appointmentId;

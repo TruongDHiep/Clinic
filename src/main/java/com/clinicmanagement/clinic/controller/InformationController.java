@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 @Controller
 @RequestMapping("/information")
 public class InformationController {
@@ -47,7 +48,7 @@ public class InformationController {
         String username = context.getAuthentication().getName();
 
         // Tìm Useracount dựa trên username
-        Useracount user = _userRepository.findByUsername(username)
+        Useraccount user = _userRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         // Lấy danh sách các cuộc hẹn của bệnh nhân
@@ -125,7 +126,7 @@ public class InformationController {
             var context = SecurityContextHolder.getContext();
             String username = context.getAuthentication().getName();
 
-            Useracount user = _userRepository.findByUsername(username)
+            Useraccount user = _userRepository.findByUsername(username)
                     .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
             List<payment> payments = _paymentService.getPaymentsByPatient(patientId);
@@ -140,20 +141,13 @@ public class InformationController {
     }
 
 
-
-
-
-
-
-    //==================================User-Profile========================================
     @GetMapping("/userProfile/{patientId}")
-
     public String getUserProfileByPatient (@PathVariable Integer patientId, Model model) {
         var context = SecurityContextHolder.getContext();
         String username = context.getAuthentication().getName();
 
         // Tìm Useracount dựa trên username
-        Useracount user = _userRepository.findByUsername(username)
+        Useraccount user = _userRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         Patient patient = user.getPatient();
@@ -179,7 +173,7 @@ public class InformationController {
         var context = SecurityContextHolder.getContext();
         String username = context.getAuthentication().getName();
 
-        Useracount user = _userRepository.findByUsername(username)
+        Useraccount user = _userRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         Patient patient = user.getPatient();
@@ -227,15 +221,13 @@ public class InformationController {
         }
     }
 
-    //========================================ACCOUNT===========================================
-
     @GetMapping("/account/{patientId}")
     public String getUserAccount (@PathVariable Integer patientId, Model model) {
         var context = SecurityContextHolder.getContext();
         String username = context.getAuthentication().getName();
 
         // Tìm Useracount dựa trên username
-        Useracount user = _userRepository.findByUsername(username)
+        Useraccount user = _userRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         Patient patient = user.getPatient();

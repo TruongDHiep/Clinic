@@ -2,8 +2,7 @@ package com.clinicmanagement.clinic.config;
 
 import com.clinicmanagement.clinic.Entities.Role;
 import com.clinicmanagement.clinic.Entities.UserRole;
-import com.clinicmanagement.clinic.Entities.Useracount;
-import com.clinicmanagement.clinic.enums.Roles;
+import com.clinicmanagement.clinic.Entities.Useraccount;
 import com.clinicmanagement.clinic.repository.RoleRepository;
 import com.clinicmanagement.clinic.repository.UserRepository;
 import com.clinicmanagement.clinic.repository.UserRoleRepository;
@@ -15,16 +14,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
 
 @Configuration
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 @Slf4j
+@EnableAsync
 public class ApplicationConfig {
 
     @Autowired
@@ -38,9 +37,29 @@ public class ApplicationConfig {
     @Bean
     ApplicationRunner applicationRunner(UserRepository userRepository){
         return args -> {
+            if (roleRepository.findByRoleName("ADMIN") == null) {
+                roleRepository.save(Role.builder()
+                        .roleName("ADMIN")
+                        .build());
+                log.info("Role ADMIN has been added to the database.");
+            }
+            if (roleRepository.findByRoleName("USER") == null) {
+                roleRepository.save(Role.builder()
+
+                        .roleName("USER")
+                        .build());
+                log.info("Role USER has been added to the database.");
+            }
+            if (roleRepository.findByRoleName("DOCTOR") == null) {
+                roleRepository.save(Role.builder()
+                        .roleName("DOCTOR")
+                        .build());
+                log.info("Role DOCTOR has been added to the database.");
+            }
+
             if(userRepository.findByUsername("admin").isEmpty()){
                 Role adminRole = roleRepository.findByRoleName("ADMIN");
-                Useracount user = Useracount.builder()
+                Useraccount user = Useraccount.builder()
                         .username("admin")
                         .password(passwordEncoder.encode("admin1234"))
                         .status(true)

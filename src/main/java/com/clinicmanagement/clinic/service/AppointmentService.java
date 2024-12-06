@@ -2,12 +2,8 @@ package com.clinicmanagement.clinic.service;
 
 import com.clinicmanagement.clinic.Entities.Appointment;
 import com.clinicmanagement.clinic.Entities.Patient;
-import com.clinicmanagement.clinic.Entities.Useracount;
 import com.clinicmanagement.clinic.Entities.appointment_service;
 import com.clinicmanagement.clinic.repository.AppointmentRepository;
-import com.clinicmanagement.clinic.repository.DoctorRepository;
-import com.clinicmanagement.clinic.repository.PatientRepository;
-import com.clinicmanagement.clinic.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

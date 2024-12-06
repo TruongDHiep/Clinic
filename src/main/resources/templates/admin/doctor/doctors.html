@@ -10,6 +10,7 @@
         <div layout:fragment="content">
             <div class="box">
                 <div class="box-body">
+                    <h1>Danh sách bệnh nhân</h1>
                     <h1 class="mb-4 text-center">Danh sách bác sĩ</h1>
                     <!-- Butt   on thêm bác sĩ -->
                     <div class="text-end">
@@ -56,6 +57,11 @@
                         </tr>
                         </tbody>
                     </table>
+
+                    <!-- Button thêm bác sĩ -->
+                    <div class="text-end">
+                        <a th:href="@{doctors/newDoctor}" class="btn btn-primary">Thêm bác sĩ mới</a>
+                    </div>
                 </div>
             </div>
         </div>
