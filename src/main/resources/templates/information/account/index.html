@@ -174,10 +174,10 @@
                         <a th:href="@{/information/userProfile/{patientId}(patientId=${user.patient.id})}" class="link-underline link-underline-opacity-0 text-dark d-block w-100">Hồ sơ</a>
                     </li>
                     <li class="p-3" >
-                        <a href="../account/index.html" class="link-underline link-underline-opacity-0 text-dark d-block w-100">Tài khoản</a>
+                        <a th:href="@{/information/account/{patientId}(patientId=${user.patient.id})}" class="link-underline link-underline-opacity-0 text-dark d-block w-100">Tài khoản</a>
                     </li>
                     <li class="p-3">
-                        <a href="" class="link-underline link-underline-opacity-0 text-dark d-block w-100">Đăng xuất</a>
+                        <a href="/logout" class="link-underline link-underline-opacity-0 text-dark d-block w-100">Đăng xuất</a>
                     </li>
                 </ul>
             </div>
@@ -187,7 +187,7 @@
                 <h1 class="text-xl">Tài khoản</h1>
             </div>
             <div class="d-flex items-center flex-row">
-                <div class="bg-white d-flex flex-row shadow-sm rounded-2 col">
+                <!--<div class="bg-white d-flex flex-row shadow-sm rounded-2 col">
                     <div class="p-3 w-100">
                         <h4>Thông tin tài khoản</h4>
                         <div class="d-flex justify-content-between mt-3">
@@ -218,7 +218,7 @@
                             <a href="" class="text-primary">Thay đổi thông tin</a>
                         </div>
                     </div>
-                </div>
+                </div>-->
                 <div class="bg-white d-flex flex-row shadow-sm rounded-2 col">
                     <div class="p-3 w-100">
 
