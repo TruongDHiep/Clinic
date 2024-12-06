@@ -29,6 +29,11 @@ public class HomeController {
         return "login/login";
     }
 
+    @GetMapping("/about")
+    public String about() {
+        return "/home/about";
+    }
+
     @GetMapping("/register")
     public String signup(){
         return "login/register";

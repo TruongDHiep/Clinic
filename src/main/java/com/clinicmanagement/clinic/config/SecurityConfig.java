@@ -31,14 +31,14 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    private final String[] PUBLIC_ENDPOINT = {"/api/users/register","/login","/","/patients","/auth/login",
-            "/booking/**", "/vnpay/**", "/payment/**", "/js/**","/images/**","/css/**", "/fonts/**"};
+    private final String[] PUBLIC_ENDPOINT = {"/api/users/register","/login","/","/patients","/auth/login"
+            , "/vnpay/**", "/payment/**", "/js/**","/images/**","/css/**", "/fonts/**", "/about", "/check-appointment"};
     private final Environment environment;
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
 //    private final String[] PUBLIC_ENDPOINT = {"/","/login","/js/**","/images/**","/css/**", "/fonts/**"};
-    private final String[] AUTHENICATE_ENDPOINT = {"/myInfo"};
+    private final String[] AUTHENICATE_ENDPOINT = {"/myInfo", "/booking"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {

@@ -21,7 +21,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -71,6 +73,37 @@ public class BookingController {
         model.addAttribute("errorMessage", "An error occurred while fetching booking.");
         return "error";
     }
+    }
+
+
+    @GetMapping("/check-appointment")
+    public String checkAppointmentPage() {
+        return "home/check-appointment";
+    }
+
+    @PostMapping("/check-appointment")
+    public String checkAppointment(@RequestParam String appointmentCode, Model model) {
+        // Tìm kiếm lịch hẹn theo mã
+        Appointment appointment = _appointmentService.findById(Integer.parseInt(appointmentCode));
+
+        // Nếu không tìm thấy
+        if (appointment == null) {
+            model.addAttribute("errorMessage", "Không tìm thấy lịch hẹn với mã: " + appointmentCode);
+        } else {
+            // Chuẩn bị thông tin hiển thị
+            Map<String, Object> appointmentDetails = new HashMap<>();
+            appointmentDetails.put("id", appointment.getId());
+            appointmentDetails.put("appointmentDate", appointment.getAppointmentDate());
+            appointmentDetails.put("appointmentTime", appointment.getAppointmentTime());
+            appointmentDetails.put("patientName", appointment.getPatient().getFullName());
+            appointmentDetails.put("doctorName", appointment.getDoctor().getFullName());
+            appointmentDetails.put("services", appointment.getAppointmentServices().stream()
+                    .map(apptService -> apptService.getServices().getServiceName()).toList());
+            appointmentDetails.put("status", appointment.getStatus());
+            model.addAttribute("appointmentDetails", appointmentDetails);
+        }
+
+        return "public/check-appointment";
     }
 
 

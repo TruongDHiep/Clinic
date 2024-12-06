@@ -46,3 +46,13 @@
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 
 }
+
+.option.selected {
+    background-color: #007BFF;
+    color: white;
+    border-color: #0056b3;
+}
+.option {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}

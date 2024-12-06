@@ -47,9 +47,6 @@ public class AppointmentService {
 
 
 
-
-
-
     @Transactional
     public List<Appointment> getAllAppointments() {
         List<Appointment> appointments = _appointmentRepository.findAll();

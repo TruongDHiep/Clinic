@@ -143,21 +143,15 @@
 
                         <div class="description border-gray-300 card rounded-lg mt-2">
                             <div class="card-body d-flex justify-content-between flex-column p-2">
+                                <label for="floatingTextarea2" class="font-weight-600 pb-1" style="display: block; width: fit-content; height: 10px">Ghi chú (Không bắt buộc)</label>
                                 <div class="form-floating">
-                                    <label for="floatingTextarea2" class="font-weight-600">Ghi chú (Không bắt buộc)</label>
-                                    <textarea class="form-control mt-1" placeholder="Triệu chứng, Thuốc đang dùng, tiền sử,..." id="floatingTextarea2" style="max-height: 200px"></textarea>
+                                    <textarea class="form-control mt-1 p-1" placeholder="Triệu chứng, Thuốc đang dùng, tiền sử,..." id="floatingTextarea2" style="max-height: 150px"></textarea>
                                 </div>
                             </div>
                         </div>
                         <button class="btn-option option mt-2" data-step="4" th:data-choice="${user.id}">Tiếp tục</button>
                     </div>
 
-<!--                    <div class="options mt-2">-->
-<!--                        <div th:each="patient : ${patients}" class="btn-option option" th:data-choice="${patient.id}">-->
-<!--                            <span th:text="${patient.getFullName()}">Tên bệnh nhân</span>-->
-<!--                            <span th:text="${patient.getDob()}">Ngày sinh</span>-->
-<!--                        </div>-->
-<!--                    </div>-->
                 </div>
                 <div class="step mb-4" id="step-5" style="display: none;">
                     <div>
@@ -171,10 +165,10 @@
                     <div class="border bg-secondary w-100 mt-2"></div>
                     <div class="options mt-2">
                         <button class="btn-option option mt-2 w-100 d-flex align-items-center px-3" data-step="5" data-choice="VNPay">
-                            <img th:src="@{/image/vnPay.svg}" alt="VN Pay Logo" style="width: 15%; margin-right: 12px;">
+                            <img th:src="@{/images/vnPay.svg}" alt="VN Pay Logo" style="width: 15%; margin-right: 12px;">
                             <div class="vnpay-container text-left">
                                 <span class="font-weight-600">VN Pay</span>
-                                <p class="mt-1 mb-0 text-muted" style="font-size: 0.9em;">Hỗ trợ thanh toán ngân hàng</p>
+                                <p class="mt-1 mb-0" style="font-size: 0.9em; color: white">Hỗ trợ thanh toán ngân hàng</p>
                             </div>
                         </button>
                     </div>
@@ -195,15 +189,11 @@
                 <p class="d-flex justify-content-between">Bệnh nhân<span id="choice-4" class="font-weight-600" style="display: none;" data-value="">Chưa chọn</span></p>
             </div>
 
-            <div class="border bg-secondary w-100 mt-2"></div>
-            <div class="d-flex justify-content-between">
-                    <span>Thanh toán bằng MOMO</span>
-                    <span>Method Icon</span>
-            </div>
+
             <div class="border bg-secondary w-100 mt-2"></div>
             <div class="mt-2 d-flex justify-content-between">
                 <span> Phí khám</span>
-                <span id="amountt" data-value=""> Giá tiền</span>
+                <span id="amountt" data-value="" class="font-weight-600"> Giá tiền</span>
             </div>
                 <input type="hidden" name="orderInfo" id="orderInfo" >
                 <input type="hidden" name="amount" id="amount" >
@@ -227,9 +217,7 @@
             const serviceName = $(this).data("choice");
             const price = parseInt($(this).find("span:nth-child(2)").text()?.replace("đ", "").replace(",", "").trim() || 0, 10);
 
-            // Xử lý chỉ cho bước 1 được thêm vào selectedServices
             if (step === 1) {
-                // Xử lý logic chọn dịch vụ
                 const serviceId = $(this).data("id");
                 if (!$(this).hasClass("selected")) {
                     if (selectedServices.length < maxServices) {
@@ -241,30 +229,31 @@
                     }
                 } else {
                     $(this).removeClass("selected");
-                    selectedServices = selectedServices.filter((service) => service.serviceName !== serviceName);
+                    selectedServices = selectedServices.filter((id) => id !== serviceId);
                 }
 
-                // Cập nhật hiển thị giá tiền và danh sách dịch vụ
                 let totalPrice = selectedServices.reduce((sum, service) => sum + price, 0);
                 $("#amountt")
-                    .text(`${totalPrice.toLocaleString()}đ`) // Hiển thị giá tiền định dạng
-                    .data("value", totalPrice);             // Lưu giá trị thực (số nguyên) trong data-value
+                    .text(`${totalPrice.toLocaleString()}đ`)
+                    .data("value", totalPrice);
 
-                // Hiển thị lựa chọn trong bước 1
                 if (selectedServices.length > 0) {
                     $(`#choice-${step}`).text(
                         selectedServices.map((service) => service.serviceName).join(", ")
                     ).data("value", selectedServices).show();
-                    $(`#step-${step + 1}`).show(); // Hiển thị bước tiếp theo
+                    $(`#step-${step + 1}`).show();
                 } else {
                     $(`#choice-${step}`).text("Chưa chọn").data("value", null).hide();
-                    $(`#step-${step + 1}`).hide(); // Ẩn bước tiếp theo
+                    $(`#step-${step + 1}`).hide();
                 }
-            } else {
-                // Các bước khác chỉ cập nhật thông tin mà không ảnh hưởng đến selectedServices
+            } else if (step !== 1) {
+                $(`[data-step=${step}]`).removeClass("selected");
+                $(this).addClass("selected");
                 $(`#choice-${step}`).text(serviceName).data("value", serviceName).show();
                 $(`#step-${step + 1}`).show();
             }
+
+            updateSubmitButtonState(); // Cập nhật màu sắc của nút
         });
 
         // Flatpickr cho ngày
@@ -315,6 +304,17 @@
             // Gửi form
             $("#booking-form").submit();
         });
+
+        // function updateSubmitButtonState() {
+        //     const step2Value = $("#choice-2").data("value");
+        //     const step3Value = $("#choice-3").data("value");
+        //
+        //     if (step2Value && step3Value) {
+        //         $("#btn-submit").css("background-color", "#28a745").css("color", "#fff");
+        //     } else {
+        //         $("#btn-submit").css("background-color", "#ccc").css("color", "#000");
+        //     }
+        // }
     });
 </script>
 

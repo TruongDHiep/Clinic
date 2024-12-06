@@ -16,6 +16,7 @@
                 height: 100%;
                 width: 100%;
                 background-color: #f3f4f6;
+                color: black;
             }
 
             .container {
@@ -36,97 +37,77 @@
 </head>
 <body>
 <!-- Header -->
-<header th:fragment="header">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a class="navbar-brand ms-4" href="/">Minie Shop</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse container-fluid" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/">Trang Chủ</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/products">Sản Phẩm</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/promotions">Khuyến Mãi</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/orders">Đơn Hàng</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/home/aboutShop">Cửa Hàng</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/home/about">Về Chúng Tôi</a>
-                </li>
-                <li>
-                    <form class="d-flex ms-4" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Tìm kiếm sản phẩm"
-                               aria-label="Search">
-                        <button class="btn btn-success" type="submit"><i class="bi bi-search"></i></button>
-                    </form>
-                </li>
-            </ul>
-            <ul class="navbar-nav">
-                <li class="nav-item me-2">
-                    <a href="/admin" class="btn btn-warning">ADMIN</a>
-                </li>
-                <li class="nav-item me-2">
-                    <a class="btn btn-info" href="/cart"><i class="bi bi-cart4"></i> Giỏ hàng</a>
-                </li>
-                <li class="nav-item me-2">
-                    <a  class="btn btn-dark">Xin chào <span sec:authentication="name">Username</span></a>
-                </li>
-                <li  class="nav-item me-2">
+<header>
+    <nav class="navbar navbar-expand-md navbar-light sticky-top bg-white text-dark">
+        <div class="container-fluid text-dark">
+            <a class="navbar-brand" href="/">
+                <img th:src="@{/images/logobv.jpg}" style="width: 150px; height: 80px">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        <a class="nav-link font-weight-bold active" aria-current="page" href="/">TRANG CHỦ</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link font-weight-bolder " aria-current="page" href="/booking">ĐẶT LỊCH</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link font-weight-bolder " aria-current="page" href="/check-appointment">KIỂM TRA LỊCH</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link font-weight-bolder " aria-current="page" href="/about">GIỚI THIỆU</a>
+                    </li>
+
+                </ul>
+                <a class="d-flex gap-2 text-decoration-none" href="/login" sec:authorize="!isAuthenticated()">
+                <button class="btn btn-lg btn-info" style="background-color: #9EDAE4 !important;">Đăng nhập</button>
+                </a>
+
+                <div class="nav-item me-2" sec:authorize="isAuthenticated()">
                     <form th:action="@{/logout}" method="post">
-                        <button class="btn btn-danger" type="submit">Đăng xuất</button>
+                        <button class="btn btn-danger btn-lg" type="submit">Đăng xuất</button>
                     </form>
-                </li>
-                <li sec:authorize="!isAuthenticated()" class="nav-item me-2">
-                    <a class="btn btn-dark" href="/login">Đăng Nhập</a>
-                </li>
-                <li sec:authorize="!isAuthenticated()" class="nav-item me-2">
-                    <a class="btn btn-dark" href="/register">Đăng Ký</a>
-                </li>
-            </ul>
+                </div>
+            </div>
         </div>
     </nav>
 </header>
 
-<div class="container">
-    <div class="content">
+<div class="container" >
+    <div style="margin-top: 135px !important;">
+    <div class="content" >
         <!-- Page content goes here -->
         <div></div>
     </div>
+    </div>
     <!-- Footer -->
-    <footer th:fragment="footer" class="bg-primary py-3 text-center row">
+    <footer th:fragment="footer" class="py-4 text-center row w-100" style="background-color: #e3f2fd;">
         <div class="col d-grid">
-            <h4><strong>MINIE SHOP</strong></h4>
-            <p class="text-white">Cảm ơn bạn đã tin tưởng chọn cửa hàng
-                <br/>
-                bánh của chúng tôi, mong được phục vụ
-                <br/>
-                bạn những vị bánh thơm ngon và khiến
-                <br/>
-                bạn hài lòng khi nếm thử!
+            <h4><strong>Phòng Khám Răng</strong></h4>
+            <img th:src="@{/images/logo.png}">
+            <p class="text-black">
+                Cảm ơn bạn đã tin tưởng và lựa chọn dịch vụ nha khoa của chúng tôi.
+                <br/>Chúng tôi cam kết mang lại sự chăm sóc tốt nhất để bạn luôn tự tin với nụ cười của mình!
             </p>
         </div>
         <div class="col d-grid">
             <h4><strong>Liên Hệ</strong></h4>
-            <p class="text-white"><i class="bi bi-geo-alt-fill"></i> 123 Đường ABC, Phường XYZ, Quận 3, TP.HCM</p>
-            <p class="text-white"><i class="bi bi-telephone-fill"></i> 08 7777 1111</p>
-            <p class="text-white"><i class="bi bi-envelope-fill"></i> admin@minie.com</p>
+            <p class="text-black"><i class="bi bi-geo-alt-fill"></i> 456 Đường ABC, Phường XYZ, Quận 1, TP.HCM</p>
+            <p class="text-black"><i class="bi bi-telephone-fill"></i> 0909 123 456</p>
+            <p class="text-black"><i class="bi bi-envelope-fill"></i> contact@phongkhamrang.com</p>
         </div>
         <div class="col d-grid">
-            <h4><strong>Giới Thiệu</strong></h4>
-            <a class="nav-link text-white" href="/products">Sản Phẩm</a>
-            <a class="nav-link text-white" href="/promotions">Khuyến Mãi</a>
-            <a class="nav-link text-white" href="/home/about">Cửa Hàng</a>
-            <a class="nav-link text-white" href="/home/about">Tuyển Dụng</a>
+            <h4><strong>Liên Kết Nhanh</strong></h4>
+            <a class="nav-link text-black" href="/services">Dịch Vụ</a>
+            <a class="nav-link text-black" href="/promotions">Ưu Đãi</a>
+            <a class="nav-link text-black" href="/team">Đội Ngũ Bác Sĩ</a>
+            <a class="nav-link text-black" href="/contact">Liên Hệ</a>
         </div>
     </footer>
 </div>
