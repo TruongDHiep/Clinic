@@ -1,51 +1,35 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" >
-<head th:replace="admin/fragment/head :: head"><title>
-    Clinic Admin
-</title></head>
-<body class="hold-transition skin-blue sidebar-mini">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style th:replace="admin/fragment/style"></style>
+</head>
+<!--<body class="hold-transition skin-blue sidebar-mini">-->
 <!-- Site wrapper -->
-<div class="wrapper">
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
 
-    <div th:replace="admin/fragment/header :: header"></div>
+        <div th:replace="admin/fragment/header"></div>
 
-    <!-- =============================================== -->
+        <div th:replace="admin/fragment/left_side"></div>
 
-    <!-- Left side column. contains the sidebar -->
-    <div th:replace="admin/fragment/sidebar :: sidebar"></div>
-
-    <!-- =============================================== -->
-
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-
-
-        <!-- Main content -->
-        <section class="content">
-
-            <!-- Default box -->
-            <div class="box">
-
-                <div class="box-body">
-                   <H1>Chào mừng đến với trang quảng trị </H1>
-                </div>
-                <!-- /.box-body -->
-
+        <div class="content-wrapper">
+            <div layout:fragment="content" class="content">
+                <p>
+                    Trang chính
+                </p>
             </div>
-            <!-- /.box -->
+        </div>
 
-        </section>
-        <!-- /.content -->
+        <div th:replace="admin/fragment/footer"></div>
     </div>
-    <!-- /.content-wrapper -->
-    <div th:replace="admin/fragment/footer :: footer"></div>
 
-</div>
-<!-- ./wrapper -->
-
-<!-- jQuery 3 -->
-<div th:replace="admin/fragment/script :: script"></div>
+<div th:replace="admin/fragment/script"></div>
 
 </body>
 </html>
