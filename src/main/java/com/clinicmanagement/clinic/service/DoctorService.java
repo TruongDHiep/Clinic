@@ -1,11 +1,8 @@
 package com.clinicmanagement.clinic.service;
 
 import com.clinicmanagement.clinic.Entities.Doctor;
-import com.clinicmanagement.clinic.exception.DuplicateEmailException;
 import com.clinicmanagement.clinic.repository.DoctorRepository;
-import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,29 +22,20 @@ public class DoctorService {
         return doctorRepository.findAllByStatus(status);
     }
 
-    public Doctor findById(Integer doctorID) {
-        return doctorRepository.findById(doctorID)
-                .orElseThrow(() -> new RuntimeException("Doctor not found"));
+    public Optional<Doctor> findByEmailAndNotId(String email, Integer id) {
+        return doctorRepository.findByEmailAndNotId(email, id);
     }
 
-    public Doctor saveDoctor(Doctor doctor) throws DuplicateEmailException {
-        try {
-            return doctorRepository.save(doctor);
-        } catch (DataIntegrityViolationException ex) {
-            if (ex.getCause() instanceof ConstraintViolationException) {
-                throw new DuplicateEmailException("Email already exists: " + doctor.getEmail());
-            }
-            throw ex; // Ném lại nếu là lỗi khác
-        }
+    public Optional<Doctor> findById(Integer id) {
+        return doctorRepository.findById(id);
     }
 
-    public Doctor updateDoctor(Integer id, Doctor doctor) {
-        Optional<Doctor> existingDoctor = doctorRepository.findById(id);
-        if (existingDoctor.isPresent()) {
-            doctor.setId(id);
-            return doctorRepository.save(doctor);
-        } else {
-            throw new IllegalArgumentException("Doctor not found");
-        }
+    public Doctor findByEmail(String email) {
+        return doctorRepository.findByEmail(email);
     }
+
+    public Doctor saveDoctor(Doctor doctor) {
+            return doctorRepository.save(doctor);
+    }
+
 }
