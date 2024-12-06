@@ -17,8 +17,12 @@ public class PaymentService {
         return _paymentRepository.findByPatientId(patientId);
     }
 
-    public List<payment> searchPayments(Integer patientId, String keyword) {
-        return _paymentRepository.searchPayments(patientId, keyword);
+    public List<payment> searchPayments(String keyword, int patientId) {
+        return _paymentRepository.findByKeywordAndPatient(keyword, patientId);
+    }
+
+    public List<payment> findByPatientId(int patientId) {
+        return _paymentRepository.findByPatientId(patientId);
     }
 
 }

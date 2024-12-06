@@ -189,13 +189,13 @@
             <div class="d-flex items-center flex-column">
                 <div class="bg-white d-flex flex-row shadow-sm rounded-2 align-items-center justify-content-between">
                     <div class="flex-grow-1 p-4">
-                        <form action="" class="w-100 d-block">
-                            <input type="text" class="form-control w-100" placeholder="Mã giao dịch, tên dịch vụ, tên bệnh nhân ...">
+                        <form th:action="@{/information/history/search/{patientId}(patientId=${user.patient.id})}" method="get" class="w-100 d-block">
+                            <input type="text" name="keyword" class="form-control w-100"
+                                   placeholder="Mã giao dịch, mã lịch khám, phương thức ..."
+                                   th:value="${param.keyword}">
+                            <button type="submit" class="btn btn-primary mt-2">Tìm kiếm</button>
                         </form>
                     </div>
-                    <button type="button" class="btn btn-outline-secondary btn-sm d-flex align-items-center justify-content-center p-2 me-2">
-                        <span class="material-symbols-outlined fs-5"> tune </span>
-                    </button>
                 </div>
                 <div style="height: 500px" class="bg-white d-flex flex-column shadow-sm rounded-2 mt-2 ">
                     <!--<div class="p-4">
