@@ -61,8 +61,8 @@ public class AdminServiceController {
 
     @GetMapping("/update/{id}")
     public String showUpdateForm(@PathVariable Integer id, Model model) {
-        Optional<Services> service = servicesService.findById(id);
-        model.addAttribute("service", serviceMapper.toServiceRequest(service.get()));
+        Services service = servicesService.findById(id);
+        model.addAttribute("service", serviceMapper.toServiceRequest(service));
         return "admin/service/update";
     }
 
@@ -90,17 +90,17 @@ public class AdminServiceController {
 
     @GetMapping("/disable/{id}")
     public String disablePatient(@PathVariable Integer id) {
-        Optional<Services> service = servicesService.findById(id);
-        service.get().setStatus(false);
-        servicesService.saveService(service.get());
+        Services service = servicesService.findById(id);
+        service.setStatus(false);
+        servicesService.saveService(service);
         return "redirect:/admin/services";
     }
 
     @GetMapping("/enable/{id}")
     public String enablePatient(@PathVariable Integer id) {
-        Optional<Services> service = servicesService.findById(id);
-        service.get().setStatus(true);
-        servicesService.saveService(service.get());
+        Services service = servicesService.findById(id);
+        service.setStatus(true);
+        servicesService.saveService(service);
         return "redirect:/admin/services";
     }
 }

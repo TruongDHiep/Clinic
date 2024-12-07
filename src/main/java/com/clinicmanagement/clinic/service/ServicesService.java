@@ -18,8 +18,9 @@ public class ServicesService {
         return serviceRepository.findAll();
     }
 
-    public Optional<Services> findById(Integer id){
-        return serviceRepository.findById(id);
+    public Services findById(Integer id){
+        return serviceRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Service not found"));
     }
 
     public Services findByServiceName(String serviceName){
