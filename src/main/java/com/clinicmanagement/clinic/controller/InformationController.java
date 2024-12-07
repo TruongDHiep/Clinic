@@ -42,8 +42,8 @@ public class InformationController {
 
     //========================================APPOINTMENT===========================================
 
-    @GetMapping("/appointment/{patientId}")
-    public String getAppointmentsByPatient(@PathVariable Integer patientId, Model model) {
+    @GetMapping("/appointment")
+    public String getAppointmentsByPatient(Model model) {
         var context = SecurityContextHolder.getContext();
         String username = context.getAuthentication().getName();
 

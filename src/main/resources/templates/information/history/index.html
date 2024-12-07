@@ -12,7 +12,6 @@
         @import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700,900&display=swap');
 
         body{
-            padding: 100px 0;
             background: #ecf0f4;
             width: 100%;
             height: 100%;
@@ -165,7 +164,7 @@
             <div class="bg-white shadow-sm rounded-2 ">
                 <ul class="nav flex-column pt-3 pb-3">
                     <li class="p-3">
-                        <a th:href="@{/information/appointment/{patientId}(patientId=${user.patient.id})}" class="link-underline link-underline-opacity-0 text-dark w-100 item-active d-block w-100">Lịch khám</a>
+                        <a th:href="@{/information/appointment}" class="link-underline link-underline-opacity-0 text-dark w-100 item-active d-block w-100">Lịch khám</a>
                     </li>
                     <li class="p-3">
                         <a th:href="@{/information/history/{patientId}(patientId=${user.patient.id})}" class="link-underline link-underline-opacity-0 text-dark d-block w-100">Lịch sử thanh toán</a>
