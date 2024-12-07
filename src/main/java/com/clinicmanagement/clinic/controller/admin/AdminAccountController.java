@@ -69,7 +69,7 @@ public class AdminAccountController {
     @GetMapping("/accounts")
     public String getAllUserAccounts(
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "2") int size,
             Model model) {
         Page<UserResponse> userAccountsPage = userService.getAllUsers(PageRequest.of(page - 1, size));
 

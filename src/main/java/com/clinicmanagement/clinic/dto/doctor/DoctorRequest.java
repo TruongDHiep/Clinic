@@ -23,7 +23,8 @@ public class DoctorRequest {
 
     private Integer id;
 
-    @NotBlank(message = "Full name is required")
+    @NotBlank(message = "Vui lòng nhập họ tên")
+
     private String fullName;
 
     @NotNull(message = "Gender is required")
@@ -41,5 +42,5 @@ public class DoctorRequest {
     @NotNull(message = "Specialization is required")
     private Integer specialization_id;
 
-    private boolean status;
+    private Boolean status;
 }

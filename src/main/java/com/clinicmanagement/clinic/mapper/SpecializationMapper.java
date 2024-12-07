@@ -1,19 +1,15 @@
 package com.clinicmanagement.clinic.mapper;
 
-import com.clinicmanagement.clinic.Entities.Services;
 import com.clinicmanagement.clinic.Entities.Specialization;
-import com.clinicmanagement.clinic.dto.ServiceDTO;
-import com.clinicmanagement.clinic.dto.ServiceRequest;
 import com.clinicmanagement.clinic.dto.SpecializationRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
-public interface ServiceMapper {
+public interface SpecializationMapper {
     @Mapping(target = "id", source = "id")
-    Services toServices(ServiceRequest serviceRequest);
+    Specialization toSpecialization(SpecializationRequest specializationRequest);
 
     @Mapping(target = "id", source = "id")
-    ServiceRequest toServiceRequest(Services services);
+    SpecializationRequest toSpecializationRequest(Specialization specialization);
 }

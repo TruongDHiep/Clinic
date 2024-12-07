@@ -271,7 +271,7 @@ public class InformationController {
             existingPatient.setDob(patient.getDob());
             existingPatient.setAddress(patient.getAddress());
 
-            _patientService.createPatient(existingPatient);
+            _patientService.savePatient(existingPatient);
             redirectAttributes.addFlashAttribute("errorMessage", "Cập nhật hồ sơ thành công");
 
             return "redirect:/information/userProfile/" + existingPatient.getId();

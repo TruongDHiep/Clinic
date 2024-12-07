@@ -55,11 +55,11 @@ public class BookingController {
 
 
 
-        List<Services> services = _servicesService.getAll();
+        List<Services> services = _servicesService.getAllServices();
         model.addAttribute("services", services);
         System.out.println("dichvu" + services);
 
-        List<Patient> patient = _patientService.findAll();
+        List<Patient> patient = _patientService.getAllPatients();
         System.out.println("patient" + patient);
         model.addAttribute("patients", patient);
         model.addAttribute("user", user.getPatient());
