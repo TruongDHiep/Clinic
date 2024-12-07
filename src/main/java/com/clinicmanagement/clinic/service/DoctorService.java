@@ -2,16 +2,23 @@ package com.clinicmanagement.clinic.service;
 
 import com.clinicmanagement.clinic.Entities.Appointment;
 import com.clinicmanagement.clinic.Entities.Doctor;
+import com.clinicmanagement.clinic.Entities.Useraccount;
+import com.clinicmanagement.clinic.dto.doctor.doctorReponse;
+import com.clinicmanagement.clinic.dto.user.UserResponse;
 import com.clinicmanagement.clinic.exception.DuplicateEmailException;
+import com.clinicmanagement.clinic.mapper.DoctorMapper;
 import com.clinicmanagement.clinic.repository.AppointmentRepository;
 import com.clinicmanagement.clinic.repository.DoctorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DoctorService {
@@ -20,7 +27,14 @@ public class DoctorService {
     private DoctorRepository doctorRepository;
 
     @Autowired
+    private DoctorMapper doctorMapper;
+
+    @Autowired
     private AppointmentRepository appointmentRepository;
+
+    public Page<Doctor> getAllUsers(Pageable pageable) {
+        return doctorRepository.findAll(pageable);
+    }
 
     public List<Doctor> getAllDoctors() {
         return doctorRepository.findAll();

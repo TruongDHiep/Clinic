@@ -1,11 +1,14 @@
 package com.clinicmanagement.clinic.controller.admin;
 
+import com.clinicmanagement.clinic.Entities.Doctor;
 import com.clinicmanagement.clinic.Entities.Patient;
 import com.clinicmanagement.clinic.dto.patient.PatientRequest;
 import com.clinicmanagement.clinic.mapper.PatientMapper;
 import com.clinicmanagement.clinic.service.PatientService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,9 +26,13 @@ public class AdminPatientController {
     private PatientMapper patientMapper;
 
     @GetMapping
-    public String showAllPatients(Model model) {
-        List<Patient> patients = patientService.getAllPatients();
-        model.addAttribute("patients", patients);
+    public String getAllPatients(@RequestParam(defaultValue = "1") int page,
+                                @RequestParam(defaultValue = "5") int size,
+                                Model model) {
+        Page<Patient> patientPage = patientService.getAllPatientPage(PageRequest.of(page - 1, size));
+        model.addAttribute("patients", patientPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", patientPage.getTotalPages());
         return "admin/patient/patients";
     }
 

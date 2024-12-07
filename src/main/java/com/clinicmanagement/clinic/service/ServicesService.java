@@ -1,8 +1,11 @@
 package com.clinicmanagement.clinic.service;
 
+import com.clinicmanagement.clinic.Entities.Patient;
 import com.clinicmanagement.clinic.Entities.Services;
 import com.clinicmanagement.clinic.repository.ServicesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +19,10 @@ public class ServicesService {
 
     public List<Services> getAllServices(){
         return serviceRepository.findAll();
+    }
+
+    public Page<Services> getAllServicePage(Pageable pageable) {
+        return serviceRepository.findAll(pageable);
     }
 
     public Services findById(Integer id){

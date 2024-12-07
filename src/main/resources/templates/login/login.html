@@ -27,9 +27,8 @@
     });
 
 </script>
-<nav class="d-flex p-2" style="background-color:#FFFFFF">
-    <img class="logo me-auto" th:src="@{/images/logo.png}" style="height: 40px; width: auto;" alt="Logo">
-    <a href="/" class="btn btn-outline-primary ms-auto">Quay lại</a>
+<nav class="d-flex m-4 px-2 mb-0" style="background-color:#FFFFFF">
+    <a href="/" class="btn btn-outline-primary ">Quay lại</a>
 </nav>
 
 <div class="position-fixed top-0 end-0 p-3" style="z-index: 11; width: 100%;">
@@ -66,7 +65,7 @@
         </div>
     </div>
 </div>
-<div class="container d-flex justify-content-center align-items-center min-vh-100">
+<div class="container d-flex justify-content-center align-items-center">
     <div class="row border rounded-5 p-3 bg-white shadow box-area">
         <div class="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column left-box" style="background:#103cbe;">
             <div class="feature-image mb-3">
@@ -82,10 +81,10 @@
                     <p>We are happy to have you back</p>
                     <form id="loginForm" th:action="@{/login}" method="post">
                         <div class="input-group mb-3 mt-5">
-                            <input type="text" name="username" th:value="user1" class="form-control form-control-lg bg-light fs-6" placeholder="Username" required>
+                            <input type="text" name="username" value="" class="form-control form-control-lg bg-light fs-6" placeholder="Username" required>
                         </div>
                         <div class="input-group mb-3">
-                            <input type="password"  name="password" th:value="admin1234" class="form-control form-control-lg bg-light fs-6" placeholder="Password" required>
+                            <input type="password"  name="password" value="" class="form-control form-control-lg bg-light fs-6" placeholder="Password" required>
                         </div>
                         <div class="input-group mb-5 d-flex justify-content-between">
                             <div class="form-check">
@@ -116,8 +115,3 @@
     </div>
 </div>
 </body>
-<footer class="d-flex flex-column align-items-center">
-    <p>
-        Các thông tin chỉ dành cho mục đích tham khảo, tra cứu và không thay thế cho việc chẩn đoán hoặc điều trị y khoa.
-    </p>
-</footer>
