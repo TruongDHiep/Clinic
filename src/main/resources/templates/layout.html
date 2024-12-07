@@ -84,7 +84,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link font-weight-bolder " aria-current="page" th:href="@{information/appointment}">THÔNG TIN CÁ NHÂN</a>
+                        <a class="nav-link font-weight-bolder " aria-current="page" sec:authorize="isAuthenticated()" th:href="@{information/appointment}">THÔNG TIN CÁ NHÂN</a>
                     </li>
 
                 </ul>
