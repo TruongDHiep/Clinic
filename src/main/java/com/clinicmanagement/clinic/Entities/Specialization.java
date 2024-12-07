@@ -18,7 +18,7 @@ public class Specialization {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-
+    @Column(name = "name", unique = true)
     private String name;
-    private boolean status;
+    private Boolean status;
 }

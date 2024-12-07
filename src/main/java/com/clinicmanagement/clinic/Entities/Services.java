@@ -18,9 +18,9 @@ public class Services {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank(message = "Service is required")
+    @Column(name = "serviceName", unique = true)
     private String serviceName;
     private String description;
     private double price;
-    private boolean status;
+    private Boolean status;
 }

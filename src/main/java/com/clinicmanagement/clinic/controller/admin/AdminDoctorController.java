@@ -29,7 +29,7 @@ public class AdminDoctorController {
 
     @GetMapping
     public String getAllDoctors(Model model) {
-        System.out.println("Get all doctors");
+
         List<Doctor> doctors = doctorService.getAllDoctors();
         model.addAttribute("doctors", doctors);
         return "admin/doctor/doctors";
@@ -38,7 +38,7 @@ public class AdminDoctorController {
     @GetMapping("/create")
     public String showCreateForm(Model model) {
         model.addAttribute("doctor", new DoctorRequest());
-        model.addAttribute("specializations", specializationService.getAllSpecialization());
+        model.addAttribute("specializations", specializationService.getAllSpecializations());
         return "admin/doctor/create";
     }
 
@@ -46,14 +46,14 @@ public class AdminDoctorController {
     public String createDoctor(@Valid @ModelAttribute("doctor") DoctorRequest doctorRequest,
                                BindingResult result,
                                Model model) {
-        List<Specialization> specializations = specializationService.getAllSpecialization();
+        List<Specialization> specializations = specializationService.getAllSpecializations();
         if (result.hasErrors()) {
             model.addAttribute("specializations", specializations);
             return "admin/doctor/create";
         }
         try {
             if(doctorService.findByEmail(doctorRequest.getEmail()) != null){
-                model.addAttribute("errorMessage", "Email đã tồn tại");
+                result.rejectValue("email", "error.doctor", "Email đã tồn tại");
                 model.addAttribute("specializations", specializations);
                 return "admin/doctor/create";
             }
@@ -70,9 +70,8 @@ public class AdminDoctorController {
     @GetMapping("/update/{id}")
     public String showUpdateForm(@PathVariable Integer id,Model model) {
         Optional<Doctor> doctor = doctorService.findById(id);
-        System.out.println(doctor.get());
         model.addAttribute("doctor", doctorMapper.toDoctorRequest(doctor.get()));
-        model.addAttribute("specializations", specializationService.getAllSpecialization());
+        model.addAttribute("specializations", specializationService.getAllSpecializations());
         return "admin/doctor/update";
     }
 
@@ -81,7 +80,7 @@ public class AdminDoctorController {
                                BindingResult result,
                                Model model) {
 
-        List<Specialization> specializations = specializationService.getAllSpecialization();
+        List<Specialization> specializations = specializationService.getAllSpecializations();
 
         if (result.hasErrors()) {
             model.addAttribute("specializations", specializations);
@@ -101,6 +100,22 @@ public class AdminDoctorController {
             model.addAttribute("specializations", specializations);
             return "admin/doctor/update";
         }
+    }
+
+    @GetMapping("/disable/{id}")
+    public String disableDoctor(@PathVariable Integer id) {
+        Optional<Doctor> doctor = doctorService.findById(id);
+        doctor.get().setStatus(false);
+        doctorService.saveDoctor(doctor.get());
+        return "redirect:/admin/doctors";
+    }
+
+    @GetMapping("/enable/{id}")
+    public String enableDoctor(@PathVariable Integer id) {
+        Optional<Doctor> doctor = doctorService.findById(id);
+        doctor.get().setStatus(true);
+        doctorService.saveDoctor(doctor.get());
+        return "redirect:/admin/doctors";
     }
 }
 

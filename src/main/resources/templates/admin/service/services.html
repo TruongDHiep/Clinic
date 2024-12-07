@@ -4,20 +4,20 @@
       layout:decorate="~{admin/index}">
 <head>
     <meta charset="UTF-8">
-    <title>Doctor</title>
+    <title>Services</title>
 </head>
 <body>
 <div layout:fragment="content">
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">DANH SÁCH BÁC SĨ</h3>
+            <h3 class="card-title">DANH SÁCH DỊCH VỤ</h3>
         </div>
         <!-- Thông báo lỗi -->
         <div class="alert alert-danger" th:if="${errorMessage}">
             <p th:text="${errorMessage}"></p>
         </div>
         <div class="text-end w-auto mx-4 mt-2">
-            <a class="btn btn-primary float-right" th:href="@{doctors/create}">Thêm bác sĩ</a>
+            <a class="btn btn-primary float-right" th:href="@{services/create}">Thêm dịch vụ</a>
         </div>
         <!-- /.card-header -->
         <div class="card-body">
@@ -25,39 +25,33 @@
                 <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Full Name</th>
-                    <th>Gender</th>
-                    <th>Specialization</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Status</th>
-                    <th>Actions</th>
+                    <th>Tên Dịch Vụ</th>
+                    <th>Mô Tả</th>
+                    <th>Giá</th>
+                    <th>Trạng Thái</th>
+                    <th>Thao Tác</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="doctor : ${doctors}">
-                    <td th:text="${doctor.id}"></td>
-                    <td th:text="${doctor.fullName}"></td>
-                    <td th:text="${doctor.gender == true ? 'Nữ' : 'Nam'}"></td>
-                    <td th:text="${doctor.specialization.name}"></td>
-                    <td th:text="${doctor.email}"></td>
-                    <td th:text="${doctor.phone}"></td>
-                    <td th:text="${doctor.status ? 'Hoạt động' : 'Không hoạt động'}"></td> <!-- Cột status -->
+                <tr th:each="service : ${services}">
+                    <td th:text="${service.id}"></td>
+                    <td th:text="${service.serviceName}"></td>
+                    <td th:text="${service.description}"></td>
+                    <td th:text="${#numbers.formatDecimal(service.price, 0, 0)}"></td>
+                    <td th:text="${service.status ? 'Hoạt động' : 'Không hoạt động'}"></td>
                     <td>
                         <!-- Biểu tượng chỉnh sửa -->
-                        <a class="btn btn-warning btn-sm" th:href="@{doctors/update/{id}(id=${doctor.id})}">Chỉnh
-                            sửa</a>
+                        <a class="btn btn-warning btn-sm" th:href="@{services/update/{id}(id=${service.id})}">Chỉnh sửa</a>
                         <!-- Biểu tượng xóa -->
                         <a class="btn btn-danger btn-sm"
-                           th:if="${doctor.status == true}"
+                           th:if="${service.status == true}"
                            onclick="return confirm('Bạn có chắc chắn muốn hủy?')"
-                           th:href="@{doctors/disable/{id}(id=${doctor.id})}">Hủy</a>
+                           th:href="@{services/disable/{id}(id=${service.id})}">Hủy</a>
 
                         <a class="btn btn-success btn-sm"
-                           th:if="${doctor.status == false}"
+                           th:if="${service.status == false}"
                            onclick="return confirm('Bạn có chắc chắn muốn kích hoạt lại?')"
-                           th:href="@{doctors/enable/{id}(id=${doctor.id})}">Kích hoạt</a>
-
+                           th:href="@{services/enable/{id}(id=${service.id})}">Kích hoạt</a>
                     </td>
                 </tr>
                 </tbody>
