@@ -13,7 +13,18 @@
             <h3 class="card-title">DANH SÁCH TÀI KHOẢN</h3>
         </div>
         <div class="text-end w-auto mx-4 mt-2">
-            <a class="btn btn-primary float-right" th:href="@{/admin/accounts/new}">Thêm bác sĩ</a>
+            <div class="row">
+                <div class="col-md-3">
+                    <input type="text" name="username" class="form-control" placeholder="Username"
+                    >
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                </div>
+                <div class="col">
+                    <a class="btn btn-primary float-right" th:href="@{/admin/accounts/new}">Tạo tài khoản cho bác sĩ</a>
+                </div>
+            </div>
         </div>
     <div class="card-body">
         <table class="table table-bordered">
@@ -54,41 +65,46 @@
             </tbody>
         </table>
         <br>
-        <nav aria-label="Page navigation" class="d-flex justify-content-center">
-            <ul class="pagination">
-                <!-- Nút Previous -->
-                <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
-                    <a class="page-link" th:href="@{/admin/accounts(page=${currentPage - 1}, size=${size})}">Previous</a>
-                </li>
+        <div class="card-footer clearfix">
+            <nav aria-label="Page navigation" class="d-flex justify-content-center">
+                <ul class="pagination">
+                    <!-- Nút Previous -->
+                    <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                        <a class="page-link" th:href="@{/admin/accounts(page=${currentPage - 1}, size=${size})}">Previous</a>
+                    </li>
 
-                <!-- Dấu ba chấm trước khi currentPage > 2 -->
-                <li class="page-item" th:if="${currentPage > 3}">
-                    <span class="page-link">...</span>
-                </li>
+                    <!-- Dấu ba chấm trước khi currentPage > 2 -->
+                    <li class="page-item" th:if="${currentPage > 3}">
+                        <span class="page-link">...</span>
+                    </li>
 
-                <!-- Hiển thị các trang gần currentPage -->
-                <li class="page-item" th:each="pageNum : ${#numbers.sequence(currentPage - 1, currentPage + 1)}"
-                    th:if="${pageNum >= 1 and pageNum <= totalPages}"
-                    th:classappend="${currentPage == pageNum} ? 'active'">
-                    <a class="page-link" th:href="@{/admin/accounts(page=${pageNum}, size=${size})}" th:text="${pageNum}"></a>
-                </li>
+                    <!-- Hiển thị các trang gần currentPage -->
+                    <li class="page-item" th:each="pageNum : ${#numbers.sequence(currentPage - 1, currentPage + 1)}"
+                        th:if="${pageNum >= 1 and pageNum <= totalPages}"
+                        th:classappend="${currentPage == pageNum} ? 'active'">
+                        <a class="page-link" th:href="@{/admin/accounts(page=${pageNum}, size=${size})}"
+                           th:text="${pageNum}"></a>
+                    </li>
 
-                <!-- Dấu ba chấm sau nếu currentPage < totalPages - 2 -->
-                <li class="page-item" th:if="${currentPage < totalPages - 2}">
-                    <span class="page-link">...</span>
-                </li>
+                    <!-- Dấu ba chấm sau nếu currentPage < totalPages - 2 -->
+                    <li class="page-item" th:if="${currentPage < totalPages - 2}">
+                        <span class="page-link">...</span>
+                    </li>
 
-                <!-- Hiển thị các trang cuối -->
-                <li class="page-item" th:if="${currentPage < totalPages - 3}">
-                    <a class="page-link" th:href="@{/admin/accounts(page=${totalPages}, size=${size})}" th:text="${totalPages}"></a>
-                </li>
+                    <!-- Hiển thị các trang cuối -->
+                    <li class="page-item" th:if="${currentPage < totalPages - 3}">
+                        <a class="page-link" th:href="@{/admin/accounts(page=${totalPages}, size=${size})}"
+                           th:text="${totalPages}"></a>
+                    </li>
 
-                <!-- Nút Next -->
-                <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
-                    <a class="page-link" th:href="@{/admin/accounts(page=${currentPage + 1}, size=${size})}">Next</a>
-                </li>
-            </ul>
-        </nav>
+                    <!-- Nút Next -->
+                    <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/admin/accounts(page=${currentPage + 1}, size=${size})}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
     </div>
 </div>

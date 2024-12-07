@@ -1,8 +1,11 @@
 package com.clinicmanagement.clinic.service;
 
+import com.clinicmanagement.clinic.Entities.Doctor;
 import com.clinicmanagement.clinic.Entities.Patient;
 import com.clinicmanagement.clinic.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +21,10 @@ public class PatientService {
     public List<Patient> getAllPatients() {
         List<Patient> patients = patientRepository.findAll();
         return patients;
+    }
+
+    public Page<Patient> getAllPatientPage(Pageable pageable) {
+        return patientRepository.findAll(pageable);
     }
 
     public List<Patient> findAllByStatus(Boolean status) {

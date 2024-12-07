@@ -3,11 +3,15 @@ package com.clinicmanagement.clinic.controller.admin;
 import com.clinicmanagement.clinic.Entities.Doctor;
 import com.clinicmanagement.clinic.Entities.Specialization;
 import com.clinicmanagement.clinic.dto.doctor.DoctorRequest;
+import com.clinicmanagement.clinic.dto.doctor.doctorReponse;
+import com.clinicmanagement.clinic.dto.user.UserResponse;
 import com.clinicmanagement.clinic.mapper.DoctorMapper;
 import com.clinicmanagement.clinic.service.DoctorService;
 import com.clinicmanagement.clinic.service.SpecializationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,10 +32,13 @@ public class AdminDoctorController {
     private DoctorMapper doctorMapper;
 
     @GetMapping
-    public String getAllDoctors(Model model) {
-
-        List<Doctor> doctors = doctorService.getAllDoctors();
-        model.addAttribute("doctors", doctors);
+    public String getAllDoctors(@RequestParam(defaultValue = "1") int page,
+                                @RequestParam(defaultValue = "5") int size,
+                                Model model) {
+        Page<Doctor> doctorPage = doctorService.getAllUsers(PageRequest.of(page - 1, size));
+        model.addAttribute("doctors", doctorPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", doctorPage.getTotalPages());
         return "admin/doctor/doctors";
     }
 

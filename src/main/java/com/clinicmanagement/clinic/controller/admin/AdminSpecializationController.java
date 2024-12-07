@@ -1,12 +1,15 @@
 package com.clinicmanagement.clinic.controller.admin;
 
 import com.clinicmanagement.clinic.Entities.Patient;
+import com.clinicmanagement.clinic.Entities.Services;
 import com.clinicmanagement.clinic.Entities.Specialization;
 import com.clinicmanagement.clinic.dto.SpecializationRequest;
 import com.clinicmanagement.clinic.mapper.SpecializationMapper;
 import com.clinicmanagement.clinic.service.SpecializationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,9 +28,13 @@ public class AdminSpecializationController {
     private SpecializationMapper specializationMapper;
 
     @GetMapping
-    public String showAllSpecializations(Model model) {
-        List<Specialization> specializations = specializationService.getAllSpecializations();
-        model.addAttribute("specializations", specializations);
+    public String getAllSpecializationPage(@RequestParam(defaultValue = "1") int page,
+                                    @RequestParam(defaultValue = "5") int size,
+                                    Model model) {
+        Page<Specialization> specializationPage = specializationService.getAllSpecializationPage(PageRequest.of(page - 1, size));
+        model.addAttribute("specializations", specializationPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", specializationPage.getTotalPages());
         return "admin/specialization/specializations";
     }
 
