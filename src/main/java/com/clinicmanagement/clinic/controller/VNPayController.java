@@ -122,7 +122,7 @@ public class VNPayController {
         // Tạo AppointmentService
         List<appointment_service> appointmentServices = serviceIdList.stream()
                 .map(serviceId -> {
-                    Services service = _servicesService.getByID(serviceId);
+                    Services service = _servicesService.findById(serviceId);
                     appointment_service appointmentService = new appointment_service();
                     appointmentService.setAppointment_id(savedAppointment);
                     appointmentService.setServices(service);

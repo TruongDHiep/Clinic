@@ -4,20 +4,20 @@
       layout:decorate="~{admin/index}">
 <head>
     <meta charset="UTF-8">
-    <title>Doctor</title>
+    <title>Specialization</title>
 </head>
 <body>
 <div layout:fragment="content">
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">DANH SÁCH BÁC SĨ</h3>
+            <h3 class="card-title">DANH SÁCH CHUYÊN KHOA</h3>
         </div>
         <!-- Thông báo lỗi -->
         <div class="alert alert-danger" th:if="${errorMessage}">
             <p th:text="${errorMessage}"></p>
         </div>
         <div class="text-end w-auto mx-4 mt-2">
-            <a class="btn btn-primary float-right" th:href="@{doctors/create}">Thêm bác sĩ</a>
+            <a class="btn btn-primary float-right" th:href="@{specializations/create}">Thêm chuyên khoa</a>
         </div>
         <!-- /.card-header -->
         <div class="card-body">
@@ -25,39 +25,29 @@
                 <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Full Name</th>
-                    <th>Gender</th>
-                    <th>Specialization</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Status</th>
+                    <th>Tên Chuyên Khoa</th>
+                    <th>Trạng Thái</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="doctor : ${doctors}">
-                    <td th:text="${doctor.id}"></td>
-                    <td th:text="${doctor.fullName}"></td>
-                    <td th:text="${doctor.gender == true ? 'Nữ' : 'Nam'}"></td>
-                    <td th:text="${doctor.specialization.name}"></td>
-                    <td th:text="${doctor.email}"></td>
-                    <td th:text="${doctor.phone}"></td>
-                    <td th:text="${doctor.status ? 'Hoạt động' : 'Không hoạt động'}"></td> <!-- Cột status -->
+                <tr th:each="specialization : ${specializations}">
+                    <td th:text="${specialization.id}"></td>
+                    <td th:text="${specialization.name}"></td>
+                    <td th:text="${specialization.status ? 'Hoạt động' : 'Không hoạt động'}"></td>
                     <td>
                         <!-- Biểu tượng chỉnh sửa -->
-                        <a class="btn btn-warning btn-sm" th:href="@{doctors/update/{id}(id=${doctor.id})}">Chỉnh
-                            sửa</a>
+                        <a class="btn btn-warning btn-sm" th:href="@{specializations/update/{id}(id=${specialization.id})}">Chỉnh sửa</a>
                         <!-- Biểu tượng xóa -->
                         <a class="btn btn-danger btn-sm"
-                           th:if="${doctor.status == true}"
+                           th:if="${specialization.status == true}"
                            onclick="return confirm('Bạn có chắc chắn muốn hủy?')"
-                           th:href="@{doctors/disable/{id}(id=${doctor.id})}">Hủy</a>
+                           th:href="@{specializations/disable/{id}(id=${specialization.id})}">Hủy</a>
 
                         <a class="btn btn-success btn-sm"
-                           th:if="${doctor.status == false}"
+                           th:if="${specialization.status == false}"
                            onclick="return confirm('Bạn có chắc chắn muốn kích hoạt lại?')"
-                           th:href="@{doctors/enable/{id}(id=${doctor.id})}">Kích hoạt</a>
-
+                           th:href="@{specializations/enable/{id}(id=${specialization.id})}">Kích hoạt</a>
                     </td>
                 </tr>
                 </tbody>

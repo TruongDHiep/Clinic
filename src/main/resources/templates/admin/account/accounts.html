@@ -8,15 +8,15 @@
 </head>
 <body>
 <div layout:fragment="content">
-        <div class="container-fluid ">
-                <h1 class="text-center" >Quản lý Tài Khoản</h1>
-                <a th:href="@{/admin/accounts/new}" class="btn btn-success" style="width: 180px;font-size: 17px;">
-                    Thêm tài khoản (chỉ bác sĩ)
-                </a>
-            </div>
-            <br>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">DANH SÁCH TÀI KHOẢN</h3>
+        </div>
+        <div class="text-end w-auto mx-4 mt-2">
+            <a class="btn btn-primary float-right" th:href="@{/admin/accounts/new}">Thêm bác sĩ</a>
+        </div>
     <div class="card-body">
-        <table class="table table-head-fixed text-nowrap">
+        <table class="table table-bordered">
             <thead>
             <tr>
                 <th>ID</th>
@@ -38,20 +38,22 @@
                 <td th:text="${user.id}"></td>
                 <td th:text="${user.username}"></td>
                 <td th:text="${user.password}"></td>
-                <td th:text="${user.doctor != null ? user.doctor.fullName : 'None Doctor'}"></td>
-                <td th:text="${user.patient != null ? user.patient.fullName : 'None Patient'}"></td>
+                <td th:text="${user.doctor != null ? user.doctor.fullName : '--'}"></td>
+                <td th:text="${user.patient != null ? user.patient.fullName : '--'}"></td>
                 <td th:text="${user.status}"></td>
                 <td>
-                    <form th:action="@{/admin/accounts/disable/{id}(id=${user.id})}" method="post" th:if="${user.status}">
-                        <button type="submit" class="btn btn-danger">Disable</button>
+                    <form th:action="@{/admin/accounts/disable/{id}(id=${user.id})}" method="post" th:if="${user.status}" onsubmit="return confirm('Bạn có chắc chắn muốn hủy?')">
+                        <button type="submit" class="btn btn-danger btn-sm">Hủy</button>
                     </form>
-                    <form th:action="@{/admin/accounts/enable/{id}(id=${user.id})}" method="post" th:if="${not user.status}">
-                        <button type="submit" class="btn btn-success">Enable</button>
+
+                    <!-- Enable Form -->
+                    <form th:action="@{/admin/accounts/enable/{id}(id=${user.id})}" method="post" th:if="${not user.status}" onsubmit="return confirm('Bạn có chắc chắn muốn kích hoạt lại?')">
+                        <button type="submit" class="btn btn-success btn-sm">Kích hoạt</button>
                     </form>
-                </td>
             </tr>
             </tbody>
         </table>
+        <br>
         <nav aria-label="Page navigation" class="d-flex justify-content-center">
             <ul class="pagination">
                 <!-- Nút Previous -->
@@ -87,9 +89,7 @@
                 </li>
             </ul>
         </nav>
-
-
-
+    </div>
     </div>
 </div>
 </body>

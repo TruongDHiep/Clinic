@@ -8,19 +8,18 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <br>
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">THÊM BÁC SĨ</h3>
         </div>
-        <p class="mx-4 mt-2"><a href="/admin/doctors">Quay lại</a></p>
-        <div class="card-body p-4">
+        <div class="mx-4 mt-2"><a href="/admin/patients"><i class="fa-solid fa-chevron-left"></i><span class="p-2">Quay lại</span></a></div>
+        <div class="card-body x-4 pt-1 pb-4">
                 <div class="box">
                     <div class="box-body m-auto w-50">
                         <div th:if="${errorMessage}" class="error">
                             <p th:text="${errorMessage}"></p>
                         </div>
-                        <form th:action="@{/admin/doctors/create}" th:object="${doctor}" method="post">
+                        <form class="p-4 shadow-lg rounded" th:action="@{/admin/doctors/create}" th:object="${doctor}" method="post">
                             <div class="mb-3">
                                 <label for="fullName" class="form-label">Full Name</label>
                                 <input type="text" class="form-control" id="fullName" th:field="*{fullName}" placeholder="Enter full name">
@@ -75,9 +74,10 @@
                                     <span th:errors="${doctor.specialization_id}"></span>
                                 </div>
                             </div>
-
                             <!-- Submit Button -->
-                            <button type="submit" class="btn btn-primary float-right">Create</button>
+                            <div class="mb-3 text-right">
+                            <button type="submit" class="btn btn-primary">Tạo mới</button>
+                            </div>
                         </form>
                     </div>
                 </div>

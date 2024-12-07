@@ -51,7 +51,7 @@ public class UserController {
                     .dob(dateDefault)
                     .status(true)
                     .build();
-            patientService.createPatient(patient);
+            patientService.savePatient(patient);
             userRequest.setPatient(patient);
             userService.createUser(userRequest);
         } catch (Exception e) {
