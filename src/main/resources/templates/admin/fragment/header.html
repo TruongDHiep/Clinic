@@ -11,9 +11,8 @@
     <ul class="navbar-nav ml-auto">
         <div class="nav-item me-2" sec:authorize="isAuthenticated()">
             <form th:action="@{/logout}" method="post">
-                <button class="btn btn-danger btn-lg" type="submit">Đăng xuất</button>
+                <button class="btn btn-danger" type="submit">Đăng xuất</button>
             </form>
         </div>
-        <!-- Navbar Search -->
     </ul>
 </nav>
