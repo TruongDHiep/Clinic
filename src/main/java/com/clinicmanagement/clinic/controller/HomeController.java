@@ -16,7 +16,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-        return "/layout";
+        return "/home/index";
     }
 
     @GetMapping("/login")
@@ -25,6 +25,11 @@ public class HomeController {
             model.addAttribute("error", "Invalid username or password. Please try again.");
         }
         return "login/login";
+    }
+
+    @GetMapping("/about")
+    public String about() {
+        return "/home/about";
     }
 
     @GetMapping("/register")

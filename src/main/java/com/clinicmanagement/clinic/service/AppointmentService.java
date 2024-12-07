@@ -62,9 +62,6 @@ public class AppointmentService {
 
 
 
-
-
-
     @Transactional
     public List<Appointment> getAllAppointments() {
         List<Appointment> appointments = _appointmentRepository.findAll();
@@ -90,6 +87,7 @@ public class AppointmentService {
             throw new RuntimeException("Có lỗi xảy ra");
         }
     }
+
 
     public void cancelAppointment(int id) {
         Optional<Appointment> appointmentOptional  = _appointmentRepository.findById(id);

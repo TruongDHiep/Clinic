@@ -25,4 +25,8 @@ public class PaymentService {
         return _paymentRepository.findByPatientId(patientId);
     }
 
+    public payment save(payment payment) {
+        return _paymentRepository.save(payment);
+    }
+
 }
